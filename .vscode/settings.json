@@ -1,0 +1,27 @@
+{
+    "files.autoSave": "onFocusChange",
+    "phpfmt.passes": [
+        "AllmanStyleBraces",
+        "AlignDoubleArrow",
+        "DoubleToSingleQuote",
+        "OrderAndRemoveUseClauses",
+        "PSR2EmptyFunction",
+        "ReindentSwitchBlocks",
+        "ReplaceIsNull",
+        "MergeElseIf",
+        "SortUseNameSpace",
+        "SpaceBetweenMethods",
+        "MergeNamespaceWithOpenTag"
+    ],
+    "phpfmt.exclude": [
+        "AlignDoubleSlashComments",
+        "StripSpaces",
+        "AutoSemicolon",
+        "AlignEquals",
+        "AlignTypehint",
+        "AllmanStyleBraces",
+        "ConvertOpenTagWithEcho",
+        "DocBlockToComment",
+        "IndentTernaryConditions"
+    ]
+}
