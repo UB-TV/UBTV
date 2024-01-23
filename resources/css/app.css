@@ -1,3 +1,76 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+    /* Reset margin dan padding */
+    margin: 0;
+    padding: 0;
+
+    font-size: 100%;
+    font-weight: inherit;
+    line-height: 1;
+}
+
+/* Set Default Font and Font Color */
+@layer base {
+    html {
+        font-family: "Inter", system-ui, sans-serif;
+        color: #393d4e;
+    }
+}
+
+/* Custom Font Class */
+@layer utilities {
+    /* Display */
+    .display-1 {
+        @apply text-[72px] tracking-[1.2px] leading-[140%];
+    }
+    .display-2 {
+        @apply text-[54px] tracking-[-1.62px] leading-[120%];
+    }
+
+    /* Heading */
+    .heading-1 {
+        @apply text-[48px] tracking-[-1.44px] leading-[120%];
+    }
+    .heading-2 {
+        @apply text-[38px] tracking-[-0.76px] leading-[120%];
+    }
+    .heading-3 {
+        @apply text-[32px] tracking-[-0.64px] leading-[120%];
+    }
+    .heading-4 {
+        @apply text-[28px] tracking-[-0.56px] leading-[120%];
+    }
+    .heading-5 {
+        @apply text-[24px] tracking-[-0.48px] leading-[120%];
+    }
+    .heading-6 {
+        @apply text-[20px] tracking-[-0.4px] leading-[120%];
+    }
+
+    /* Body */
+    .body-1 {
+        @apply text-[18px] tracking-[-0.36px] leading-[140%];
+    }
+    .body-2 {
+        @apply text-[16px] tracking-[-0.32px] leading-[140%];
+    }
+
+    /* Caption */
+    .caption-1 {
+        @apply text-[14px] tracking-[-0.28px] leading-[140%];
+    }
+    .caption-2 {
+        @apply text-[12px] tracking-[-0.12px];
+    }
+
+    /* Overline */
+    .overline-1 {
+        @apply text-[12px] tracking-[1.44px];
+    }
+    .overline-2 {
+        @apply text-[10px] tracking-[-1.2px];
+    }
+}
