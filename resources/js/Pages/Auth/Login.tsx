@@ -1,6 +1,7 @@
+import { Link } from "@inertiajs/react"
+// Component
 import LoginForm from "@/Components/Auth/LoginForm"
 import Button from "@/Components/Shared/Button"
-import { Link } from "@inertiajs/react"
 
 const Login = () => {
     return (

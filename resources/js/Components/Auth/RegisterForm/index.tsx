@@ -1,10 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
+// Constants
+import { RegisterOptions } from "@/Constants/FormOptions";
 // Component
 import Button from "@/Components/Shared/Button";
 import Select from "@/Components/Form/Select";
-import { RegisterOptions } from "@/Constants/FormOptions";
+import InputField from "@/Components/Form/InputField";
 
 const phoneNumberValidator = (phoneNumber: string) => {
     return phoneNumber.startsWith('+62');
@@ -16,7 +18,7 @@ const schema = z.object({
     email: z.string().email(),
     password: z.string().min(8),
     role: z.string(),
-    phoneNumber: z.string().refine(phoneNumberValidator, {
+    phoneNumber: z.string().min(14).refine(phoneNumberValidator, {
         message: 'Phone number must start with +62',
     }),
 });
@@ -44,39 +46,36 @@ const RegisterForm = () => {
             <div className="flex items-start justify-between mb-12">
                 <div className="flex flex-col gap-6 w-[45%]">
                     <div className="flex flex-col gap-2">
-                        <label className="body-2 font-medium" htmlFor="id">No. ID</label>
-                        <input
-                            type="text"
+                        <InputField
                             id="id"
-                            className="p-[10px] body-2 rounded-lg"
-                            {...register("id")}
+                            type="text"
+                            label="No. ID"
                             placeholder="Masukkan No. ID"
+                            control={control}
                         />
                         {errors.id && (
                             <span className="text-error-500">{errors.id.message}</span>
                         )}
                     </div>
                     <div className="flex flex-col gap-2">
-                        <label className="body-2 font-medium" htmlFor="name">Nama</label>
-                        <input
-                            type="text"
+                        <InputField
                             id="name"
-                            className="p-[10px] body-2 rounded-lg"
-                            {...register("name")}
+                            type="text"
+                            label="Email"
                             placeholder="Masukkan Nama"
+                            control={control}
                         />
                         {errors.name && (
                             <span className="text-error-500">{errors.name.message}</span>
                         )}
                     </div>
                     <div className="flex flex-col gap-2">
-                        <label className="body-2 font-medium" htmlFor="email">Email</label>
-                        <input
-                            type="text"
+                        <InputField
                             id="email"
-                            className="p-[10px] body-2 rounded-lg"
-                            {...register("email")}
+                            type="email"
+                            label="Email"
                             placeholder="Masukkan email"
+                            control={control}
                         />
                         {errors.email && (
                             <span className="text-error-500">{errors.email.message}</span>
@@ -85,13 +84,12 @@ const RegisterForm = () => {
                 </div>
                 <div className="flex flex-col gap-6 w-[45%]">
                     <div className="flex flex-col gap-2">
-                        <label className="body-2 font-medium" htmlFor="password">Password</label>
-                        <input
-                            type="text"
+                        <InputField
                             id="password"
-                            className="p-[10px] body-2 rounded-lg"
-                            {...register("password")}
-                            placeholder="Masukkan Password"
+                            type="password"
+                            label="Password"
+                            placeholder="Masukkan password"
+                            control={control}
                         />
                         {errors.password && (
                             <span className="text-error-500">{errors.password.message}</span>
@@ -105,13 +103,12 @@ const RegisterForm = () => {
                         control={control}
                     />
                     <div className="flex flex-col gap-2">
-                        <label className="body-2 font-medium" htmlFor="phoneNumber">Nomor Telepon</label>
-                        <input
-                            type="text"
+                        <InputField
                             id="phoneNumber"
-                            className="p-[10px] body-2 rounded-lg"
-                            {...register("phoneNumber")}
-                            placeholder="Masukkan Nomor Telepon"
+                            type="text"
+                            label="Nomor Telepon"
+                            placeholder="Masukkan phoneNumber"
+                            control={control}
                         />
                         {errors.phoneNumber && (
                             <span className="text-error-500">{errors.phoneNumber.message}</span>

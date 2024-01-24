@@ -1,6 +1,6 @@
-import RegisterForm from "@/Components/Auth/RegisterForm"
-import Button from "@/Components/Shared/Button"
 import { Link } from "@inertiajs/react"
+// Component
+import RegisterForm from "@/Components/Auth/RegisterForm"
 
 const Register = () => {
     return (
@@ -12,7 +12,7 @@ const Register = () => {
                 </div>
                 <RegisterForm />
                 <span className="heading-6 font-semibold text-center">Sudah Punya Akun?
-                    <Link href="/register" className="text-secondary-700 underline">
+                    <Link href="/login" className="text-secondary-700 underline">
                         Masuk
                     </Link>
                 </span>
