@@ -1,18 +1,13 @@
-import { Link } from "@inertiajs/react";
+import { CameramanMenus } from "@/Constants/Temp";
+import Layout from "@/Layout";
 
 const Dashboard = () => {
     return (
-        <div className="flex flex-col justify-center items-center gap-4 min-h-screen">
-            <h1 className="heading-1 text-primary-600">This is a temporary Dashboard</h1>
-            <div className="body-1 flex items-center gap-4">
-                <Link className="text-blue-500 hover:underline" href="/login">
-                    Login
-                </Link>
-                <Link className="text-blue-500 hover:underline" href="/register">
-                    Register
-                </Link>
-            </div>
-        </div>
+        <Layout menus={CameramanMenus}>
+            <main>
+
+            </main>
+        </Layout>
     )
 }
 

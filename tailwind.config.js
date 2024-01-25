@@ -97,6 +97,9 @@ export default {
                     { fontFeatureSettings: '"cv02", "cv03", "cv04", "cv11"' },
                 ],
             },
+            boxShadow: {
+                "1": "0px 4px 45px 0px rgba(0, 0, 0, 0.10)",
+            },
         },
     },
 
