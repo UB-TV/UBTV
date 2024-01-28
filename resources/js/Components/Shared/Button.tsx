@@ -1,6 +1,6 @@
 type ButtonProps = {
     type: "submit" | "button"
-    label: string
+    label?: string
     style: "Filled" | "Outlined",
     color: "Primary" | "Error",
     icon?: string
