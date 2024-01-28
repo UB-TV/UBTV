@@ -48,13 +48,13 @@ const Dashboard = () => {
                         {notUploadSectionVisible && (
                             <section>
                                 <h2 className="heading-5 font-semibold mb-3">Belum Upload</h2>
-                                <Table head={CAMERAMAN_HEADER} body={filteredNotUploadedPrograms} action="/icon/more-fill.svg" />
+                                <Table head={CAMERAMAN_HEADER} body={filteredNotUploadedPrograms} action="/icon/more-fill.svg" pagination={false} />
                             </section>
                         )}
                         {uploadSectionVisible && (
                             <section>
                                 <h2 className="heading-5 font-semibold mb-3">Sudah Upload</h2>
-                                <Table head={CAMERAMAN_HEADER} body={filteredUploadedPrograms} action="/icon/more-fill.svg" />
+                                <Table head={CAMERAMAN_HEADER} body={filteredUploadedPrograms} action="/icon/more-fill.svg" pagination={false} />
                             </section>
                         )}
                     </>

@@ -37,7 +37,7 @@ const Layout = ({
                     iconPosition="Left"
                 />
             </aside>
-            <main className="flex flex-col items-start gap-6 w-full max-w-[78%] h-screen p-6 bg-white border border-solid border-grey-300 rounded-lg shadow-1">
+            <main className="flex flex-col items-start gap-6 w-full max-w-[78%] min-h-screen h-fit p-6 bg-white border border-solid border-grey-300 rounded-lg shadow-1">
                 {children}
             </main>
         </div>

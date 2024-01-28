@@ -46,4 +46,36 @@ export const CameramanPrograms = [
         slug: 'insightful-lectures',
         uploadStatus: false
     },
+    {
+        id: 6,
+        code: 'UNIV1001',
+        title: 'Insightful Lectures',
+        premiere: 'Senin, 15 Agustus 2023 18:10',
+        slug: 'insightful-lectures',
+        uploadStatus: true
+    },
+    {
+        id: 7,
+        code: 'UNIV1001',
+        title: 'Insightful Lectures',
+        premiere: 'Senin, 15 Agustus 2023 18:10',
+        slug: 'insightful-lectures',
+        uploadStatus: true
+    },
+    {
+        id: 8,
+        code: 'UNIV1001',
+        title: 'Insightful Lectures',
+        premiere: 'Senin, 15 Agustus 2023 18:10',
+        slug: 'insightful-lectures',
+        uploadStatus: true
+    },
+    {
+        id: 9,
+        code: 'UNIV1001',
+        title: 'no 6',
+        premiere: 'Senin, 15 Agustus 2023 18:10',
+        slug: 'insightful-lectures',
+        uploadStatus: true
+    },
 ]
