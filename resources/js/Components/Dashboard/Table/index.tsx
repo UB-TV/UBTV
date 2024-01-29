@@ -25,7 +25,7 @@ const Table = ({
     action,
     pagination,
 }: TableProps) => {
-    const ITEMS_PER_PAGE = 10;
+    const ITEMS_PER_PAGE = 1;
     const totalPages = Math.ceil(body.length / ITEMS_PER_PAGE);
 
     const [currentPage, setCurrentPage] = useState(1);
@@ -90,7 +90,7 @@ const Table = ({
                     <img
                         src="/icon/pagination-arrow.svg"
                         alt="pagination arrow"
-                        className={`cursor-pointer${currentPage === 1 ? 'opacity-50' : ''} mr-3`}
+                        className={`cursor-pointer ${currentPage === 1 ? 'opacity-50' : ''} mr-3`}
                         onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
                     />
                     {getVisiblePages().map((page) => (
