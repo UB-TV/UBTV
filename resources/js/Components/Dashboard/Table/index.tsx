@@ -90,9 +90,8 @@ const Table = ({
                     <img
                         src="/icon/pagination-arrow.svg"
                         alt="pagination arrow"
-                        className={`cursor-pointer${currentPage === 1 ? 'opacity-50' : ''}`}
+                        className={`cursor-pointer${currentPage === 1 ? 'opacity-50' : ''} mr-3`}
                         onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
-                        style={{ opacity: currentPage === 1 ? 0.5 : 1, marginRight: '12px' }}
                     />
                     {getVisiblePages().map((page) => (
                         <button
@@ -106,9 +105,8 @@ const Table = ({
                     <img
                         src="/icon/pagination-arrow.svg"
                         alt="pagination arrow"
-                        className={`cursor-pointer transform rotate-180  ${currentPage === totalPages ? 'opacity-50' : ''}`}
+                        className={`cursor-pointer transform rotate-180  ${currentPage === totalPages ? 'opacity-50' : ''} ml-3`}
                         onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
-                        style={{ marginLeft: '12px' }}
                     />
                 </div>
             )}

@@ -17,3 +17,7 @@ Route::get('/register', function () {
 Route::get('/uploaded', function () {
     return Inertia::render('Shared/UploadedProgram');
 })->name('uploaded-program');
+
+Route::get('/not-uploaded', function () {
+    return Inertia::render('Shared/NotUploadedProgram');
+})->name('not-uploaded-program');
