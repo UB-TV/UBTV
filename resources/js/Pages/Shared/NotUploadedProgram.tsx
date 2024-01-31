@@ -35,7 +35,7 @@ const NotUploadedProgram = () => {
                     </p>
                 </div>
                 {filteredUploadedPrograms.length > 0 ? (
-                    <Table head={CAMERAMAN_HEADER} body={filteredUploadedPrograms} action="/icon/more-fill.svg" pagination={true} />
+                    <Table head={CAMERAMAN_HEADER} body={filteredUploadedPrograms} uploadStatus={filteredUploadedPrograms.uploadStatus} slug={filteredUploadedPrograms.slug} action="/icon/more-fill.svg" pagination={true} />
                 ) : (
                     <p className="body-1 font-semibol">Tidak ada program yang ditemukan</p>
                 )}

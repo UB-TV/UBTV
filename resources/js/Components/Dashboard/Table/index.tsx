@@ -1,10 +1,13 @@
 import IconButton from "@/Components/Shared/IconButton.tsx"
+import { HandleSlugRedirect } from "@/util/HandleSlugRedirect"
 import { useEffect, useState } from "react"
 
 type TableBodyProps = {
     code: string
     title: string
     premiere: string
+    uploadStatus: boolean,
+    slug: string
 }
 
 type TableHeaderProps = {
@@ -15,6 +18,8 @@ type TableHeaderProps = {
 type TableProps = {
     head: TableHeaderProps[];
     body: TableBodyProps[];
+    uploadStatus: boolean;
+    slug: string;
     action?: string;
     pagination: boolean;
 };
@@ -25,7 +30,7 @@ const Table = ({
     action,
     pagination,
 }: TableProps) => {
-    const ITEMS_PER_PAGE = 1;
+    const ITEMS_PER_PAGE = 10;
     const totalPages = Math.ceil(body.length / ITEMS_PER_PAGE);
 
     const [currentPage, setCurrentPage] = useState(1);
@@ -79,7 +84,12 @@ const Table = ({
                             <td className="p-2">{body.title}</td>
                             <td className="p-2">{body.premiere}</td>
                             {action && (
-                                <td className="flex justify-center p-2"><IconButton icon="/icon/more-fill.svg" /></td>
+                                <td className="flex justify-center p-2">
+                                    <IconButton
+                                    onClick={() => HandleSlugRedirect('cameraman', body.uploadStatus, body.slug )}
+                                icon="/icon/more-fill.svg"
+                                 />
+                                </td>
                             )}
                         </tr>
                     ))}

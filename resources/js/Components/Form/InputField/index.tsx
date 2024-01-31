@@ -1,4 +1,3 @@
-// InputField.tsx
 import { useState } from 'react';
 import { useController } from 'react-hook-form';
 
@@ -8,6 +7,8 @@ type InputFieldProps = {
     label: string;
     placeholder: string;
     control: any;
+    disabled?: boolean;
+    value?: string;
 };
 
 const InputField = ({
@@ -16,13 +17,15 @@ const InputField = ({
     label,
     placeholder,
     control,
+    disabled = false,
+    value: propValue = ''
 }: InputFieldProps) => {
     const {
         field: { value, onChange },
     } = useController({
         name: id,
         control,
-        defaultValue: '',
+        defaultValue: propValue,
     });
 
     const [showPassword, setShowPassword] = useState(false);
@@ -44,6 +47,7 @@ const InputField = ({
                     className={`p-[10px] body-2 rounded-lg w-full`}
                     value={value}
                     onChange={onChange}
+                    disabled={disabled}
                 />
                 {type === 'password' && (
                     <button

@@ -19,9 +19,9 @@ const Layout = ({
                 <div className="w-full">
                     <img src="/icon/logo.svg" alt="UBTV Logo" className="w-[60%] mb-12" />
                     <div className="flex flex-col gap-6">
-                        {menus.map((menu) => {
+                        {menus.map((menu, index) => {
                             return (
-                                <Menu {...menu} />
+                                <Menu key={index} {...menu} />
                             )
                         })}
                     </div>
