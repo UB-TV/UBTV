@@ -24,30 +24,30 @@
 @layer utilities {
     /* Display */
     .display-1 {
-        @apply text-[72px] tracking-[1.2px] leading-[140%];
+        @apply font-jakarta text-[72px] tracking-[1.2px] leading-[140%];
     }
     .display-2 {
-        @apply text-[54px] tracking-[-1.62px] leading-[120%];
+        @apply font-jakarta text-[54px] tracking-[-1.62px] leading-[120%];
     }
 
     /* Heading */
     .heading-1 {
-        @apply text-[48px] tracking-[-1.44px] leading-[120%];
+        @apply font-jakarta text-[48px] tracking-[-1.44px] leading-[120%];
     }
     .heading-2 {
-        @apply text-[38px] tracking-[-0.76px] leading-[120%];
+        @apply font-jakarta text-[38px] tracking-[-0.76px] leading-[120%];
     }
     .heading-3 {
-        @apply text-[32px] tracking-[-0.64px] leading-[120%];
+        @apply font-jakarta text-[32px] tracking-[-0.64px] leading-[120%];
     }
     .heading-4 {
-        @apply text-[28px] tracking-[-0.56px] leading-[120%];
+        @apply font-jakarta text-[28px] tracking-[-0.56px] leading-[120%];
     }
     .heading-5 {
-        @apply text-[24px] tracking-[-0.48px] leading-[120%];
+        @apply font-jakarta text-[24px] tracking-[-0.48px] leading-[120%];
     }
     .heading-6 {
-        @apply text-[20px] tracking-[-0.4px] leading-[120%];
+        @apply font-jakarta text-[20px] tracking-[-0.4px] leading-[120%];
     }
 
     /* Body */
@@ -95,8 +95,4 @@ input[type="search"]::-webkit-search-cancel-button,
 input[type="search"]::-webkit-search-results-button,
 input[type="search"]::-webkit-search-results-decoration {
     display: none;
-}
-
-.toast-container {
-    z-index: 9999 !important;
 }

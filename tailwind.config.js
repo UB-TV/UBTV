@@ -96,6 +96,7 @@ export default {
                     'Inter var, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
                     { fontFeatureSettings: '"cv02", "cv03", "cv04", "cv11"' },
                 ],
+                jakarta: ['"Plus Jakarta Sans"', 'sans-serif']
             },
             boxShadow: {
                 "1": "0px 4px 45px 0px rgba(0, 0, 0, 0.10)",
