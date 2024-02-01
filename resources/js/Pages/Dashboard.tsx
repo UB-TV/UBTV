@@ -1,19 +1,67 @@
-import { Link } from "@inertiajs/react";
+import SearchField from "@/Components/Dashboard/SearchField";
+import Table from "@/Components/Dashboard/Table";
+import { CAMERAMAN_HEADER } from "@/Constants/TableHeader";
+import { CameramanMenus, CameramanPrograms } from "@/Constants/Temp";
+import Layout from "@/Layout";
+import { useMemo, useState } from "react";
 
 const Dashboard = () => {
-    return (
-        <div className="flex flex-col justify-center items-center gap-4 min-h-screen">
-            <h1 className="heading-1 text-primary-600">This is a temporary Dashboard</h1>
-            <div className="body-1 flex items-center gap-4">
-                <Link className="text-blue-500 hover:underline" href="/login">
-                    Login
-                </Link>
-                <Link className="text-blue-500 hover:underline" href="/register">
-                    Register
-                </Link>
-            </div>
-        </div>
-    )
-}
+    const [searchInput, setSearchInput] = useState('');
 
-export default Dashboard
+    const handleSearch = (input: string) => {
+        setSearchInput(input);
+    };
+
+    const filterPrograms = (programs: any, searchInput: string) => {
+        const filteredPrograms = programs.filter((program: any) =>
+            program.title.toLowerCase().includes(searchInput.toLowerCase())
+        );
+        return filteredPrograms;
+    };
+
+    const filteredNotUploadedPrograms = useMemo(
+        () => filterPrograms(CameramanPrograms.filter((program) => !program.uploadStatus), searchInput),
+        [CameramanPrograms, searchInput]
+    );
+
+    const filteredUploadedPrograms = useMemo(
+        () => filterPrograms(CameramanPrograms.filter((program) => program.uploadStatus), searchInput),
+        [CameramanPrograms, searchInput]
+    );
+
+    const notUploadSectionVisible = filteredNotUploadedPrograms.length > 0;
+    const uploadSectionVisible = filteredUploadedPrograms.length > 0;
+    return (
+        <Layout menus={CameramanMenus}>
+            <>
+                <h1 className="heading-3 font-semibold">Selamat Datang, Raina </h1>
+                <div className="flex items-center gap-6">
+                    <SearchField onSearch={handleSearch} />
+                    <p className="caption-1">
+                        <span className="font-semibold">{CameramanPrograms.length}</span> Program
+                    </p>
+                </div>
+                {!notUploadSectionVisible && !uploadSectionVisible ? (
+                    <p className="body-1 font-semibol">Tidak ada program yang ditemukan</p>
+                ) : (
+                    <>
+                        {notUploadSectionVisible && (
+                            <section>
+                                <h2 className="heading-5 font-semibold mb-3">Belum Upload</h2>
+                                <Table head={CAMERAMAN_HEADER} body={filteredNotUploadedPrograms} action="/icon/more-fill.svg" pagination={false} />
+                            </section>
+                        )}
+                        {uploadSectionVisible && (
+                            <section>
+                                <h2 className="heading-5 font-semibold mb-3">Sudah Upload</h2>
+                                <Table head={CAMERAMAN_HEADER} body={filteredUploadedPrograms} action="/icon/more-fill.svg" pagination={false} />
+                            </section>
+                        )}
+                    </>
+                )}
+            </>
+        </Layout>
+    );
+};
+
+export default Dashboard;
