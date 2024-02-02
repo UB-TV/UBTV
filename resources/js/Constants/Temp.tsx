@@ -1,3 +1,5 @@
+// **All CONSTANTS IN THIS FILE IS FOR REPLACING SERVER RESPONSE**
+
 export const CameramanMenus = [
     {
         link: '/',
@@ -10,6 +12,25 @@ export const CameramanMenus = [
     {
         link: '/uploaded',
         label: 'Sudah Upload'
+    },
+]
+
+export const EditorMenus = [
+    {
+        link: '/',
+        label: 'Dashboard'
+    },
+    {
+        link: '/not-uploaded',
+        label: 'Belum Upload'
+    },
+    {
+        link: '/uploaded',
+        label: 'Sudah Upload'
+    },
+    {
+        link: '/message',
+        label: 'Pesan Masuk'
     },
 ]
 
@@ -565,5 +586,40 @@ export const CameramanPrograms = [
         premiere: 'Senin, 15 Agustus 2023 18:10',
         slug: 'no-6',
         uploadStatus: true
+    },
+]
+
+export const MessageData = [
+    {
+        id: 1,
+        programTitle: 'Insightful Lectures',
+        programEpisode: 3,
+        sender: 'Ardhito Pramono',
+        senderRole: 'Produser',
+        message: 'Hi! Untuk pengambilan video dari atas, pastikan kamera stabil dan fokus pada detail penting. Perhatikan sudut pengambilan yang menarik dan pastikan pencahayaan memadai. Jangan lupa untuk memastikan keamanan alat saat pengambilan dari ketinggian. Terima kasih!'
+    },
+    {
+        id: 2,
+        programTitle: 'Insightful Lectures',
+        programEpisode: 3,
+        sender: 'Ardhito Pramono',
+        senderRole: 'Produser',
+        message: 'Hi! Untuk pengambilan video dari atas, pastikan kamera stabil dan fokus pada detail penting. Perhatikan sudut pengambilan yang menarik dan pastikan pencahayaan memadai. Jangan lupa untuk memastikan keamanan alat saat pengambilan dari ketinggian. Terima kasih!'
+    },
+    {
+        id: 3,
+        programTitle: 'Insightful Lectures',
+        programEpisode: 3,
+        sender: 'Ardhito Pramono',
+        senderRole: 'Produser',
+        message: 'Hi! Untuk pengambilan video dari atas, pastikan kamera stabil dan fokus pada detail penting. Perhatikan sudut pengambilan yang menarik dan pastikan pencahayaan memadai. Jangan lupa untuk memastikan keamanan alat saat pengambilan dari ketinggian. Terima kasih!'
+    },
+    {
+        id: 4,
+        programTitle: 'Insightful Lectures',
+        programEpisode: 3,
+        sender: 'Ardhito Pramono',
+        senderRole: 'Produser',
+        message: 'Hi! Untuk pengambilan video dari atas, pastikan kamera stabil dan fokus pada detail penting. Perhatikan sudut pengambilan yang menarik dan pastikan pencahayaan memadai. Jangan lupa untuk memastikan keamanan alat saat pengambilan dari ketinggian. Terima kasih!'
     },
 ]

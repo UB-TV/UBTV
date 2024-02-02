@@ -1,7 +1,7 @@
 import SearchField from "@/Components/Dashboard/SearchField";
 import Table from "@/Components/Dashboard/Table";
 import { CAMERAMAN_HEADER } from "@/Constants/TableHeader";
-import { CameramanMenus, CameramanPrograms } from "@/Constants/Temp";
+import { CameramanMenus, CameramanPrograms, EditorMenus } from "@/Constants/Temp";
 import Layout from "@/Layout";
 import { useMemo, useState } from "react";
 
@@ -32,7 +32,7 @@ const Dashboard = () => {
     const notUploadSectionVisible = filteredNotUploadedPrograms.length > 0;
     const uploadSectionVisible = filteredUploadedPrograms.length > 0;
     return (
-        <Layout menus={CameramanMenus}>
+        <Layout menus={EditorMenus}>
             <>
                 <h1 className="heading-3 font-semibold">Selamat Datang, Raina </h1>
                 <div className="flex items-center gap-6">
@@ -48,13 +48,13 @@ const Dashboard = () => {
                         {notUploadSectionVisible && (
                             <section>
                                 <h2 className="heading-5 font-semibold mb-3">Belum Upload</h2>
-                                <Table head={CAMERAMAN_HEADER} body={filteredNotUploadedPrograms} action="/icon/more-fill.svg" pagination={false} />
+                                <Table head={CAMERAMAN_HEADER} body={filteredNotUploadedPrograms} action="/icon/more-fill.svg" pagination={false} type="Program" />
                             </section>
                         )}
                         {uploadSectionVisible && (
                             <section>
                                 <h2 className="heading-5 font-semibold mb-3">Sudah Upload</h2>
-                                <Table head={CAMERAMAN_HEADER} body={filteredUploadedPrograms} action="/icon/more-fill.svg" pagination={false} />
+                                <Table head={CAMERAMAN_HEADER} body={filteredUploadedPrograms} action="/icon/more-fill.svg" pagination={false} type="Program" />
                             </section>
                         )}
                     </>
