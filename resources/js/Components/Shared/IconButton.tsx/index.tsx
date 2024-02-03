@@ -1,16 +1,18 @@
 type IconButtonProps = {
     icon: string
     onClick?: () => void;
+    style: 'Filled' | 'Outlined'
 }
 const IconButton = ({
     icon,
-    onClick
+    onClick,
+    style
 }: IconButtonProps) => {
     return (
         <button
             type="button"
             onClick={onClick}
-            className="bg-primary-500 p-[9px] rounded-[10px]"
+            className={`${style === 'Filled' ? 'bg-primary-500' : 'border-2 border-solid border-primary-500' } p-[9px] rounded-[10px]`}
         >
             <img src={icon} alt="Icon Button" />
         </button>

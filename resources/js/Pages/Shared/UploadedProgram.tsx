@@ -1,7 +1,7 @@
 import SearchField from "@/Components/Dashboard/SearchField"
 import Table from "@/Components/Dashboard/Table"
 import { CAMERAMAN_HEADER } from "@/Constants/TableHeader"
-import { CameramanMenus, CameramanPrograms, EditorMenus } from "@/Constants/Temp"
+import { CameramanMenus, CameramanPrograms, EditoProgram, EditorMenus } from "@/Constants/Temp"
 import Layout from "@/Layout"
 import { useMemo, useState } from "react"
 
@@ -20,8 +20,8 @@ const UploadedProgram = () => {
     };
 
     const filteredUploadedPrograms = useMemo(
-        () => filterPrograms(CameramanPrograms.filter((program) => program.uploadStatus), searchInput),
-        [CameramanPrograms, searchInput]
+        () => filterPrograms(EditoProgram.filter((program) => program.uploadStatus), searchInput),
+        [EditoProgram, searchInput]
     );
 
     return (
@@ -31,7 +31,7 @@ const UploadedProgram = () => {
                 <div className="flex items-center gap-6">
                     <SearchField onSearch={handleSearch} />
                     <p className="caption-1">
-                        <span className="font-semibold">{CameramanPrograms.filter((program) => program.uploadStatus).length}</span> Program
+                        <span className="font-semibold">{EditoProgram.filter((program) => program.uploadStatus).length}</span> Program
                     </p>
                 </div>
                 {filteredUploadedPrograms.length > 0 ? (

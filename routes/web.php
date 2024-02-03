@@ -24,8 +24,12 @@ Route::get('/not-uploaded', function () {
 
 Route::get('/not-uploaded/cameraman/{slug}', function () {
     return Inertia::render('Cameraman/ProgramDetail');
-})->name('not-uploaded-program-detail');
+})->name('cameraman-not-uploaded-program-detail');
 
 Route::get('/message', function () {
     return Inertia::render('Shared/ProgramMessage');
 })->name('program-message');
+
+Route::get('/not-uploaded/editor/{slug}', function () {
+    return Inertia::render('Editor/ProgramDetail');
+})->name('editor-not-uploaded-program-detail');

@@ -101,8 +101,9 @@ const Table = ({
                             {action && (
                                 <td className="flex justify-center p-2">
                                     <IconButton
-                                        onClick={() => HandleSlugRedirect('cameraman', body.uploadStatus, body.slug)}
+                                        onClick={() => HandleSlugRedirect('editor', body.uploadStatus, body.slug)}
                                         icon="/icon/more-fill.svg"
+                                        style="Filled"
                                     />
                                 </td>
                             )}

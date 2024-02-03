@@ -1,5 +1,6 @@
 import SearchField from "@/Components/Dashboard/SearchField";
 import Table from "@/Components/Dashboard/Table";
+import Hyperlink from "@/Components/Shared/Hyperlink";
 import { CAMERAMAN_HEADER } from "@/Constants/TableHeader";
 import { CameramanMenus, CameramanPrograms, EditorMenus } from "@/Constants/Temp";
 import Layout from "@/Layout";
@@ -47,13 +48,19 @@ const Dashboard = () => {
                     <>
                         {notUploadSectionVisible && (
                             <section>
-                                <h2 className="heading-5 font-semibold mb-3">Belum Upload</h2>
+                                <div className="flex items-end justify-between mb-3">
+                                    <h2 className="heading-5 font-semibold">Belum Upload</h2>
+                                    <Hyperlink url="/not-uploaded" label="Selengkapnya" />
+                                </div>
                                 <Table head={CAMERAMAN_HEADER} body={filteredNotUploadedPrograms} action="/icon/more-fill.svg" pagination={false} type="Program" />
                             </section>
                         )}
                         {uploadSectionVisible && (
                             <section>
-                                <h2 className="heading-5 font-semibold mb-3">Sudah Upload</h2>
+                                <div className="flex items-end justify-between mb-3">
+                                    <h2 className="heading-5 font-semibold">Sudah Upload</h2>
+                                    <Hyperlink url="/uploaded" label="Selengkapnya" />
+                                </div>
                                 <Table head={CAMERAMAN_HEADER} body={filteredUploadedPrograms} action="/icon/more-fill.svg" pagination={false} type="Program" />
                             </section>
                         )}
