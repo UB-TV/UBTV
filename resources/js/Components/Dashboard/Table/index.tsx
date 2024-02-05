@@ -1,5 +1,6 @@
 import IconButton from "@/Components/Shared/IconButton.tsx"
 import { HandleSlugRedirect } from "@/util/HandleSlugRedirect"
+import { getUserRole } from "@/util/RoleData";
 import { useEffect, useState } from "react"
 type TableHeaderProps = {
     label: string;
@@ -101,7 +102,7 @@ const Table = ({
                             {action && (
                                 <td className="flex justify-center p-2">
                                     <IconButton
-                                        onClick={() => HandleSlugRedirect('editor', body.uploadStatus, body.slug)}
+                                        onClick={() => HandleSlugRedirect(getUserRole(), body.uploadStatus, body.slug)}
                                         icon="/icon/more-fill.svg"
                                         style="Filled"
                                     />
