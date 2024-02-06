@@ -1,17 +1,18 @@
 import { useEffect, useRef } from 'react';
-// Data
-import { CameramanMenus, CameramanPrograms } from "@/Constants/Temp";
+import { EditoProgram, EditorMenus } from "@/Constants/Temp";
 // Component
 import Button from "@/Components/Shared/Button";
-import ProgramCard from "@/Components/Cameraman/ProgramCard";
 import UploadVideoForm from "@/Components/Cameraman/UploadVideoForm";
 import Dialog from "@/Components/Shared/Dialog";
 import Layout from "@/Layout";
 import IconButton from '@/Components/Shared/IconButton.tsx';
+import ProgramCard from '@/Components/Editor/ProgramCard';
+import SegmentCard from '@/Components/Editor/SegementCard';
+import UploadSegmentForm from '@/Components/Editor/UploadSegmentForm';
 
 const ProgramDetail = () => {
     const slug = window.location.pathname.split('/').pop();
-    const program = CameramanPrograms.find((program) => program.slug === slug);
+    const program = EditoProgram.find((program) => program.slug === slug);
 
     useEffect(() => {
         if (!program) {
@@ -28,14 +29,14 @@ const ProgramDetail = () => {
         dialogRef.current.hasAttribute("open")
             ? dialogRef.current.close()
             : dialogRef.current.showModal();
-    };
+    }
 
     const handleBackButton = () => {
         window.history.back();
     };
 
     return (
-        <Layout menus={CameramanMenus}>
+        <Layout menus={EditorMenus}>
             {program && (
                 <>
                     <IconButton onClick={handleBackButton} icon='/icon/back-arrow.svg' style='Filled' />
@@ -82,20 +83,39 @@ const ProgramDetail = () => {
                         </div>
                     </section>
                     <section className="flex flex-col gap-3 w-full mt-6">
-                        <div className="flex items-center justify-between">
-                            <h1 className="heading-5 font-semibold">Upload Video</h1>
-                            <Button type="button" label="Upload Video" style="Filled" color="Primary" width="Fit" size="Medium" icon="/icon/plus-white.svg" iconPosition="Left" onClick={toggleDialog} />
-                        </div>
+                        <h1 className="heading-5 font-semibold">Video dari Kameraman</h1>
                         <div className="flex gap-6 flex-wrap">
                             {program.episode.map((episode, index) => {
                                 return (
-                                    <ProgramCard key={index} {...episode} />
+                                    <ProgramCard key={index} {...episode} segmentNumber={episode.segmen.length} />
                                 )
                             })}
                         </div>
                         <Dialog size="Normal" toggleDialog={toggleDialog} ref={dialogRef}>
                             <h1 className="heading-2 font-semibold text-left">Upload Video</h1>
                             <UploadVideoForm episodeNumber={program.episode.length} />
+                        </Dialog>
+                    </section>
+                    <section className="flex flex-col gap-3 w-full mt-6">
+                        <div className="flex items-center justify-between">
+                            <h1 className="heading-5 font-semibold">Upload Video</h1>
+                            <Button type="button" label="Upload Video" style="Filled" color="Primary" width="Fit" size="Medium" icon="/icon/plus-white.svg" iconPosition="Left" onClick={toggleDialog} />
+                        </div>
+                        <div className="flex gap-6 flex-wrap">
+                            {program.episode.map((episode, index) => (
+                                <div key={episode.episodeNumber} className="w-full mt-4">
+                                    <h2 className="heading-6 font-semibold mb-2">Episode {episode.episodeNumber} ({program.episode[index].segmen.length} Segmen)</h2>
+                                    <div className="flex gap-6 flex-wrap">
+                                        {episode.segmen.map((segment, index) => (
+                                            <SegmentCard key={index} segmentNumber={segment.segmentNumber} thumbnailUrl={segment.preview} />
+                                        ))}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                        <Dialog size="Normal" toggleDialog={toggleDialog} ref={dialogRef}>
+                            <h1 className="heading-2 font-semibold text-left">Upload Video</h1>
+                            <UploadSegmentForm episode = {program.episode} />
                         </Dialog>
                     </section>
                 </>
