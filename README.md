@@ -1,5 +1,8 @@
 # UBTV
 
+> [!IMPORTANT]
+> Please see [Project Convention](./CONVENTION.md) before making contribution
+
 ## Requirements
 - PHP 8.2.x or higher. [(Reference)][PHP Download Page]
 - Node.js 20.10.0 LTS. [(Reference)][Node.js Download Page]
