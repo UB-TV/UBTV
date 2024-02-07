@@ -33,3 +33,7 @@ Route::get('/message', function () {
 Route::get('/not-uploaded/editor/{slug}', function () {
     return Inertia::render('Editor/ProgramDetail');
 })->name('editor-not-uploaded-program-detail');
+
+Route::get('/validation', function () {
+    return Inertia::render('MCR/Validation');
+})->name('validation');
