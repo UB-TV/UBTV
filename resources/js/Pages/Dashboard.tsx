@@ -57,7 +57,7 @@ const Dashboard = () => {
     const notUploadSectionVisible = filteredNotUploadedPrograms.length > 0;
     const uploadSectionVisible = filteredUploadedPrograms.length > 0;
     const validatedFalseSectionVisible = filteredNotUploadedPrograms.length > 0;
-    const programSectionVisible = filteredUploadedPrograms.length > 0;
+    const programSectionVisible = allPrograms.length > 0;
 
     return (
         <Layout menus={getLayoutMenu()}>

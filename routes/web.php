@@ -37,3 +37,7 @@ Route::get('/not-uploaded/editor/{slug}', function () {
 Route::get('/validation', function () {
     return Inertia::render('MCR/Validation');
 })->name('validation');
+
+Route::get('/program', function () {
+    return Inertia::render('MCR/Program');
+})->name('mcr-program');
