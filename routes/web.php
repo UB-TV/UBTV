@@ -41,3 +41,7 @@ Route::get('/validation', function () {
 Route::get('/program', function () {
     return Inertia::render('MCR/Program');
 })->name('mcr-program');
+
+Route::get('/program/{slug}', function () {
+    return Inertia::render('MCR/ProgramDetail');
+})->name('mcr-program-detail');

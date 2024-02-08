@@ -1531,6 +1531,8 @@ export const MCRProgram = [
                     }
                 ],
                 validationStatus: true,
+                airingStatus: 'On Air',
+                productionStatus: 'Shooting'
             },
             {
                 episodeNumber: 2,
@@ -1555,6 +1557,8 @@ export const MCRProgram = [
                     }
                 ],
                 validationStatus: false,
+                airingStatus: 'On Air',
+                productionStatus: 'Validasi QC MCR'
             },
             {
                 episodeNumber: 3,
@@ -1579,6 +1583,8 @@ export const MCRProgram = [
                     }
                 ],
                 validationStatus: true,
+                airingStatus: 'On Air',
+                productionStatus: 'Validasi Produser'
             },
         ],
         members: [
@@ -1642,6 +1648,8 @@ export const MCRProgram = [
                     }
                 ],
                 validationStatus: true,
+                airingStatus: 'On Air',
+                productionStatus: 'Shooting'
             },
             {
                 episodeNumber: 2,
@@ -1666,6 +1674,8 @@ export const MCRProgram = [
                     }
                 ],
                 validationStatus: true,
+                airingStatus: 'On Air',
+                productionStatus: 'Validasi QC MCR'
             },
             {
                 episodeNumber: 3,
@@ -1690,6 +1700,8 @@ export const MCRProgram = [
                     }
                 ],
                 validationStatus: true,
+                airingStatus: 'On Air',
+                productionStatus: 'Validasi Produser'
             },
         ],
         members: [
@@ -1753,6 +1765,8 @@ export const MCRProgram = [
                     }
                 ],
                 validationStatus: true,
+                airingStatus: 'On Air',
+                productionStatus: 'Shooting'
             },
             {
                 episodeNumber: 2,
@@ -1777,6 +1791,8 @@ export const MCRProgram = [
                     }
                 ],
                 validationStatus: true,
+                airingStatus: 'On Air',
+                productionStatus: 'Validasi QC MCR'
             },
             {
                 episodeNumber: 3,
@@ -1801,6 +1817,8 @@ export const MCRProgram = [
                     }
                 ],
                 validationStatus: true,
+                airingStatus: 'On Air',
+                productionStatus: 'Validasi Produser'
             },
         ],
         members: [
@@ -1865,6 +1883,8 @@ export const MCRProgram = [
                     }
                 ],
                 validationStatus: true,
+                airingStatus: 'On Air',
+                productionStatus: 'Shooting'
             },
             {
                 episodeNumber: 2,
@@ -1889,6 +1909,8 @@ export const MCRProgram = [
                     }
                 ],
                 validationStatus: false,
+                airingStatus: 'On Air',
+                productionStatus: 'Validasi QC MCR'
             },
             {
                 episodeNumber: 3,
@@ -1913,6 +1935,8 @@ export const MCRProgram = [
                     }
                 ],
                 validationStatus: true,
+                airingStatus: 'On Air',
+                productionStatus: 'Validasi Produser'
             },
         ],
         members: [
@@ -1976,6 +2000,8 @@ export const MCRProgram = [
                     }
                 ],
                 validationStatus: true,
+                airingStatus: 'On Air',
+                productionStatus: 'Shooting'
             },
             {
                 episodeNumber: 2,
@@ -2000,6 +2026,8 @@ export const MCRProgram = [
                     }
                 ],
                 validationStatus: true,
+                airingStatus: 'On Air',
+                productionStatus: 'Validasi QC MCR'
             },
             {
                 episodeNumber: 3,
@@ -2024,6 +2052,8 @@ export const MCRProgram = [
                     }
                 ],
                 validationStatus: true,
+                airingStatus: 'On Air',
+                productionStatus: 'Validasi Produser'
             },
         ],
         members: [
@@ -2087,6 +2117,8 @@ export const MCRProgram = [
                     }
                 ],
                 validationStatus: true,
+                airingStatus: 'On Air',
+                productionStatus: 'Shooting'
             },
             {
                 episodeNumber: 2,
@@ -2111,6 +2143,8 @@ export const MCRProgram = [
                     }
                 ],
                 validationStatus: true,
+                airingStatus: 'On Air',
+                productionStatus: 'Validasi QC MCR'
             },
             {
                 episodeNumber: 3,
@@ -2135,6 +2169,8 @@ export const MCRProgram = [
                     }
                 ],
                 validationStatus: true,
+                airingStatus: 'On Air',
+                productionStatus: 'Validasi Produser'
             },
         ],
         members: [
@@ -2198,6 +2234,8 @@ export const MCRProgram = [
                     }
                 ],
                 validationStatus: true,
+                airingStatus: 'On Air',
+                productionStatus: 'Shooting'
             },
             {
                 episodeNumber: 2,
@@ -2222,6 +2260,8 @@ export const MCRProgram = [
                     }
                 ],
                 validationStatus: true,
+                airingStatus: 'On Air',
+                productionStatus: 'Validasi QC MCR'
             },
             {
                 episodeNumber: 3,
@@ -2246,6 +2286,8 @@ export const MCRProgram = [
                     }
                 ],
                 validationStatus: true,
+                airingStatus: 'On Air',
+                productionStatus: 'Validasi Produser'
             },
         ],
         members: [
@@ -2309,6 +2351,8 @@ export const MCRProgram = [
                     }
                 ],
                 validationStatus: true,
+                airingStatus: 'On Air',
+                productionStatus: 'Shooting'
             },
             {
                 episodeNumber: 2,
@@ -2333,6 +2377,8 @@ export const MCRProgram = [
                     }
                 ],
                 validationStatus: true,
+                airingStatus: 'Off Air',
+                productionStatus: 'Validasi QC MCR'
             },
             {
                 episodeNumber: 3,
@@ -2357,6 +2403,8 @@ export const MCRProgram = [
                     }
                 ],
                 validationStatus: true,
+                airingStatus: 'Off Air',
+                productionStatus: 'Validasi Produser'
             },
         ],
         members: [
