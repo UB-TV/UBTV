@@ -21,3 +21,15 @@ export const RegisterOptions = [
         value: 'mcr'
     },
 ]
+
+// MCR Validation Table
+export const MCRVALIDATION = [
+    {
+        optionLabel: 'On Air',
+        value: 'on-air'
+    },
+    {
+        optionLabel: 'Validasi Produser',
+        value: 'validasi-produser'
+    }
+]

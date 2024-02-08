@@ -70,3 +70,26 @@ export const MCR_PROGRAM_HEADER = [
         width: '20%'
     }
 ]
+
+export const VALIDATION_HEADER = [
+    {
+        label: 'Episode',
+        width: '10%'
+    },
+    {
+        label: 'Status',
+        width: '45%'
+    },
+    {
+        label: 'Segmen',
+        width: '10%'
+    },
+    {
+        label: 'Video',
+        width: '23%'
+    },
+    {
+        label: 'Aksi',
+        width: '12%'
+    }
+]

@@ -38,6 +38,10 @@ Route::get('/validation', function () {
     return Inertia::render('MCR/Validation');
 })->name('validation');
 
+Route::get('/validation/{slug}', function () {
+    return Inertia::render('MCR/ProgramValidation');
+})->name('program-validation');
+
 Route::get('/program', function () {
     return Inertia::render('MCR/Program');
 })->name('mcr-program');

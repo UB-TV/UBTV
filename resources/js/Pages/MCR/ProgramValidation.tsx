@@ -1,13 +1,13 @@
 import { useEffect, useRef } from 'react';
 import { MCRMenus, MCRProgram } from "@/Constants/Temp";
 // Component
-import Dialog from "@/Components/Shared/Dialog";
 import Layout from "@/Layout";
 import IconButton from '@/Components/Shared/IconButton.tsx';
-import Button from '@/Components/Shared/Button';
-import EpisodeCard from '@/Components/MCR/EpisodeCard';
+import ValidationCard from '@/Components/MCR/ValidationCard';
+import ValidationTable from '@/Components/Shared/ValidationTable';
+import { MCRVALIDATION } from '@/Constants/FormOptions';
 
-const ProgramDetail = () => {
+const ProgramValidation = () => {
     const slug = window.location.pathname.split('/').pop();
     const program = MCRProgram.find((program) => program.slug === slug);
 
@@ -53,11 +53,15 @@ const ProgramDetail = () => {
                                     <p className="body-2 font-semibold text-secondary-text">{program.title}</p>
                                 </div>
                                 <div>
-                                    <h1 className="heading-5 font-semibold mb-[6px]">Waktu Premiere</h1>
-                                    <p className="body-2 font-semibold text-secondary-text">{program.premiere}</p>
+                                    <h1 className="heading-5 font-semibold mb-[6px]">Durasi</h1>
+                                    <p className="body-2 font-semibold text-secondary-text">{program.duration}</p>
                                 </div>
                             </div>
                             <div className="max-w-[48%] w-full flex flex-col gap-3">
+                                <div>
+                                    <h1 className="heading-5 font-semibold mb-[6px]">Waktu Premiere</h1>
+                                    <p className="body-2 font-semibold text-secondary-text">{program.premiere}</p>
+                                </div>
                                 <div>
                                     <h1 className="heading-5 font-semibold mb-[6px]">Jumlah Episode</h1>
                                     <p className="body-2 font-semibold text-secondary-text">{program.episode.length}</p>
@@ -81,18 +85,15 @@ const ProgramDetail = () => {
                     </section>
                     <section className="flex flex-col gap-3 w-full mt-6">
                         <div className="flex flex-col gap-3">
-                            <h1 className="heading-5 font-semibold">Episode</h1>
-                            <div className='flex items-center gap-1'>
-                                <div className='border-2 border-solid border-success-600 rounded-full w-3 h-3' />
-                                <p className='body-2'>On Air</p>
-                            </div>
+                            <h1 className="heading-5 font-semibold">Hasil Video</h1>
                             <div className='flex gap-6 flex-wrap'>
                                 {program.episode.map((episode, index) => {
                                     return (
-                                        <EpisodeCard key={index} {...episode} airingStatus={episode.airingStatus} segment={episode.segmen.length} />
+                                        <ValidationCard key={index} {...episode} segment={episode.segmen.length} />
                                     )
                                 })}
                             </div>
+                            <ValidationTable body={program.episode} dropdownOptions={MCRVALIDATION} />
                         </div>
                     </section>
                 </>
@@ -101,4 +102,4 @@ const ProgramDetail = () => {
     );
 };
 
-export default ProgramDetail;
+export default ProgramValidation;
