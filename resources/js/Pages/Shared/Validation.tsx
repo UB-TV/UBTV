@@ -48,7 +48,7 @@ const Validation = () => {
                     </p>
                 </div>
                 {validatedFalseSectionVisible ? (
-                    <Table head={MCR_VALIDATION_HEADER} body={filteredValidationFalsePrograms} action="/icon/more-fill.svg" pagination={true} type="Program" />
+                    <Table head={MCR_VALIDATION_HEADER} body={filteredValidationFalsePrograms} action="/icon/more-fill.svg" pagination={true} type="Program" redirectUrl="validation" />
                 ) : (
                     <p className="body-1 font-semibol">Tidak ada program yang ditemukan</p>
                 )}

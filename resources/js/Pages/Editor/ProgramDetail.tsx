@@ -39,7 +39,7 @@ const ProgramDetail = () => {
         <Layout menus={EditorMenus}>
             {program && (
                 <>
-                    <IconButton onClick={handleBackButton} icon='/icon/back-arrow.svg' style='Filled' />
+                    <IconButton color='Primary' onClick={handleBackButton} icon='/icon/back-arrow.svg' style='Filled' />
                     <section className="w-full flex flex-col gap-3">
                         <div className="w-full flex items-start justify-between">
                             <div className="max-w-[48%] w-full flex flex-col gap-3">
