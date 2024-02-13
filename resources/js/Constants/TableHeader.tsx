@@ -71,6 +71,25 @@ export const MCR_PROGRAM_HEADER = [
     }
 ]
 
+export const PRODUCER_NEW_PROGRAM_HEADER = [
+    {
+        label: 'Kode',
+        width: '10%'
+    },
+    {
+        label: 'Nama',
+        width: '25%'
+    },
+    {
+        label: 'Waktu  Premiere',
+        width: '25%'
+    },
+    {
+        label: 'Status Program',
+        width: '20%'
+    }
+]
+
 export const VALIDATION_HEADER = [
     {
         label: 'Episode',
