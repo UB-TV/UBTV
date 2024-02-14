@@ -57,3 +57,7 @@ Route::get('/validation/producer/{slug}', function () {
 Route::get('/new-program', function () {
     return Inertia::render('Producer/NewProgram');
 })->name('producer-new-program');
+
+Route::get('/new-program/producer/{slug}', function () {
+    return Inertia::render('Producer/ProgramDetail');
+})->name('producer-new-program-detail');

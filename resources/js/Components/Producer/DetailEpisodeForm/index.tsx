@@ -5,6 +5,7 @@ type DetailEpisodeFormProps = {
     code: string
     duration: string
     productionDate: string
+    productionStatus: string
     theme: string
     desc: string
     segment: number
@@ -14,6 +15,7 @@ const DetailEpisodeForm = ({
     code,
     duration,
     productionDate,
+    productionStatus,
     theme,
     desc,
     segment
@@ -47,6 +49,12 @@ const DetailEpisodeForm = ({
                 />
             </div>
             <div className="w-[48%] flex flex-col gap-6">
+                <DisabledInputField
+                    id="productionStatus"
+                    label="Status Episode"
+                    type="text"
+                    value={productionStatus}
+                />
                 <DisabledInputField
                     id="productionDate"
                     label="Produksi"

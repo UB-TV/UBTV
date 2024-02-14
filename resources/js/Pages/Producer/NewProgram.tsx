@@ -40,7 +40,7 @@ const NewProgram = () => {
                     </p>
                 </div>
                 {NewProgram.length > 0  ? (
-                    <Table head={PRODUCER_NEW_PROGRAM_HEADER} body={NewProgram} action="/icon/more-fill.svg" pagination={true} type="Program" redirectUrl="validation" />
+                    <Table head={PRODUCER_NEW_PROGRAM_HEADER} body={NewProgram} action="/icon/more-fill.svg" pagination={true} type="Program" redirectUrl="new-program" />
                 ) : (
                     <p className="body-1 font-semibol">Tidak ada program yang ditemukan</p>
                 )}

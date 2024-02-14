@@ -13,6 +13,7 @@ type ValidationCardProps = {
     code: string
     duration: string
     productionDate: string
+    productionStatus: string
     segment: number
     theme: string
     desc: string
@@ -25,6 +26,7 @@ const ValidationCard = ({
     duration,
     theme,
     productionDate,
+    productionStatus,
     segment,
     desc,
 }: ValidationCardProps) => {
@@ -65,7 +67,7 @@ const ValidationCard = ({
             {/* Detail Dialog */}
             <Dialog size="Normal" toggleDialog={toggleDialogDetail} ref={detailRef}>
                 <h1 className="heading-2 font-semibold text-left">Episode {episodeNumber}</h1>
-                <DetailEpisodeForm code={code} productionDate={productionDate} theme={theme} desc={desc} duration={duration} segment={segment} />
+                <DetailEpisodeForm code={code} productionDate={productionDate} productionStatus={productionStatus} theme={theme} desc={desc} duration={duration} segment={segment} />
                 <Button type="button" label="Kembali" style="Filled" color="Primary" width="Full" size="Large" onClick={toggleDialogDetail} />
             </Dialog>
             {/* Revision Dialog */}

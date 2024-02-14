@@ -78,15 +78,11 @@ export const PRODUCER_NEW_PROGRAM_HEADER = [
     },
     {
         label: 'Nama',
-        width: '25%'
+        width: '35%'
     },
     {
         label: 'Waktu  Premiere',
-        width: '25%'
-    },
-    {
-        label: 'Status Program',
-        width: '20%'
+        width: '35%'
     }
 ]
 
