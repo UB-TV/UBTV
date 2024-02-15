@@ -39,7 +39,7 @@ const UploadedProgram = () => {
                     </p>
                 </div>
                 {filteredUploadedPrograms.length > 0 ? (
-                    <Table head={CAMERAMAN_HEADER} body={filteredUploadedPrograms} action="/icon/more-fill.svg" pagination={true} type="Program" />
+                    <Table head={CAMERAMAN_HEADER} body={filteredUploadedPrograms} action="/icon/more-fill.svg" pagination={true} type="Program" redirectUrl="uploaded" />
                 ) : (
                     <p className="body-1 font-semibol">Tidak ada program yang ditemukan</p>
                 )}

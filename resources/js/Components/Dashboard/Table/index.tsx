@@ -11,6 +11,7 @@ type TableProps = {
     head: TableHeaderProps[];
     body: any;
     action?: string;
+    redirectUrl?: string;
     pagination: boolean;
     //Please look up the design for which type you should use
     type: 'Program' | 'Program Status' | 'Status Episode' | 'Message' | 'User Permission' | 'User'
@@ -20,6 +21,7 @@ const Table = ({
     head,
     body,
     action,
+    redirectUrl,
     pagination,
     type
 }: TableProps) => {
@@ -102,7 +104,8 @@ const Table = ({
                             {action && (
                                 <td className="flex justify-center p-2">
                                     <IconButton
-                                        onClick={() => HandleSlugRedirect(getUserRole(), body.uploadStatus, body.slug)}
+                                        color="Primary"
+                                        onClick={() => HandleSlugRedirect(`${redirectUrl}`, getUserRole(), `${body.slug}`)}
                                         icon="/icon/more-fill.svg"
                                         style="Filled"
                                     />

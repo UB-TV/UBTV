@@ -35,17 +35,29 @@ Route::get('/not-uploaded/editor/{slug}', function () {
 })->name('editor-not-uploaded-program-detail');
 
 Route::get('/validation', function () {
-    return Inertia::render('MCR/Validation');
+    return Inertia::render('Shared/Validation');
 })->name('validation');
 
-Route::get('/validation/{slug}', function () {
+Route::get('/validation/mcr/{slug}', function () {
     return Inertia::render('MCR/ProgramValidation');
-})->name('program-validation');
+})->name('mcr-program-validation');
 
 Route::get('/program', function () {
     return Inertia::render('MCR/Program');
 })->name('mcr-program');
 
-Route::get('/program/{slug}', function () {
+Route::get('program/{slug}', function () {
     return Inertia::render('MCR/ProgramDetail');
 })->name('mcr-program-detail');
+
+Route::get('/validation/producer/{slug}', function () {
+    return Inertia::render('Producer/ProgramValidation');
+})->name('producer-program-validation');
+
+Route::get('/new-program', function () {
+    return Inertia::render('Producer/NewProgram');
+})->name('producer-new-program');
+
+Route::get('/new-program/producer/{slug}', function () {
+    return Inertia::render('Producer/ProgramDetail');
+})->name('producer-new-program-detail');

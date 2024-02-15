@@ -1,13 +1,7 @@
-export const HandleSlugRedirect = (role: string, programStatus: boolean, slug: string) => {
-    let url = '';
+export const HandleSlugRedirect = (url: string, role:string, slug: string) => {
+    let redirectUrl = '';
 
-    if (programStatus) {
-        url += 'uploaded'
-    } else {
-        url += 'not-uploaded'
-    }
+    redirectUrl += `/${url}/${role}/${slug}`;
 
-    url += `/${role}/${slug}`;
-
-    window.location.href = url;
+    window.location.href = redirectUrl;
 };

@@ -26,8 +26,6 @@ const Dashboard = () => {
         const filteredPrograms = programs.filter((program: any) =>
             program.title.toLowerCase().includes(searchInput.toLowerCase())
         );
-        console.log(filteredPrograms);
-
         return filteredPrograms;
     };
 
