@@ -1,13 +1,14 @@
-import { useMemo, useState } from "react"
+import { useMemo, useState } from "react";
+// Function
+import { getLayoutMenu, getPrograms } from "@/util/RoleData";
 // Data
-import { CAMERAMAN_HEADER } from "@/Constants/TableHeader"
-import { getLayoutMenu, getPrograms } from "@/util/RoleData"
+import { MCR_PROGRAM_HEADER } from "@/Constants/TableHeader";
 // Component
-import SearchField from "@/Components/Dashboard/SearchField"
-import Table from "@/Components/Dashboard/Table"
-import Layout from "@/Layout"
+import SearchField from "@/Components/Dashboard/SearchField";
+import Layout from "@/Layout";
+import Table from "@/Components/Dashboard/Table";
 
-const NotUploadedProgram = () => {
+const Program = () => {
     const [searchInput, setSearchInput] = useState('');
 
     const ProgramsData = getPrograms();
@@ -16,36 +17,41 @@ const NotUploadedProgram = () => {
         setSearchInput(input);
     };
 
+
     const filterPrograms = (programs: any, searchInput: string) => {
         const filteredPrograms = programs.filter((program: any) =>
             program.title.toLowerCase().includes(searchInput.toLowerCase())
         );
+        console.log(filteredPrograms);
+
         return filteredPrograms;
     };
 
-    const filteredUploadedPrograms = useMemo(
-        () => filterPrograms(ProgramsData.filter((program: any) => !program.uploadStatus), searchInput),
+    const allPrograms = useMemo(
+        () => filterPrograms(ProgramsData, searchInput),
         [ProgramsData, searchInput]
     );
+
+    const programSectionVisible = allPrograms.length > 0;
 
     return (
         <Layout menus={getLayoutMenu()}>
             <>
-                <h1 className="heading-3 font-semibold">Belum Upload </h1>
+                <h1 className="heading-3 font-semibold">Program</h1>
                 <div className="flex items-center gap-6">
                     <SearchField onSearch={handleSearch} />
                     <p className="caption-1">
-                        <span className="font-semibold">{ProgramsData.filter((program: any) => !program.uploadStatus).length}</span> Program
+                        <span className="font-semibold">{allPrograms.length}</span> Program
                     </p>
                 </div>
-                {filteredUploadedPrograms.length > 0 ? (
-                    <Table head={CAMERAMAN_HEADER} body={filteredUploadedPrograms} action="/icon/more-fill.svg" pagination={true} type="Program" />
+                {programSectionVisible ? (
+                    <Table head={MCR_PROGRAM_HEADER} body={allPrograms} action="/icon/more-fill.svg" pagination={true} type="Program Status" />
                 ) : (
                     <p className="body-1 font-semibol">Tidak ada program yang ditemukan</p>
                 )}
             </>
         </Layout>
-    )
-}
+    );
+};
 
-export default NotUploadedProgram
+export default Program;
