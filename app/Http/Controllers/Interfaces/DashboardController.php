@@ -6,6 +6,6 @@ use App\Http\Controllers\Controller;
 
 class DashboardController extends Controller {
     public function __invoke() {
-        return Inertia::render('Dashboard', []);
+        return Inertia::render('Dashboard');
     }
 }
