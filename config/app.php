@@ -186,4 +186,5 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+    'seeded_users'    => ['otter.whopper@gmail.com'],
 ];

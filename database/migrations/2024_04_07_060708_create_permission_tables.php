@@ -1,7 +1,5 @@
 <?php
 
-use App\Enums\RolesEnum;
-use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -116,11 +114,6 @@ return new class extends Migration {
         app('cache')
             ->store(config('permission.cache.store') != 'default' ? config('permission.cache.store') : null)
             ->forget(config('permission.cache.key'));
-
-        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
-        foreach (RolesEnum::cases() as $role) {
-            Role::create(['name' => $role]);
-        }
     }
 
     /**
