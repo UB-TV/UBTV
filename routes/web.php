@@ -2,6 +2,7 @@
 
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DDController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\Interfaces\DashboardController;
 
@@ -56,3 +57,5 @@ Route::group(['middleware' => 'auth'], function () {
         return Inertia::render('MCR/ProgramDetail');
     })->name('mcr-program-detail');
 });
+
+Route::get('/dd', DDController::class);

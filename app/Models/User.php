@@ -42,4 +42,14 @@ class User extends Authenticatable {
         'email_verified_at' => 'datetime',
         'password'          => 'hashed',
     ];
+
+    public static function clean(?User $user): string {
+        if ($user === null) {
+            return '';
+        }
+        return collect([
+            'name'  => $user->name,
+            'roles' => $user->getRoleNames()->toArray(),
+        ])->toJson();
+    }
 }

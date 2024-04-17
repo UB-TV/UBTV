@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Middleware;
 
+use App\Models\User;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
 use Illuminate\Http\Request;
@@ -16,8 +17,8 @@ class HandleInertiaRequests extends Middleware {
     /**
      * Determine the current asset version.
      */
-    public function version(Request $request): string | null {
-        return parent::version($request);
+    public function version(Request $req): string | null {
+        return parent::version($req);
     }
 
     /**
@@ -25,15 +26,13 @@ class HandleInertiaRequests extends Middleware {
      *
      * @return array<string, mixed>
      */
-    public function share(Request $request): array {
+    public function share(Request $req): array {
         return [
-            ...parent::share($request),
-            'auth'  => [
-                'user' => $request->user(),
-            ],
+             ...parent::share($req),
+            'user'  => User::clean($req->user()),
             'ziggy' => fn() => [
-                ...(new Ziggy)->toArray(),
-                'location' => $request->url(),
+                 ...(new Ziggy)->toArray(),
+                'location' => $req->url(),
             ],
         ];
     }
