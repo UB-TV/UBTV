@@ -12,13 +12,18 @@
     ...
   }:
     flake-utils.lib.eachDefaultSystem (system: let
-      pkgs = nixpkgs.legacyPackages.${system};
+      pkgs = import nixpkgs {
+        system = "x86_64-linux";
+        config.allowUnfree = true;
+      };
     in {
       devShells.default = pkgs.mkShell {
         packages = with pkgs; [
           php83
           php83Packages.composer
           nodejs_20
+          nodePackages.intelephense
+          phpactor
         ];
       };
     });
