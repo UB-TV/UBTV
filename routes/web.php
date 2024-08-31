@@ -2,11 +2,11 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DDController;
-use App\Http\Controllers\GoogleController;
+use App\Http\Controllers\GoogleSSOController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::controller(GoogleController::class)->prefix('/sso/google')->group(function () {
+Route::controller(GoogleSSOController::class)->prefix('/sso/google')->group(function () {
     Route::get('/redirect', 'redirect')->name('sso.google.redirect');
     Route::get('/callback', 'callback')->name('sso.google.callback');
 });

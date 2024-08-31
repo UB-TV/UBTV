@@ -23,6 +23,7 @@
           nodejs
           nodePackages.intelephense
           php
+          php83Packages.php-cs-fixer
           phpPackages.composer
         ];
       };
