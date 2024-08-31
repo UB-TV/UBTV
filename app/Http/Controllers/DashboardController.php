@@ -10,7 +10,7 @@ class DashboardController extends Controller
     public function __invoke(Request $req)
     {
         return Inertia::render('Dashboard', [
-            'role' => $req->user()->getRoleNames()->first()
+            'role' => $req->user()->getRoleNames()->first(),
         ]);
     }
 }

@@ -2,9 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\Program;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
+use App\Models\Program;
 
 class ProgramPolicy
 {

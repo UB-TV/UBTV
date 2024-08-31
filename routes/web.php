@@ -1,10 +1,10 @@
 <?php
 
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\DDController;
-use App\Http\Controllers\GoogleSSOController;
-use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DDController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\GoogleSSOController;
 
 Route::controller(GoogleSSOController::class)->prefix('/sso/google')->group(function () {
     Route::get('/redirect', 'redirect')->name('sso.google.redirect');
