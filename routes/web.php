@@ -1,8 +1,8 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DDController;
 use App\Http\Controllers\GoogleController;
-use App\Http\Controllers\Interfaces\DashboardController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
