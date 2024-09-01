@@ -1,13 +1,14 @@
+import Button from "@/Components/Shared/Button"
 import IconButton from "@/Components/Shared/IconButton.tsx"
-import { HandleSlugRedirect } from "@/util/HandleSlugRedirect"
 import { useEffect, useState } from "react"
+import { NewUsers } from "@/Constants/Temp";
 
 type TableBodyProps = {
-    code: string
-    title: string
-    premiere: string
-    uploadStatus: boolean,
-    slug: string
+    id: number;
+    name: string;
+    role: string;
+    email: string;
+    phone: string;
 }
 
 type TableHeaderProps = {
@@ -18,9 +19,7 @@ type TableHeaderProps = {
 type TableProps = {
     head: TableHeaderProps[];
     body: TableBodyProps[];
-    uploadStatus: boolean;
-    slug: string;
-    action?: string;
+    action?: boolean;
     pagination: boolean;
 };
 
@@ -30,6 +29,9 @@ const Table = ({
     action,
     pagination,
 }: TableProps) => {
+    const [users, setUsers] = useState<TableBodyProps[]>(NewUsers);
+    const [selectedUsers, setSelectedUsers] = useState<number[]>([]);
+
     const ITEMS_PER_PAGE = 10;
     const totalPages = Math.ceil(body.length / ITEMS_PER_PAGE);
 
@@ -64,6 +66,24 @@ const Table = ({
         return visiblePages;
     };
 
+    const handleAccept = (userId: number) => {
+        setUsers(users.filter(user => user.id !== userId));
+    
+        alert(`User added to Users: ${userId}`);
+      };
+      
+      const handleReject = (userId: number) => {
+        setUsers(users.filter(user => user.id !== userId));
+    
+        alert(`User rejected and data deleted: ${userId}`);
+      };
+      
+      const handleDelete = (userId: number) => {
+        setUsers(users.filter(user => user.id !== userId));
+    
+        alert(`User deleted: ${userId}`);
+      };
+
     return (
         <div>
             <table className="table-fixed w-full rounded-md border border-solid border-grey-200">
@@ -72,25 +92,49 @@ const Table = ({
                         {head.map((head, index) => (
                             <th key={index} className={`p-2 w-[${head.width}] whitespace-nowrap`}>{head.label}</th>
                         ))}
-                        {action && (
-                            <th className="text-center w-[10%]">Aksi</th>
-                        )}
+                        {action === true ? (
+                            <th className="text-center w-[10%]">Konfirmasi Assign</th>
+                        ) : (
+                            <th className="text-center w-[10%]">Action</th>
+                        )
+                        }
                     </tr>
                 </thead>
                 <tbody>
                     {paginatedData && paginatedData.map((body, index) => (
                         <tr key={index}>
-                            <td className="p-2">{body.code}</td>
-                            <td className="p-2">{body.title}</td>
-                            <td className="p-2">{body.premiere}</td>
-                            {action && (
+                            <td className="p-2">{body.id}</td>
+                            <td className="p-2">{body.name}</td>
+                            <td className="p-2">{body.role}</td>
+                            <td className="p-2">{body.email}</td>
+                            <td className="p-2">{body.phone}</td>
+                            {action === true ? (
+                                <td className="flex justify-center gap-3 p-2">
+                                    <Button
+                                    type="button"
+                                    icon="/icon/reject.svg"
+                                    key={index}
+                                    onClick={() => handleReject(body.id)}
+                                    iconOnly
+                                    />
+
+                                    <Button
+                                    type="button"
+                                    icon="/icon/accept.svg"
+                                    key={index}
+                                    onClick={() => handleAccept(body.id)}
+                                    iconOnly
+                                    />
+                                </td>
+                            ) : (
                                 <td className="flex justify-center p-2">
                                     <IconButton
-                                    onClick={() => HandleSlugRedirect('cameraman', body.uploadStatus, body.slug )}
-                                icon="/icon/more-fill.svg"
-                                 />
+                                        onClick={() => handleDelete(body.id)}
+                                        icon="/icon/delete.svg"
+                                    />
                                 </td>
-                            )}
+                            )
+                        }
                         </tr>
                     ))}
                 </tbody>

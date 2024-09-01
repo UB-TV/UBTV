@@ -3,7 +3,7 @@
 use Inertia\Inertia;
 
 Route::get('/', function () {
-    return Inertia::render('Dashboard');
+    return redirect()->route('new-users');
 })->name('dashboard');
 
 Route::get('/login', function () {
@@ -14,14 +14,10 @@ Route::get('/register', function () {
     return Inertia::render('Auth/Register');
 })->name('register');
 
-Route::get('/uploaded', function () {
-    return Inertia::render('Shared/UploadedProgram');
-})->name('uploaded-program');
+Route::get('/new-users', function () {
+    return Inertia::render('Shared/NewUsersDashboard');
+})->name('new-users');
 
-Route::get('/not-uploaded', function () {
-    return Inertia::render('Shared/NotUploadedProgram');
-})->name('not-uploaded-program');
-
-Route::get('/not-uploaded/cameraman/{slug}', function () {
-    return Inertia::render('Cameraman/ProgramDetail');
-})->name('not-uploaded-program-detail');
+Route::get('/users', function () {
+    return Inertia::render('Shared/UsersDashboard');
+})->name('users');
