@@ -8,7 +8,6 @@ type ButtonProps = {
     onClick?: () => void;
     width: "Fit" | "Full"
     size: "Small" | "Medium" | "Large" | "Center"
-    className?: string
 }
 
 const Button = ({
@@ -20,8 +19,7 @@ const Button = ({
     iconPosition,
     onClick,
     width,
-    size,
-    className
+    size
 }: ButtonProps) => {
     return (
         <button
@@ -31,10 +29,10 @@ const Button = ({
         ${style === "Filled" ? "bg-primary-500 text-white" :
                     style === "Outlined" && color === "Primary" ? "border-2 border-solid border-primary-500 text-primary-500" : "border-2 border-solid border-error-600 text-error-600"
                 }
-        ${width === "Fit" ? "w-fit flex justify-center" : "w-full flex justify-center"}
+        ${width === "Fit" ? "w-fit" : "w-full flex justify-center"}
         ${size === "Small" ? "caption-2" : size === "Medium" ? "caption-1" : "body-2"}
         ${iconPosition === "Left" ? "flex items-center gap-2" : "flex flex-row-reverse items-center gap-2"}
-        font-medium rounded-[10px] py-3 px-6 ${className}
+        font-medium rounded-[10px] py-3 px-6
         `}
         >
             {icon ? (

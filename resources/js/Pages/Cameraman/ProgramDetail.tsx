@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react';
-// Data
 import { CameramanMenus, CameramanPrograms } from "@/Constants/Temp";
 // Component
 import Button from "@/Components/Shared/Button";
@@ -7,7 +6,6 @@ import ProgramCard from "@/Components/Cameraman/ProgramCard";
 import UploadVideoForm from "@/Components/Cameraman/UploadVideoForm";
 import Dialog from "@/Components/Shared/Dialog";
 import Layout from "@/Layout";
-import IconButton from '@/Components/Shared/IconButton.tsx';
 
 const ProgramDetail = () => {
     const slug = window.location.pathname.split('/').pop();
@@ -28,17 +26,12 @@ const ProgramDetail = () => {
         dialogRef.current.hasAttribute("open")
             ? dialogRef.current.close()
             : dialogRef.current.showModal();
-    };
-
-    const handleBackButton = () => {
-        window.history.back();
-    };
+    }
 
     return (
         <Layout menus={CameramanMenus}>
             {program && (
                 <>
-                    <IconButton onClick={handleBackButton} icon='/icon/back-arrow.svg' style='Filled' />
                     <section className="w-full flex flex-col gap-3">
                         <div className="w-full flex items-start justify-between">
                             <div className="max-w-[48%] w-full flex flex-col gap-3">

@@ -1,7 +1,15 @@
 import IconButton from "@/Components/Shared/IconButton.tsx"
 import { HandleSlugRedirect } from "@/util/HandleSlugRedirect"
-import { getUserRole } from "@/util/RoleData";
 import { useEffect, useState } from "react"
+
+type TableBodyProps = {
+    code: string
+    title: string
+    premiere: string
+    uploadStatus: boolean,
+    slug: string
+}
+
 type TableHeaderProps = {
     label: string;
     width: string
@@ -9,11 +17,11 @@ type TableHeaderProps = {
 
 type TableProps = {
     head: TableHeaderProps[];
-    body: any;
+    body: TableBodyProps[];
+    uploadStatus: boolean;
+    slug: string;
     action?: string;
     pagination: boolean;
-    //Please look up the design for which type you should use
-    type: 'Program' | 'Program Status' | 'Status Episode' | 'Message' | 'User Permission' | 'User'
 };
 
 const Table = ({
@@ -21,13 +29,12 @@ const Table = ({
     body,
     action,
     pagination,
-    type
 }: TableProps) => {
     const ITEMS_PER_PAGE = 10;
     const totalPages = Math.ceil(body.length / ITEMS_PER_PAGE);
 
     const [currentPage, setCurrentPage] = useState(1);
-    const [paginatedData, setPaginatedData] = useState<any[]>();
+    const [paginatedData, setPaginatedData] = useState<TableBodyProps[]>();
 
     const handlePageChange = (newPage: number) => {
         setCurrentPage(newPage);
@@ -73,39 +80,15 @@ const Table = ({
                 <tbody>
                     {paginatedData && paginatedData.map((body, index) => (
                         <tr key={index}>
-                            {/* Please make one for User Permission and User Type for Admin Role */}
-                            {type === 'Program' || type === 'Program Status' || type === 'Status Episode' ? (
-                                <>
-                                    <td className="p-2">{body.code}</td>
-                                    <td className="p-2">{body.title}</td>
-                                    <td className="p-2">{body.premiere}</td>
-                                    {type === 'Status Episode' && (
-                                        <td className="p-2" >{body.episode}</td>
-                                    )}
-                                    {type === 'Status Episode' || type === 'Program Status' && (
-                                        <td className="p-2" >{body.status}</td>
-                                    )}
-                                </>
-                            ) : type === 'Message' ? (
-                                <>
-                                    <td className="p-2">{body.sender}</td>
-                                    <td className="p-2">{body.programTitle}</td>
-                                    <td className="p-2">{body.programEpisode}</td>
-                                    <td className="p-2">{body.senderRole}</td>
-                                    <td className="p-2">{body.message}</td>
-                                </>
-                            ) : (
-                                <>
-                                    {/* Type User Permission and User goes here */}
-                                </>
-                            )}
+                            <td className="p-2">{body.code}</td>
+                            <td className="p-2">{body.title}</td>
+                            <td className="p-2">{body.premiere}</td>
                             {action && (
                                 <td className="flex justify-center p-2">
                                     <IconButton
-                                        onClick={() => HandleSlugRedirect(getUserRole(), body.uploadStatus, body.slug)}
-                                        icon="/icon/more-fill.svg"
-                                        style="Filled"
-                                    />
+                                    onClick={() => HandleSlugRedirect('cameraman', body.uploadStatus, body.slug )}
+                                icon="/icon/more-fill.svg"
+                                 />
                                 </td>
                             )}
                         </tr>
