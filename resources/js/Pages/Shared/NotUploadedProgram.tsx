@@ -1,12 +1,16 @@
+import { useMemo, useState } from "react"
+// Data
+import { CAMERAMAN_HEADER } from "@/Constants/TableHeader"
+import { getLayoutMenu, getPrograms } from "@/util/RoleData"
+// Component
 import SearchField from "@/Components/Dashboard/SearchField"
 import Table from "@/Components/Dashboard/Table"
-import { CAMERAMAN_HEADER } from "@/Constants/TableHeader"
-import { CameramanMenus, CameramanPrograms } from "@/Constants/Temp"
 import Layout from "@/Layout"
-import { useMemo, useState } from "react"
 
 const NotUploadedProgram = () => {
     const [searchInput, setSearchInput] = useState('');
+
+    const ProgramsData = getPrograms();
 
     const handleSearch = (input: string) => {
         setSearchInput(input);
@@ -20,22 +24,22 @@ const NotUploadedProgram = () => {
     };
 
     const filteredUploadedPrograms = useMemo(
-        () => filterPrograms(CameramanPrograms.filter((program) => !program.uploadStatus), searchInput),
-        [CameramanPrograms, searchInput]
+        () => filterPrograms(ProgramsData.filter((program: any) => !program.uploadStatus), searchInput),
+        [ProgramsData, searchInput]
     );
 
     return (
-        <Layout menus={CameramanMenus}>
+        <Layout menus={getLayoutMenu()}>
             <>
                 <h1 className="heading-3 font-semibold">Belum Upload </h1>
                 <div className="flex items-center gap-6">
                     <SearchField onSearch={handleSearch} />
                     <p className="caption-1">
-                        <span className="font-semibold">{CameramanPrograms.filter((program) => !program.uploadStatus).length}</span> Program
+                        <span className="font-semibold">{ProgramsData.filter((program: any) => !program.uploadStatus).length}</span> Program
                     </p>
                 </div>
                 {filteredUploadedPrograms.length > 0 ? (
-                    <Table head={CAMERAMAN_HEADER} body={filteredUploadedPrograms} uploadStatus={filteredUploadedPrograms.uploadStatus} slug={filteredUploadedPrograms.slug} action="/icon/more-fill.svg" pagination={true} />
+                    <Table head={CAMERAMAN_HEADER} body={filteredUploadedPrograms} action="/icon/more-fill.svg" pagination={true} type="Program" />
                 ) : (
                     <p className="body-1 font-semibol">Tidak ada program yang ditemukan</p>
                 )}
