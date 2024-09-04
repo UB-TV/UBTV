@@ -1,7 +1,7 @@
 # UBTV
 
 > [!IMPORTANT]
-> Please see [Project Convention](./CONVENTION.md) before making contribution
+> Please see [Project Convention](./docs/CONVENTION.md) before making contribution
 
 ## Requirements
 - PHP 8.2.x or higher. [(Reference)][PHP Download Page]
