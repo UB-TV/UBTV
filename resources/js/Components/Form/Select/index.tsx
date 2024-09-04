@@ -2,26 +2,18 @@ import { useController } from 'react-hook-form';
 
 type SelectProps = {
     id: string;
-    label?: string;
+    label: string;
     placeholder: string;
     options: {
         optionLabel: string;
         value: string;
     }[];
     control: any;
-    onChange?: (value: string) => void;
 };
 
-const Select = ({
-    id,
-    label,
-    placeholder,
-    options,
-    control,
-    onChange
-}: SelectProps) => {
+const Select = ({ id, label, placeholder, options, control }: SelectProps) => {
     const {
-        field: { value, onChange: fieldOnChange },
+        field: { value, onChange },
     } = useController({
         name: id,
         control,
@@ -36,10 +28,7 @@ const Select = ({
             <select
                 id={id}
                 value={value}
-                onChange={(e) => {
-                    fieldOnChange(e.target.value);
-                    onChange && onChange(e.target.value);
-                }}
+                onChange={(e) => onChange(e.target.value)}
                 className="p-[10px] body-2 rounded-lg"
             >
                 <option value="" disabled>
