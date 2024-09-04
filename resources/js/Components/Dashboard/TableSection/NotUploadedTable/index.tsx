@@ -17,7 +17,7 @@ const NotUploadedTable = ({
                 <h2 className="heading-5 font-semibold">Belum Upload</h2>
                 <Hyperlink url="/not-uploaded" label="Selengkapnya" />
             </div>
-            <Table head={header} body={program} action="/icon/more-fill.svg" pagination={false} type="Program" />
+            <Table head={header} body={program} action="/icon/more-fill.svg" pagination={false} type="Program" redirectUrl='not-uploaded' />
         </section>
     )
 }

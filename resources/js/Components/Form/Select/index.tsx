@@ -10,6 +10,7 @@ type SelectProps = {
     }[];
     control: any;
     onChange?: (value: string) => void;
+    value?: string;
 };
 
 const Select = ({
@@ -18,14 +19,15 @@ const Select = ({
     placeholder,
     options,
     control,
-    onChange
+    onChange,
+    value: propValue = ''
 }: SelectProps) => {
     const {
         field: { value, onChange: fieldOnChange },
     } = useController({
         name: id,
         control,
-        defaultValue: '',
+        defaultValue: propValue,
     });
 
     return (
