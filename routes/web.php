@@ -53,19 +53,20 @@ Route::group(['middleware' => 'auth'], function () {
         return Inertia::render('MCR/Program');
     })->name('mcr-program');
 
-Route::get('/dd', DDController::class);
-Route::get('program/{slug}', function () {
-    return Inertia::render('MCR/ProgramDetail');
-})->name('mcr-program-detail');
+    Route::get('/dd', DDController::class);
+    Route::get('program/{slug}', function () {
+        return Inertia::render('MCR/ProgramDetail');
+    })->name('mcr-program-detail');
 
-Route::get('/validation/producer/{slug}', function () {
-    return Inertia::render('Producer/ProgramValidation');
-})->name('producer-program-validation');
+    Route::get('/validation/producer/{slug}', function () {
+        return Inertia::render('Producer/ProgramValidation');
+    })->name('producer-program-validation');
 
-Route::get('/new-program', function () {
-    return Inertia::render('Producer/NewProgram');
-})->name('producer-new-program');
+    Route::get('/new-program', function () {
+        return Inertia::render('Producer/NewProgram');
+    })->name('producer-new-program');
 
-Route::get('/new-program/producer/{slug}', function () {
-    return Inertia::render('Producer/ProgramDetail');
-})->name('producer-new-program-detail');
+    Route::get('/new-program/producer/{slug}', function () {
+        return Inertia::render('Producer/ProgramDetail');
+    })->name('producer-new-program-detail');
+});
