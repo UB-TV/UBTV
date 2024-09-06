@@ -10,14 +10,16 @@ return new class () extends Migration {
      */
     public function up(): void
     {
-        Schema::create('programs', function (Blueprint $table) {
+        Schema::create('videos', function (Blueprint $table) {
             $table->id();
-            $table->string('code')->unique();
-            $table->string('name');
-            $table->text('description');
-            $table->boolean('is_active');
-            $table->dateTime('premiere_at');
+            $table->unsignedBigInteger('episode_id');
+            $table->string('object_id');
             $table->timestamps();
+            $table->foreign('episode_id')
+                ->references('id')
+                ->on('episodes')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
         });
     }
 
@@ -26,6 +28,6 @@ return new class () extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('programs');
+        Schema::dropIfExists('videos');
     }
 };

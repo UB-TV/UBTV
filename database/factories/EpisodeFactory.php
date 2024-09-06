@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Program>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Episode>
  */
-class ProgramFactory extends Factory
+class EpisodeFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,10 +18,10 @@ class ProgramFactory extends Factory
     {
         return [
             'code' => fake()->regexify('[A-Z]{5}[0-4]{3}'),
-            'name' => fake()->sentence(3),
+            'duration' => fake()->lexify(),
+            'themes' => fake()->lexify(),
+            'start_production' => fake()->dateTimeBetween('+0 days', '+1 years'),
             'description' => fake()->paragraph(),
-            'is_active' => fake()->boolean(),
-            'premiere_at' => fake()->dateTimeBetween('+0 days', '+1 years'),
         ];
     }
 }

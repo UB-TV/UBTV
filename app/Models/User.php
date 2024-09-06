@@ -7,6 +7,7 @@ use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
@@ -33,5 +34,10 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
     protected $hidden = ['remember_token'];
+    public function videos(): BelongsToMany
+    {
+        return $this->belongsToMany(Video::class);
+    }
 }
