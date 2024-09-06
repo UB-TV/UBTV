@@ -11,10 +11,16 @@ class DashboardController extends Controller
 {
     public function __invoke(Request $req)
     {
-        $datas = [];
         $user = $req->user();
-        // if ($user->hasRole('cameraman')) {
+        if ($user->hasRole('cameraman')) {
+            return $this->cameraman($req);
+        };
+    }
+
+    private function cameraman(Request $req)
+    {
         # TODO: find better way to implement this
+        $user = $req->user();
         $pendingVideoPrograms = DB::table('programs')
             ->select('programs.*')
             ->join('episodes', 'programs.id', '=', 'episodes.program_id')
@@ -34,12 +40,10 @@ class DashboardController extends Controller
             ->where('user_video.user_id', '=', $user->id)
             ->groupBy('programs.id')
             ->get();
-        $datas = [
+
+        return Inertia::render('Dashboard', [
             'pending_video_programs' => $pendingVideoPrograms,
             'uploaded_video_programs' => $uploadedVideoPrograms
-        ];
-        dd($datas);
-        return Inertia::render('Dashboard', $datas);
+        ]);
     }
-
 }

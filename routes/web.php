@@ -3,6 +3,7 @@
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DDController;
+use App\Http\Controllers\CameramanController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GoogleSSOController;
 
@@ -20,7 +21,15 @@ Route::get('/register', function () {
 })->name('register');
 
 Route::group(['middleware' => 'auth'], function () {
+    ########### CLEAN ###########
     Route::get('/', DashboardController::class)->name('dashboard');
+    Route::controller(CameramanController::class)->prefix('cameraman')->group(function () {
+        Route::get('/pending', 'pending');
+        Route::get('/uploaded', 'uploaded');
+        Route::get('/{slug}', 'program');
+    });
+    #############################
+
     Route::get('/uploaded', function () {
         return Inertia::render('Shared/UploadedProgram');
     })->name('uploaded-program');
