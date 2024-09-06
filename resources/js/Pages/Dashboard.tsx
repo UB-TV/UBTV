@@ -1,9 +1,11 @@
 import SearchField from "@/Components/Dashboard/SearchField";
 import Table from "@/Components/Dashboard/Table";
-import { CAMERAMAN_HEADER } from "@/Constants/TableHeader";
-import { CameramanMenus, CameramanPrograms } from "@/Constants/Temp";
+import { REGISTERED_HEADER, PROCESS_HEADER } from "@/Constants/TableHeader";
+import { ProgramMenus, ListPrograms } from "@/Constants/Temp";
 import Layout from "@/Layout";
 import { useMemo, useState } from "react";
+import AddProgramButton from "@/Components/ProgramHead/AddProgram";
+import { Link } from "@inertiajs/react"
 
 const Dashboard = () => {
     const [searchInput, setSearchInput] = useState('');
@@ -16,30 +18,46 @@ const Dashboard = () => {
         const filteredPrograms = programs.filter((program: any) =>
             program.title.toLowerCase().includes(searchInput.toLowerCase())
         );
+        
         return filteredPrograms;
     };
 
-    const filteredNotUploadedPrograms = useMemo(
-        () => filterPrograms(CameramanPrograms.filter((program) => !program.uploadStatus), searchInput),
-        [CameramanPrograms, searchInput]
+    const formatPrograms = (programs: any) => {
+        return programs.map((program: any) => {
+            const latestEpisode = program.episode?.[program.episode.length - 1];
+            return {
+                ...program,
+                statusEpisode: latestEpisode?.statusEpisode || '',
+            };
+        });
+    };
+
+    const filteredRegisteredPrograms = useMemo(
+        () => filterPrograms(ListPrograms.filter((program) => !program.programStatus), searchInput),
+        [ListPrograms, searchInput]
+    );
+    
+    const filteredProcessPrograms = useMemo(
+        () => filterPrograms(formatPrograms(ListPrograms.filter((program) => program.programStatus)), searchInput),
+        [ListPrograms, searchInput]
     );
 
-    const filteredUploadedPrograms = useMemo(
-        () => filterPrograms(CameramanPrograms.filter((program) => program.uploadStatus), searchInput),
-        [CameramanPrograms, searchInput]
-    );
-
-    const notUploadSectionVisible = filteredNotUploadedPrograms.length > 0;
-    const uploadSectionVisible = filteredUploadedPrograms.length > 0;
+    const notUploadSectionVisible = filteredRegisteredPrograms.length > 0;
+    const uploadSectionVisible = filteredProcessPrograms.length > 0;
     return (
-        <Layout menus={CameramanMenus}>
+        <Layout menus={ProgramMenus}>
             <>
                 <h1 className="heading-3 font-semibold">Selamat Datang, Raina </h1>
-                <div className="flex items-center gap-6">
+                <div className="flex justify-between items-center w-full">
+                    <div className="flex items-center gap-6">
                     <SearchField onSearch={handleSearch} />
                     <p className="caption-1">
-                        <span className="font-semibold">{CameramanPrograms.length}</span> Program
+                        <span className="font-semibold">{ListPrograms.length}</span> Program
                     </p>
+                    </div>
+                    <div className="flex items-center justify-between">
+                            <AddProgramButton/>
+                    </div>
                 </div>
                 {!notUploadSectionVisible && !uploadSectionVisible ? (
                     <p className="body-1 font-semibol">Tidak ada program yang ditemukan</p>
@@ -47,14 +65,20 @@ const Dashboard = () => {
                     <>
                         {notUploadSectionVisible && (
                             <section>
-                                <h2 className="heading-5 font-semibold mb-3">Belum Upload</h2>
-                                <Table head={CAMERAMAN_HEADER} body={filteredNotUploadedPrograms} action="/icon/more-fill.svg" pagination={false} />
+                                <div className="flex justify-between items-center mb-3">
+                                    <h2 className="heading-5 font-semibold">Terdaftar</h2>
+                                    <Link href="/registered-program" className="caption-1 font-semibold text-primary-500 underline">Selengkapnya</Link>
+                                </div>
+                                <Table head={REGISTERED_HEADER} body={filteredRegisteredPrograms} action="/icon/more-fill.svg" pagination={false} programStatus={filteredRegisteredPrograms.programStatus} showProgramStatus={true} showDelete={false}/>
                             </section>
                         )}
                         {uploadSectionVisible && (
                             <section>
-                                <h2 className="heading-5 font-semibold mb-3">Sudah Upload</h2>
-                                <Table head={CAMERAMAN_HEADER} body={filteredUploadedPrograms} action="/icon/more-fill.svg" pagination={false} />
+                                <div className="flex justify-between items-center mb-3">
+                                    <h2 className="heading-5 font-semibold">Proses</h2>
+                                    <Link href="/process-program" className="caption-1 font-semibold text-primary-500 underline">Selengkapnya</Link>
+                                </div>
+                                <Table head={PROCESS_HEADER} body={filteredProcessPrograms} programStatus={false} slug={filteredProcessPrograms.slug} action="/icon/more-fill.svg" pagination={false} showDelete={false}/>
                             </section>
                         )}
                     </>

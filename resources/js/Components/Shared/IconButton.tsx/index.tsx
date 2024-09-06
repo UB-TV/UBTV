@@ -1,16 +1,18 @@
 type IconButtonProps = {
     icon: string
     onClick?: () => void;
+    color?: string
 }
 const IconButton = ({
     icon,
-    onClick
+    onClick,
+    color = "bg-primary-500"
 }: IconButtonProps) => {
     return (
         <button
             type="button"
             onClick={onClick}
-            className="bg-primary-500 p-[9px] rounded-[10px]"
+            className={`${color} p-[9px] rounded-[10px]`}
         >
             <img src={icon} alt="Icon Button" />
         </button>

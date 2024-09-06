@@ -6,8 +6,11 @@ type TableBodyProps = {
     code: string
     title: string
     premiere: string
-    uploadStatus: boolean,
+    programStatus: boolean
+    status: "Aktif" | "Tidak Aktif",
     slug: string
+    episode?: any[]
+    statusEpisode?: string;
 }
 
 type TableHeaderProps = {
@@ -18,10 +21,13 @@ type TableHeaderProps = {
 type TableProps = {
     head: TableHeaderProps[];
     body: TableBodyProps[];
-    uploadStatus: boolean;
-    slug: string;
     action?: string;
     pagination: boolean;
+    programStatus: boolean;
+    slug?: string;
+    onDelete?: (slug: string) => void;
+    showDelete?: boolean
+    showProgramStatus?: boolean;
 };
 
 const Table = ({
@@ -29,6 +35,9 @@ const Table = ({
     body,
     action,
     pagination,
+    onDelete,
+    showDelete = true,
+    showProgramStatus = false
 }: TableProps) => {
     const ITEMS_PER_PAGE = 10;
     const totalPages = Math.ceil(body.length / ITEMS_PER_PAGE);
@@ -39,12 +48,12 @@ const Table = ({
     const handlePageChange = (newPage: number) => {
         setCurrentPage(newPage);
     };
-
+    
     useEffect(() => {
         const startIdx = (currentPage - 1) * ITEMS_PER_PAGE;
         const endIdx = Math.min(startIdx + ITEMS_PER_PAGE, body.length);
         setPaginatedData(body.slice(startIdx, endIdx));
-    }, [currentPage, body]);
+      }, [currentPage, body]);
 
     const getVisiblePages = () => {
         const visiblePages = [];
@@ -83,13 +92,29 @@ const Table = ({
                             <td className="p-2">{body.code}</td>
                             <td className="p-2">{body.title}</td>
                             <td className="p-2">{body.premiere}</td>
+                            {body.episode && body.episode.length > 0 && (
+                            <td className="p-2">{body.episode.length}</td>
+                            )}
+                            {showProgramStatus && (
+                                <td className="p-2">{body.status}</td>
+                            )}
+                            {body.statusEpisode && !showProgramStatus && (
+                            <td className="p-2">{body.statusEpisode}</td>
+                            )}
                             {action && (
-                                <td className="flex justify-center p-2">
+                            <td className="flex justify-center p-2 gap-2">
+                                {showDelete && onDelete && (    
                                     <IconButton
-                                    onClick={() => HandleSlugRedirect('cameraman', body.uploadStatus, body.slug )}
+                                    onClick={() => onDelete(body.slug)}
+                                    icon="/icon/delete.svg"
+                                    color="bg-error-500"
+                                    />
+                                )}
+                                <IconButton
+                                onClick={() => HandleSlugRedirect('program-head', body.programStatus, body.slug )}
                                 icon="/icon/more-fill.svg"
-                                 />
-                                </td>
+                                />
+                            </td>
                             )}
                         </tr>
                     ))}

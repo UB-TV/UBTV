@@ -1,4 +1,3 @@
-// Register Role
 export const RegisterOptions = [
     {
         optionLabel: 'Kepala Program',

@@ -2,10 +2,12 @@ import DisabledInputField from "@/Components/Form/Disabled/DisabledInputField"
 import DisabledTextarea from "@/Components/Form/Disabled/DisabledTextArea"
 
 type EpisodeFormProps = {
-    code: string
-    duration: string
-    productionDate: string
+    code: string;
+    duration: "30 Minute" | "60 Minute" | "90 Minute";
     theme: string
+    segment: number
+    productionDate: string
+    statusEpisode: "shooting" | "editing" | "validasi produser" | "validasi qc mcr" | "on air";
     desc: string
 }
 
@@ -14,6 +16,8 @@ const EpisodeForm = ({
     duration,
     productionDate,
     theme,
+    segment,
+    statusEpisode,
     desc,
 }: EpisodeFormProps) => {
     return (
@@ -21,7 +25,7 @@ const EpisodeForm = ({
             <div className="w-[48%] flex flex-col gap-6">
                 <DisabledInputField
                     id="code"
-                    label="Kode"
+                    label="Kode Episode"
                     type="text"
                     value={code}
                 />
@@ -37,13 +41,19 @@ const EpisodeForm = ({
                     type="text"
                     value={theme}
                 />
+                <DisabledInputField
+                    id="segment"
+                    label="Jumlah Segment"
+                    type="text"
+                    value={segment.toString()}
+                />
             </div>
             <div className="w-[48%] flex flex-col gap-6">
                 <DisabledInputField
-                    id="productionDate"
-                    label="Produksi"
+                    id="statusEpisode"
+                    label="Status Episode"
                     type="text"
-                    value={productionDate}
+                    value={statusEpisode}
                 />
                 <DisabledTextarea
                     id="desc"

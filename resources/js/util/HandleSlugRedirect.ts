@@ -2,9 +2,9 @@ export const HandleSlugRedirect = (role: string, programStatus: boolean, slug: s
     let url = '';
 
     if (programStatus) {
-        url += 'uploaded'
+        url += 'process-program'
     } else {
-        url += 'not-uploaded'
+        url += 'registered-program'
     }
 
     url += `/${role}/${slug}`;

@@ -1,24 +1,24 @@
-export const CameramanMenus = [
+export const ProgramMenus = [
     {
         link: '/',
         label: 'Dashboard'
     },
     {
-        link: '/not-uploaded',
-        label: 'Belum Upload'
+        link: '/registered-program',
+        label: 'Terdaftar'
     },
     {
-        link: '/uploaded',
-        label: 'Sudah Upload'
+        link: '/process-program',
+        label: 'Proses'
     },
 ]
 
-export const CameramanPrograms = [
+export const ListPrograms = [
     {
         id: 1,
         status: 'Aktif',
         code: 'UNIV1001',
-        title: 'Insightful Lectures',
+        title: 'Insightful Lectures 1',
         duration: '30 Menit',
         episode: [
             {
@@ -26,30 +26,11 @@ export const CameramanPrograms = [
                 code: 'UNIV1001',
                 theme: 'education',
                 productionDate: '24/01/2024',
+                segment: 4,
                 desc: 'Insightful Lectures adalah sebuah program video yang menghadirkan serangkaian kuliah inspiratif yang bertujuan untuk memberikan wawasan mendalam kepada penontonnya.',
                 thumbnail: '/image/program-thumbnail.jpg',
                 duration: '30 Minute',
-                isActive: true
-            },
-            {
-                episodeNumber: 2,
-                code: 'UNIV1001',
-                theme: 'education',
-                productionDate: '24/01/2024',
-                desc: 'Insightful Lectures adalah sebuah program video yang menghadirkan serangkaian kuliah inspiratif yang bertujuan untuk memberikan wawasan mendalam kepada penontonnya.',
-                thumbnail: '/image/program-error.jpg',
-                duration: '30 Minute',
-                isActive: false
-            },
-            {
-                episodeNumber: 3,
-                code: 'UNIV1001',
-                theme: 'education',
-                productionDate: '24/01/2024',
-                desc: 'Insightful Lectures adalah sebuah program video yang menghadirkan serangkaian kuliah inspiratif yang bertujuan untuk memberikan wawasan mendalam kepada penontonnya.',
-                thumbnail: '/image/program-error.jpg',
-                duration: '30 Minute',
-                isActive: false
+                statusEpisode: "on air"
             },
         ],
         members: [
@@ -80,13 +61,13 @@ export const CameramanPrograms = [
         ],
         desc: 'Insightful Lectures adalah sebuah program video yang menghadirkan serangkaian kuliah inspiratif yang bertujuan untuk memberikan wawasan mendalam kepada penontonnya. Dalam setiap episode, para pembicara yang ahli di bidangnya berbagi pengalaman, pengetahuan, dan pemikiran inspiratif mereka, menciptakan suasana yang merangsang pemikiran dan memotivasi. Tema kuliah-kuliah tersebut melibatkan berbagai aspek kehidupan, mulai dari perkembangan pribadi, inovasi dalam karier, hingga konsep-konsep filosofis yang dapat menginspirasi dan membimbing penonton menuju pemahaman yang lebih mendalam tentang diri mereka dan dunia sekitar. Insightful Lectures menjadi sumber daya berharga bagi mereka yang mencari motivasi dan kebijaksanaan dari para pemikir ulung dalam berbagai bidang kehidupan.',
         premiere: 'Senin, 15 Agustus 2023 18:10',
-        slug: 'insightful-lectures',
-        uploadStatus: true
+        slug: 'insightful-lectures1',
+        programStatus: true,
     },
     {
         id: 2,
         status: 'Aktif',
-        code: 'UNIV1001',
+        code: 'UNIV1002',
         title: 'Insightful Lectures',
         duration: '30 Menit',
         episode: [
@@ -95,30 +76,11 @@ export const CameramanPrograms = [
                 code: 'UNIV1001',
                 theme: 'education',
                 productionDate: '24/01/2024',
+                segment: 4,
                 desc: 'Insightful Lectures adalah sebuah program video yang menghadirkan serangkaian kuliah inspiratif yang bertujuan untuk memberikan wawasan mendalam kepada penontonnya.',
                 thumbnail: '/image/program-thumbnail.jpg',
                 duration: '30 Minute',
-                isActive: true
-            },
-            {
-                episodeNumber: 2,
-                code: 'UNIV1001',
-                theme: 'education',
-                productionDate: '24/01/2024',
-                desc: 'Insightful Lectures adalah sebuah program video yang menghadirkan serangkaian kuliah inspiratif yang bertujuan untuk memberikan wawasan mendalam kepada penontonnya.',
-                thumbnail: '/image/program-error.jpg',
-                duration: '30 Minute',
-                isActive: false
-            },
-            {
-                episodeNumber: 3,
-                code: 'UNIV1001',
-                theme: 'education',
-                productionDate: '24/01/2024',
-                desc: 'Insightful Lectures adalah sebuah program video yang menghadirkan serangkaian kuliah inspiratif yang bertujuan untuk memberikan wawasan mendalam kepada penontonnya.',
-                thumbnail: '/image/program-error.jpg',
-                duration: '30 Minute',
-                isActive: false
+                statusEpisode: "on air"
             },
         ],
         members: [
@@ -149,47 +111,16 @@ export const CameramanPrograms = [
         ],
         desc: 'Insightful Lectures adalah sebuah program video yang menghadirkan serangkaian kuliah inspiratif yang bertujuan untuk memberikan wawasan mendalam kepada penontonnya. Dalam setiap episode, para pembicara yang ahli di bidangnya berbagi pengalaman, pengetahuan, dan pemikiran inspiratif mereka, menciptakan suasana yang merangsang pemikiran dan memotivasi. Tema kuliah-kuliah tersebut melibatkan berbagai aspek kehidupan, mulai dari perkembangan pribadi, inovasi dalam karier, hingga konsep-konsep filosofis yang dapat menginspirasi dan membimbing penonton menuju pemahaman yang lebih mendalam tentang diri mereka dan dunia sekitar. Insightful Lectures menjadi sumber daya berharga bagi mereka yang mencari motivasi dan kebijaksanaan dari para pemikir ulung dalam berbagai bidang kehidupan.',
         premiere: 'Senin, 15 Agustus 2023 18:10',
-        slug: 'insightful-lectures',
-        uploadStatus: true
+        slug: 'insightful-lectures2',
+        programStatus: true,
     },
     {
         id: 3,
         status: 'Aktif',
-        code: 'UNIV1001',
+        code: 'UNIV1003',
         title: 'Insightful Lectures',
         duration: '30 Menit',
-        episode: [
-            {
-                episodeNumber: 1,
-                code: 'UNIV1001',
-                theme: 'education',
-                productionDate: '24/01/2024',
-                desc: 'Insightful Lectures adalah sebuah program video yang menghadirkan serangkaian kuliah inspiratif yang bertujuan untuk memberikan wawasan mendalam kepada penontonnya.',
-                thumbnail: '/image/program-thumbnail.jpg',
-                duration: '30 Minute',
-                isActive: true
-            },
-            {
-                episodeNumber: 2,
-                code: 'UNIV1001',
-                theme: 'education',
-                productionDate: '24/01/2024',
-                desc: 'Insightful Lectures adalah sebuah program video yang menghadirkan serangkaian kuliah inspiratif yang bertujuan untuk memberikan wawasan mendalam kepada penontonnya.',
-                thumbnail: '/image/program-error.jpg',
-                duration: '30 Minute',
-                isActive: false
-            },
-            {
-                episodeNumber: 3,
-                code: 'UNIV1001',
-                theme: 'education',
-                productionDate: '24/01/2024',
-                desc: 'Insightful Lectures adalah sebuah program video yang menghadirkan serangkaian kuliah inspiratif yang bertujuan untuk memberikan wawasan mendalam kepada penontonnya.',
-                thumbnail: '/image/program-error.jpg',
-                duration: '30 Minute',
-                isActive: false
-            },
-        ],
+        episode: [],
         members: [
             {
                 name: 'Erik Johansson',
@@ -206,59 +137,20 @@ export const CameramanPrograms = [
             {
                 name: 'Emilia Andersson',
                 role: 'Editor'
-            },
-            {
-                name: 'Isabella Fischer',
-                role: 'MCR'
-            },
-            {
-                name: 'Jonas van der Berg',
-                role: 'MCR'
             }
         ],
         desc: 'Insightful Lectures adalah sebuah program video yang menghadirkan serangkaian kuliah inspiratif yang bertujuan untuk memberikan wawasan mendalam kepada penontonnya. Dalam setiap episode, para pembicara yang ahli di bidangnya berbagi pengalaman, pengetahuan, dan pemikiran inspiratif mereka, menciptakan suasana yang merangsang pemikiran dan memotivasi. Tema kuliah-kuliah tersebut melibatkan berbagai aspek kehidupan, mulai dari perkembangan pribadi, inovasi dalam karier, hingga konsep-konsep filosofis yang dapat menginspirasi dan membimbing penonton menuju pemahaman yang lebih mendalam tentang diri mereka dan dunia sekitar. Insightful Lectures menjadi sumber daya berharga bagi mereka yang mencari motivasi dan kebijaksanaan dari para pemikir ulung dalam berbagai bidang kehidupan.',
-        premiere: 'Senin, 15 Agustus 2023 18:10',
-        slug: 'insightful-lectures',
-        uploadStatus: false
+        premiere: 'Selasa, 15 Agustus 2023 18:10',
+        slug: 'insightful-lectures3',
+        programStatus: false,
     },
     {
         id: 4,
         status: 'Aktif',
-        code: 'UNIV1001',
+        code: 'UNIV1004',
         title: 'Insightful Lectures',
         duration: '30 Menit',
-        episode: [
-            {
-                episodeNumber: 1,
-                code: 'UNIV1001',
-                theme: 'education',
-                productionDate: '24/01/2024',
-                desc: 'Insightful Lectures adalah sebuah program video yang menghadirkan serangkaian kuliah inspiratif yang bertujuan untuk memberikan wawasan mendalam kepada penontonnya.',
-                thumbnail: '/image/program-thumbnail.jpg',
-                duration: '30 Minute',
-                isActive: true
-            },
-            {
-                episodeNumber: 2,
-                code: 'UNIV1001',
-                theme: 'education',
-                productionDate: '24/01/2024',
-                desc: 'Insightful Lectures adalah sebuah program video yang menghadirkan serangkaian kuliah inspiratif yang bertujuan untuk memberikan wawasan mendalam kepada penontonnya.',
-                thumbnail: '/image/program-error.jpg',
-                duration: '30 Minute',
-                isActive: false
-            },
-            {
-                episodeNumber: 3,
-                code: 'UNIV1001',
-                theme: 'education',
-                productionDate: '24/01/2024',
-                desc: 'Insightful Lectures adalah sebuah program video yang menghadirkan serangkaian kuliah inspiratif yang bertujuan untuk memberikan wawasan mendalam kepada penontonnya.',
-                thumbnail: '/image/program-error.jpg',
-                duration: '30 Minute',
-                isActive: false
-            },
-        ],
+        episode: [],
         members: [
             {
                 name: 'Erik Johansson',
@@ -287,13 +179,13 @@ export const CameramanPrograms = [
         ],
         desc: 'Insightful Lectures adalah sebuah program video yang menghadirkan serangkaian kuliah inspiratif yang bertujuan untuk memberikan wawasan mendalam kepada penontonnya. Dalam setiap episode, para pembicara yang ahli di bidangnya berbagi pengalaman, pengetahuan, dan pemikiran inspiratif mereka, menciptakan suasana yang merangsang pemikiran dan memotivasi. Tema kuliah-kuliah tersebut melibatkan berbagai aspek kehidupan, mulai dari perkembangan pribadi, inovasi dalam karier, hingga konsep-konsep filosofis yang dapat menginspirasi dan membimbing penonton menuju pemahaman yang lebih mendalam tentang diri mereka dan dunia sekitar. Insightful Lectures menjadi sumber daya berharga bagi mereka yang mencari motivasi dan kebijaksanaan dari para pemikir ulung dalam berbagai bidang kehidupan.',
         premiere: 'Senin, 15 Agustus 2023 18:10',
-        slug: 'insightful-lectures',
-        uploadStatus: false
+        slug: 'insightful-lectures4',
+        programStatus: false,
     },
     {
         id: 5,
         status: 'Aktif',
-        code: 'UNIV1001',
+        code: 'UNIV1005',
         title: 'Insightful Lectures',
         duration: '30 Menit',
         episode: [
@@ -302,30 +194,33 @@ export const CameramanPrograms = [
                 code: 'UNIV1001',
                 theme: 'education',
                 productionDate: '24/01/2024',
+                segment: 4,
                 desc: 'Insightful Lectures adalah sebuah program video yang menghadirkan serangkaian kuliah inspiratif yang bertujuan untuk memberikan wawasan mendalam kepada penontonnya.',
                 thumbnail: '/image/program-thumbnail.jpg',
                 duration: '30 Minute',
-                isActive: true
+                statusEpisode: "on air"
             },
             {
                 episodeNumber: 2,
                 code: 'UNIV1001',
                 theme: 'education',
                 productionDate: '24/01/2024',
+                segment: 4,
                 desc: 'Insightful Lectures adalah sebuah program video yang menghadirkan serangkaian kuliah inspiratif yang bertujuan untuk memberikan wawasan mendalam kepada penontonnya.',
                 thumbnail: '/image/program-error.jpg',
                 duration: '30 Minute',
-                isActive: false
+                statusEpisode: "editing"
             },
             {
                 episodeNumber: 3,
                 code: 'UNIV1001',
                 theme: 'education',
                 productionDate: '24/01/2024',
+                segment: 4,
                 desc: 'Insightful Lectures adalah sebuah program video yang menghadirkan serangkaian kuliah inspiratif yang bertujuan untuk memberikan wawasan mendalam kepada penontonnya.',
                 thumbnail: '/image/program-error.jpg',
                 duration: '30 Minute',
-                isActive: false
+                statusEpisode: "editing"
             },
         ],
         members: [
@@ -356,8 +251,8 @@ export const CameramanPrograms = [
         ],
         desc: 'Insightful Lectures adalah sebuah program video yang menghadirkan serangkaian kuliah inspiratif yang bertujuan untuk memberikan wawasan mendalam kepada penontonnya. Dalam setiap episode, para pembicara yang ahli di bidangnya berbagi pengalaman, pengetahuan, dan pemikiran inspiratif mereka, menciptakan suasana yang merangsang pemikiran dan memotivasi. Tema kuliah-kuliah tersebut melibatkan berbagai aspek kehidupan, mulai dari perkembangan pribadi, inovasi dalam karier, hingga konsep-konsep filosofis yang dapat menginspirasi dan membimbing penonton menuju pemahaman yang lebih mendalam tentang diri mereka dan dunia sekitar. Insightful Lectures menjadi sumber daya berharga bagi mereka yang mencari motivasi dan kebijaksanaan dari para pemikir ulung dalam berbagai bidang kehidupan.',
         premiere: 'Senin, 15 Agustus 2023 18:10',
-        slug: 'insightful-lectures',
-        uploadStatus: true
+        slug: 'insightful-lectures5',
+        programStatus: true,
     },
     {
         id: 6,
@@ -371,30 +266,33 @@ export const CameramanPrograms = [
                 code: 'UNIV1001',
                 theme: 'education',
                 productionDate: '24/01/2024',
+                segment: 4,
                 desc: 'Insightful Lectures adalah sebuah program video yang menghadirkan serangkaian kuliah inspiratif yang bertujuan untuk memberikan wawasan mendalam kepada penontonnya.',
                 thumbnail: '/image/program-thumbnail.jpg',
                 duration: '30 Minute',
-                isActive: true
+                statusEpisode: "on air"
             },
             {
                 episodeNumber: 2,
                 code: 'UNIV1001',
                 theme: 'education',
                 productionDate: '24/01/2024',
+                segment: 4,
                 desc: 'Insightful Lectures adalah sebuah program video yang menghadirkan serangkaian kuliah inspiratif yang bertujuan untuk memberikan wawasan mendalam kepada penontonnya.',
                 thumbnail: '/image/program-error.jpg',
                 duration: '30 Minute',
-                isActive: false
+                statusEpisode: "validasi produser"
             },
             {
                 episodeNumber: 3,
                 code: 'UNIV1001',
                 theme: 'education',
                 productionDate: '24/01/2024',
+                segment: 4,
                 desc: 'Insightful Lectures adalah sebuah program video yang menghadirkan serangkaian kuliah inspiratif yang bertujuan untuk memberikan wawasan mendalam kepada penontonnya.',
                 thumbnail: '/image/program-error.jpg',
                 duration: '30 Minute',
-                isActive: false
+                statusEpisode: "validasi produser"
             },
         ],
         members: [
@@ -425,8 +323,8 @@ export const CameramanPrograms = [
         ],
         desc: 'Insightful Lectures adalah sebuah program video yang menghadirkan serangkaian kuliah inspiratif yang bertujuan untuk memberikan wawasan mendalam kepada penontonnya. Dalam setiap episode, para pembicara yang ahli di bidangnya berbagi pengalaman, pengetahuan, dan pemikiran inspiratif mereka, menciptakan suasana yang merangsang pemikiran dan memotivasi. Tema kuliah-kuliah tersebut melibatkan berbagai aspek kehidupan, mulai dari perkembangan pribadi, inovasi dalam karier, hingga konsep-konsep filosofis yang dapat menginspirasi dan membimbing penonton menuju pemahaman yang lebih mendalam tentang diri mereka dan dunia sekitar. Insightful Lectures menjadi sumber daya berharga bagi mereka yang mencari motivasi dan kebijaksanaan dari para pemikir ulung dalam berbagai bidang kehidupan.',
         premiere: 'Senin, 15 Agustus 2023 18:10',
-        slug: 'insightful-lectures',
-        uploadStatus: true
+        slug: 'insightful-lectures6',
+        programStatus: true,
     },
     {
         id: 7,
@@ -440,30 +338,33 @@ export const CameramanPrograms = [
                 code: 'UNIV1001',
                 theme: 'education',
                 productionDate: '24/01/2024',
+                segment: 4,
                 desc: 'Insightful Lectures adalah sebuah program video yang menghadirkan serangkaian kuliah inspiratif yang bertujuan untuk memberikan wawasan mendalam kepada penontonnya.',
                 thumbnail: '/image/program-thumbnail.jpg',
                 duration: '30 Minute',
-                isActive: true
+                statusEpisode: "on air"
             },
             {
                 episodeNumber: 2,
                 code: 'UNIV1001',
                 theme: 'education',
                 productionDate: '24/01/2024',
+                segment: 4,
                 desc: 'Insightful Lectures adalah sebuah program video yang menghadirkan serangkaian kuliah inspiratif yang bertujuan untuk memberikan wawasan mendalam kepada penontonnya.',
                 thumbnail: '/image/program-error.jpg',
                 duration: '30 Minute',
-                isActive: false
+                statusEpisode: "validasi qc mcr"
             },
             {
                 episodeNumber: 3,
                 code: 'UNIV1001',
                 theme: 'education',
                 productionDate: '24/01/2024',
+                segment: 4,
                 desc: 'Insightful Lectures adalah sebuah program video yang menghadirkan serangkaian kuliah inspiratif yang bertujuan untuk memberikan wawasan mendalam kepada penontonnya.',
                 thumbnail: '/image/program-error.jpg',
                 duration: '30 Minute',
-                isActive: false
+                statusEpisode: "validasi qc mcr"
             },
         ],
         members: [
@@ -494,8 +395,8 @@ export const CameramanPrograms = [
         ],
         desc: 'Insightful Lectures adalah sebuah program video yang menghadirkan serangkaian kuliah inspiratif yang bertujuan untuk memberikan wawasan mendalam kepada penontonnya. Dalam setiap episode, para pembicara yang ahli di bidangnya berbagi pengalaman, pengetahuan, dan pemikiran inspiratif mereka, menciptakan suasana yang merangsang pemikiran dan memotivasi. Tema kuliah-kuliah tersebut melibatkan berbagai aspek kehidupan, mulai dari perkembangan pribadi, inovasi dalam karier, hingga konsep-konsep filosofis yang dapat menginspirasi dan membimbing penonton menuju pemahaman yang lebih mendalam tentang diri mereka dan dunia sekitar. Insightful Lectures menjadi sumber daya berharga bagi mereka yang mencari motivasi dan kebijaksanaan dari para pemikir ulung dalam berbagai bidang kehidupan.',
         premiere: 'Senin, 15 Agustus 2023 18:10',
-        slug: 'insightful-lectures',
-        uploadStatus: true
+        slug: 'insightful-lectures7',
+        programStatus: true,
     },
     {
         id: 8,
@@ -509,30 +410,33 @@ export const CameramanPrograms = [
                 code: 'UNIV1001',
                 theme: 'education',
                 productionDate: '24/01/2024',
+                segment: 4,
                 desc: 'Insightful Lectures adalah sebuah program video yang menghadirkan serangkaian kuliah inspiratif yang bertujuan untuk memberikan wawasan mendalam kepada penontonnya.',
                 thumbnail: '/image/program-thumbnail.jpg',
                 duration: '30 Minute',
-                isActive: true
+                statusEpisode: "on air"
             },
             {
                 episodeNumber: 2,
                 code: 'UNIV1001',
                 theme: 'education',
                 productionDate: '24/01/2024',
+                segment: 4,
                 desc: 'Insightful Lectures adalah sebuah program video yang menghadirkan serangkaian kuliah inspiratif yang bertujuan untuk memberikan wawasan mendalam kepada penontonnya.',
                 thumbnail: '/image/program-error.jpg',
                 duration: '30 Minute',
-                isActive: false
+                statusEpisode: "shooting"
             },
             {
                 episodeNumber: 3,
                 code: 'UNIV1001',
                 theme: 'education',
                 productionDate: '24/01/2024',
+                segment: 4,
                 desc: 'Insightful Lectures adalah sebuah program video yang menghadirkan serangkaian kuliah inspiratif yang bertujuan untuk memberikan wawasan mendalam kepada penontonnya.',
                 thumbnail: '/image/program-error.jpg',
                 duration: '30 Minute',
-                isActive: false
+                statusEpisode: "shooting"
             },
         ],
         members: [
@@ -564,6 +468,15 @@ export const CameramanPrograms = [
         desc: 'Insightful Lectures adalah sebuah program video yang menghadirkan serangkaian kuliah inspiratif yang bertujuan untuk memberikan wawasan mendalam kepada penontonnya. Dalam setiap episode, para pembicara yang ahli di bidangnya berbagi pengalaman, pengetahuan, dan pemikiran inspiratif mereka, menciptakan suasana yang merangsang pemikiran dan memotivasi. Tema kuliah-kuliah tersebut melibatkan berbagai aspek kehidupan, mulai dari perkembangan pribadi, inovasi dalam karier, hingga konsep-konsep filosofis yang dapat menginspirasi dan membimbing penonton menuju pemahaman yang lebih mendalam tentang diri mereka dan dunia sekitar. Insightful Lectures menjadi sumber daya berharga bagi mereka yang mencari motivasi dan kebijaksanaan dari para pemikir ulung dalam berbagai bidang kehidupan.',
         premiere: 'Senin, 15 Agustus 2023 18:10',
         slug: 'no-6',
-        uploadStatus: true
+        programStatus: true,
     },
 ]
+
+export const Team = [
+    { name: 'Erik Johansson', role: 'Producer' },
+    { name: 'Sophia Muller', role: 'Cameraman' },
+    { name: 'Luca Rossi', role: 'Editor' },
+    { name: 'Emilia Andersson', role: 'Editor' },
+    { name: 'Isabella Fischer', role: 'MCR' },
+    { name: 'Jonas van der Berg', role: 'MCR' }
+];

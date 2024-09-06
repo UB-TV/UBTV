@@ -1,6 +1,7 @@
 <?php
 
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return Inertia::render('Dashboard');
@@ -14,14 +15,18 @@ Route::get('/register', function () {
     return Inertia::render('Auth/Register');
 })->name('register');
 
-Route::get('/uploaded', function () {
-    return Inertia::render('Shared/UploadedProgram');
-})->name('uploaded-program');
+Route::get('/process-program', function () {
+    return Inertia::render('Shared/ProcessProgram');
+})->name('process-program');
 
-Route::get('/not-uploaded', function () {
-    return Inertia::render('Shared/NotUploadedProgram');
-})->name('not-uploaded-program');
+Route::get('/process-program/program-head/{slug}', function () {
+    return Inertia::render('ProgramHead/ProgramDetail');
+})->name('process-program-detail');
 
-Route::get('/not-uploaded/cameraman/{slug}', function () {
-    return Inertia::render('Cameraman/ProgramDetail');
-})->name('not-uploaded-program-detail');
+Route::get('/registered-program', function () {
+    return Inertia::render('Shared/RegisteredProgram');
+})->name('registered-program');
+
+Route::get('/registered-program/program-head/{slug}', function () {
+    return Inertia::render('ProgramHead/ProgramDetail');
+})->name('registered-program-detail');
