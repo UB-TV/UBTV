@@ -17,11 +17,12 @@ use App\Http\Requests\PostEpisodeVideosRequest;
 
 class CameramanController extends Controller
 {
-    private Client $client = new Client();
+    private Client $client;
     private Drive $driveService;
 
     public function __construct()
     {
+        $this->client = new Client();
         $this->client->useApplicationDefaultCredentials();
         $this->client->addScope(Drive::DRIVE);
         $this->driveService = new Drive($this->client);
@@ -32,10 +33,10 @@ class CameramanController extends Controller
         $program = Program::where('slug', $slug)->firstOrFail();
         $episodes = $program->episodes()->get();
         $program->episode_count = $episodes->count();
-        dd([
+        dd(json_encode([
             'program' => $program,
             'episodes' => $episodes
-        ]);
+        ]));
         #TODO: render the correct page & delete dd
         return Inertia::render('CHANGEME', [
             'program' => $program,
@@ -54,7 +55,7 @@ class CameramanController extends Controller
             ->where('user_video.user_id', '=', $user->id)
             ->groupBy('programs.id')
             ->paginate(15);
-        dd($uploadedVideoPrograms);
+        dd(json_encode($uploadedVideoPrograms));
         #TODO: render the correct page & delete dd
         return Inertia::render('CHANGEME', $uploadedVideoPrograms);
     }
@@ -73,7 +74,7 @@ class CameramanController extends Controller
             ->whereNull('user_video.id')
             ->groupBy('programs.id')
             ->paginate(15);
-        dd($pendingVideoPrograms);
+        dd(json_encode($pendingVideoPrograms));
         #TODO: render the correct page & delete dd
         return Inertia::render('CHANGEME', $pendingVideoPrograms);
     }
