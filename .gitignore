@@ -19,3 +19,4 @@ yarn-error.log
 /.fleet
 /.idea
 _ide_helper.php
+google-service-account.json

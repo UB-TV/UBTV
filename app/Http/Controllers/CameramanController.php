@@ -2,17 +2,34 @@
 
 namespace App\Http\Controllers;
 
+use Google\Client;
 use Inertia\Inertia;
+use Inertia\Response;
+use App\Models\Episode;
 use App\Models\Program;
+use Google\Service\Drive;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Google\Service\Drive\DriveFile;
+use App\Http\Requests\PostEpisodeRequest;
 use Illuminate\Database\Query\JoinClause;
+use App\Http\Requests\PostEpisodeVideosRequest;
 
 class CameramanController extends Controller
 {
-    public function program(string $slug)
+    private Client $client = new Client();
+    private Drive $driveService;
+
+    public function __construct()
     {
-        $program = Program::where('name', $slug)->firstOrFail();
+        $this->client->useApplicationDefaultCredentials();
+        $this->client->addScope(Drive::DRIVE);
+        $this->driveService = new Drive($this->client);
+    }
+
+    public function program(string $slug): Response
+    {
+        $program = Program::where('slug', $slug)->firstOrFail();
         $episodes = $program->episodes()->get();
         $program->episode_count = $episodes->count();
         dd([
@@ -26,7 +43,7 @@ class CameramanController extends Controller
         ]);
     }
 
-    public function uploaded(Request $req)
+    public function uploaded(Request $req): Response
     {
         $user = $req->user();
         $uploadedVideoPrograms = DB::table('programs')
@@ -42,7 +59,7 @@ class CameramanController extends Controller
         return Inertia::render('CHANGEME', $uploadedVideoPrograms);
     }
 
-    public function pending(Request $req)
+    public function pending(Request $req): Response
     {
         $user = $req->user();
         $pendingVideoPrograms = DB::table('programs')
@@ -59,5 +76,26 @@ class CameramanController extends Controller
         dd($pendingVideoPrograms);
         #TODO: render the correct page & delete dd
         return Inertia::render('CHANGEME', $pendingVideoPrograms);
+    }
+
+    #TODO: implement feature
+    public function upload(PostEpisodeVideosRequest $req)
+    {
+        $payload = $req->validated();
+        foreach ($payload->videos as $video) {
+            $metadata = new DriveFile(['name' => $video->attachment->getClientOriginalName()]);
+            $file = $this->driveService->files->create($metadata, [
+                'data' => $video->attachment,
+                'fields' => 'id',
+            ]);
+            dd($file->id);
+        }
+    }
+
+    public function createEpisode(PostEpisodeRequest $req)
+    {
+        $payload = $req->validated();
+        Episode::create($payload);
+        return back();
     }
 }
