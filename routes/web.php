@@ -19,7 +19,7 @@ Route::get('/register', function () {
     return Inertia::render('Auth/Register');
 })->name('register');
 
-Route::group([], function () {
+Route::group(['middleware' => 'auth'], function () {
     Route::get('/', DashboardController::class)->name('dashboard');
     Route::get('/uploaded', function () {
         return Inertia::render('Shared/UploadedProgram');
