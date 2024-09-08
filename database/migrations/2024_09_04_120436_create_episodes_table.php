@@ -10,15 +10,20 @@ return new class () extends Migration {
      */
     public function up(): void
     {
-        Schema::create('programs', function (Blueprint $table) {
+        Schema::create('episodes', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('program_id');
             $table->string('code')->unique();
-            $table->string('slug')->unique();
-            $table->string('name');
+            $table->string('duration');
+            $table->string('themes');
+            $table->date('start_production');
             $table->text('description');
-            $table->boolean('is_active');
-            $table->dateTime('premiere_at');
             $table->timestamps();
+            $table->foreign('program_id')
+                ->references('id')
+                ->on('episodes')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
         });
     }
 
@@ -27,6 +32,6 @@ return new class () extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('programs');
+        Schema::dropIfExists('episodes');
     }
 };

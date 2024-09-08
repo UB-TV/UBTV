@@ -3,6 +3,7 @@
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DDController;
+use App\Http\Controllers\CameramanController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GoogleSSOController;
 
@@ -19,8 +20,27 @@ Route::get('/register', function () {
     return Inertia::render('Auth/Register');
 })->name('register');
 
-Route::group(['middleware' => 'auth'], function () {
+Route::middleware(['auth'])->group(function () {
+    ########### CLEAN ###########
+    # UI (ideally only contain GET routes)
     Route::get('/', DashboardController::class)->name('dashboard');
+    Route::controller(CameramanController::class)->prefix('/cameraman')->group(function () {
+        Route::get('/pending', 'pending');
+        Route::get('/uploaded', 'uploaded');
+        Route::get('/{slug}', 'program');
+    });
+
+    # API
+    Route::prefix('/api/v1')->group(function () {
+        Route::prefix('/videos')->group(function () {
+            Route::post('/', [CameramanController::class, 'upload']);
+        });
+        Route::prefix('/episodes')->group(function () {
+            Route::post('/', [CameramanController::class, 'createEpisode']);
+        });
+    });
+    #############################
+
     Route::get('/uploaded', function () {
         return Inertia::render('Shared/UploadedProgram');
     })->name('uploaded-program');
