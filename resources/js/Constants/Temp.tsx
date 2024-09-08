@@ -68,6 +68,17 @@ export const ProducerMenus = [
     },
 ]
 
+export const AdminMenus = [
+    {
+        link: '/new-users',
+        label: 'User Baru'
+    },
+    {
+        link: '/users',
+        label: 'User'
+    }
+]
+
 export const CameramanPrograms = [
     {
         id: 1,
@@ -3394,4 +3405,47 @@ export const ProducerProgram = [
         slug: 'no-6',
         uploadStatus: true
     },
+]
+
+export const UsersData = [
+    {
+        id: 1,
+        name: 'John Doe',
+        role: 'Cameraman',
+        email: 'johndoe@example.com',
+        phone: '081234567890',
+        status: 'new'
+      },
+      {
+        id: 2,
+        name: 'Jane Smith',
+        role: 'Director',
+        email: 'janesmith@example.com',
+        phone: '081234567890',
+        status: 'new'
+      },
+      {
+        id: 3,
+        name: 'Michael Johnson',
+        role: 'Producer',
+        email: 'michaeljohnson@example.com',
+        phone: '081234567890',
+        status: 'new'
+      },
+      {
+        id: 4,
+        name: 'Emily Davis',
+        role: 'Producer',
+        email: 'michaeljohnson@example.com',
+        phone: '081234567890',
+        status: 'accepted'
+      },
+      {
+        id: 5,
+        name: 'David Wilson',
+        role: 'Sound Engineer',
+        email: 'davidwilson@example.com',
+        phone: '081234567890',
+        status: 'accepted'
+      }
 ]

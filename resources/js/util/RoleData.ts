@@ -10,6 +10,7 @@ import {
     MCRProgram,
     ProducerMenus,
     ProducerProgram,
+    AdminMenus
 } from "@/Constants/Temp";
 
 export const getUserRole = (): string => {
@@ -37,6 +38,9 @@ export const getLayoutMenu = (): any => {
 
         case "producer":
             return ProducerMenus;
+
+        case "admin":
+            return AdminMenus;
 
         default:
             return "";

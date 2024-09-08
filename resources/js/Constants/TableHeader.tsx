@@ -108,3 +108,26 @@ export const VALIDATION_HEADER = [
         width: '12%'
     }
 ]
+
+export const ADMIN_HEADER = [
+    { 
+        label: 'ID', 
+        width: '10%' 
+    },
+    { 
+        label: 'Nama', 
+        width: '25%' 
+    },
+    { 
+        label: 'Role', 
+        width: '10%' 
+    },
+    { 
+        label: 'Email', 
+        width: '35%' 
+    },
+    { 
+        label: 'No. Telepon', 
+        width: '20%' 
+    },
+]

@@ -1,4 +1,5 @@
 import IconButton from "@/Components/Shared/IconButton.tsx"
+import Button from "@/Components/Shared/Button";
 import { HandleSlugRedirect } from "@/util/HandleSlugRedirect"
 import { getUserRole } from "@/util/RoleData";
 import { useEffect, useState } from "react"
@@ -13,8 +14,7 @@ type TableProps = {
     action?: string;
     redirectUrl?: string;
     pagination: boolean;
-    //Please look up the design for which type you should use
-    type: 'Program' | 'Program Status' | 'Status Episode' | 'Message' | 'User Permission' | 'User'
+    type: 'Program' | 'Program Status' | 'Status Episode' | 'Message' | 'User Permission' | 'User' | 'Admin';
 };
 
 const Table = ({
@@ -59,6 +59,18 @@ const Table = ({
         return visiblePages;
     };
 
+    const handleAccept = (userId: number) => {
+        alert(`User added to Users: ${userId}`);
+    };
+
+    const handleReject = (userId: number) => {
+        alert(`User rejected and data deleted: ${userId}`);
+    };
+
+    const handleDelete = (userId: number) => {
+        alert(`User deleted: ${userId}`);
+    };
+
     return (
         <div>
             <table className="table-fixed w-full rounded-md border border-solid border-grey-200">
@@ -67,7 +79,10 @@ const Table = ({
                         {head.map((head, index) => (
                             <th key={index} className={`p-2 w-[${head.width}] whitespace-nowrap`}>{head.label}</th>
                         ))}
-                        {action && (
+                        {(action && type === 'Admin') && (
+                            <th className="text-center w-[10%]">Konfirmasi Assign</th>
+                        )}
+                        {(action && type !== 'Admin') && (
                             <th className="text-center w-[10%]">Aksi</th>
                         )}
                     </tr>
@@ -76,40 +91,78 @@ const Table = ({
                     {paginatedData && paginatedData.map((body, index) => (
                         <tr key={index}>
                             {/* Please make one for User Permission and User Type for Admin Role */}
-                            {type === 'Program' || type === 'Program Status' || type === 'Status Episode' ? (
+                            {type === 'Admin' ? (
                                 <>
-                                    <td className="p-2">{body.code}</td>
-                                    <td className="p-2">{body.title}</td>
-                                    <td className="p-2">{body.premiere}</td>
-                                    {type === 'Status Episode' && (
-                                        <td className="p-2" >{body.episode}</td>
+                                    <td className="p-2">{body.id}</td>
+                                    <td className="p-2">{body.name}</td>
+                                    <td className="p-2">{body.role}</td>
+                                    <td className="p-2">{body.email}</td>
+                                    <td className="p-2">{body.phone}</td>
+                                    {action === 'new' && (
+                                        <td className="flex justify-center gap-3 p-2">
+                                            <Button
+                                                type="button"
+                                                icon="/icon/reject.svg"
+                                                onClick={() => handleReject(body.id)}
+                                                iconOnly
+                                            />
+                                            <Button
+                                                type="button"
+                                                icon="/icon/accept.svg"
+                                                onClick={() => handleAccept(body.id)}
+                                                iconOnly
+                                            />
+                                        </td>
                                     )}
-                                    {type === 'Status Episode' || type === 'Program Status' && (
-                                        <td className="p-2" >{body.status}</td>
+                                    {action === 'accepted' && (
+                                        <td className="flex justify-center p-2">
+                                        <IconButton
+                                            onClick={() => handleDelete(body.id)}
+                                            icon="/icon/delete.svg"
+                                            color="Error"
+                                            style="Filled"
+                                        />
+                                    </td>
                                     )}
-                                </>
-                            ) : type === 'Message' ? (
-                                <>
-                                    <td className="p-2">{body.sender}</td>
-                                    <td className="p-2">{body.programTitle}</td>
-                                    <td className="p-2">{body.programEpisode}</td>
-                                    <td className="p-2">{body.senderRole}</td>
-                                    <td className="p-2">{body.message}</td>
                                 </>
                             ) : (
                                 <>
-                                    {/* Type User Permission and User goes here */}
+                                    {type === 'Program' || type === 'Program Status' || type === 'Status Episode' ? (
+                                        <>
+                                            <td className="p-2">{body.code}</td>
+                                            <td className="p-2">{body.title}</td>
+                                            <td className="p-2">{body.premiere}</td>
+                                            {type === 'Status Episode' && (
+                                                <td className="p-2">{body.episode}</td>
+                                            )}
+                                            {(type === 'Status Episode' || type === 'Program Status') && (
+                                                <td className="p-2">{body.status}</td>
+                                            )}
+                                        </>
+                                    ) : type === 'Message' ? (
+                                        <>
+                                            <td className="p-2">{body.sender}</td>
+                                            <td className="p-2">{body.programTitle}</td>
+                                            <td className="p-2">{body.programEpisode}</td>
+                                            <td className="p-2">{body.senderRole}</td>
+                                            <td className="p-2">{body.message}</td>
+                                        </>
+                                    ) : (
+                                        <>
+                                            {/* Other types like User Permission, User */}
+                                        </>
+                                    )}
+                                    {(action) && (
+                                        <td className="flex justify-center p-2">
+                                            <IconButton
+                                                color="Primary"
+                                                onClick={() => HandleSlugRedirect(`${redirectUrl}`, getUserRole(), `${body.slug}`)}
+                                                icon="/icon/more-fill.svg"
+                                                style="Filled"
+                                            />
+                                        </td>
+                                    )}
                                 </>
-                            )}
-                            {action && (
-                                <td className="flex justify-center p-2">
-                                    <IconButton
-                                        color="Primary"
-                                        onClick={() => HandleSlugRedirect(`${redirectUrl}`, getUserRole(), `${body.slug}`)}
-                                        icon="/icon/more-fill.svg"
-                                        style="Filled"
-                                    />
-                                </td>
                             )}
                         </tr>
                     ))}

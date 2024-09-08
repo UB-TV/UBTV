@@ -19,7 +19,7 @@ Route::get('/register', function () {
     return Inertia::render('Auth/Register');
 })->name('register');
 
-Route::group(['middleware' => 'auth'], function () {
+Route::group([], function () {
     Route::get('/', DashboardController::class)->name('dashboard');
     Route::get('/uploaded', function () {
         return Inertia::render('Shared/UploadedProgram');
@@ -69,4 +69,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/new-program/producer/{slug}', function () {
         return Inertia::render('Producer/ProgramDetail');
     })->name('producer-new-program-detail');
+
+    Route::get('/new-users', function () {
+        return Inertia::render('Admin/NewUsers');
+    })->name('new-users');
+
+    Route::get('/users', function () {
+        return Inertia::render('Admin/Users');
+    })->name('users');
 });
