@@ -89,4 +89,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/new-program/producer/{slug}', function () {
         return Inertia::render('Producer/ProgramDetail');
     })->name('producer-new-program-detail');
+
+    Route::get('/new-users', function () {
+        return Inertia::render('Admin/NewUsers');
+    })->name('new-users');
+
+    Route::get('/users', function () {
+        return Inertia::render('Admin/Users');
+    })->name('users');
 });
