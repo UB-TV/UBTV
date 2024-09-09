@@ -3,6 +3,7 @@
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DDController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CameramanController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GoogleSSOController;
@@ -29,6 +30,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/uploaded', 'uploaded');
         Route::get('/{slug}', 'program');
     });
+    Route::get('/admin/new-users', [AdminController::class, 'approval']);
 
     # API
     Route::prefix('/api/v1')->group(function () {
@@ -37,6 +39,9 @@ Route::middleware(['auth'])->group(function () {
         });
         Route::prefix('/episodes')->group(function () {
             Route::post('/', [CameramanController::class, 'createEpisode']);
+        });
+        Route::prefix('/users')->group(function () {
+            Route::delete('/{id}', [AdminController::class, 'deleteUser']);
         });
     });
     #############################
