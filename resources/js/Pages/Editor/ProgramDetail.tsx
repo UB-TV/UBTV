@@ -36,7 +36,7 @@ const ProgramDetail = () => {
     };
 
     return (
-        <Layout menus={EditorMenus}>
+        <Layout>
             {program && (
                 <>
                     <IconButton color='Primary' onClick={handleBackButton} icon='/icon/back-arrow.svg' style='Filled' />

@@ -1,14 +1,15 @@
 import IconButton from "@/Components/Shared/IconButton.tsx"
-import Button from "@/Components/Shared/Button";
+import { useGetUserRole } from "@/util/RoleData";
 import { HandleSlugRedirect } from "@/util/HandleSlugRedirect"
-import { getUserRole } from "@/util/RoleData";
 import { useEffect, useState } from "react"
+import Button from "@/Components/Shared/Button";
+
 type TableHeaderProps = {
     label: string;
     width: string
 };
 
-type TableProps = {
+interface TableProps {
     head: TableHeaderProps[];
     body: any;
     action?: string;
@@ -116,13 +117,13 @@ const Table = ({
                                     )}
                                     {action === 'accepted' && (
                                         <td className="flex justify-center p-2">
-                                        <IconButton
-                                            onClick={() => handleDelete(body.id)}
-                                            icon="/icon/delete.svg"
-                                            color="Error"
-                                            style="Filled"
-                                        />
-                                    </td>
+                                            <IconButton
+                                                onClick={() => handleDelete(body.id)}
+                                                icon="/icon/delete.svg"
+                                                color="Error"
+                                                style="Filled"
+                                            />
+                                        </td>
                                     )}
                                 </>
                             ) : (
@@ -130,8 +131,8 @@ const Table = ({
                                     {type === 'Program' || type === 'Program Status' || type === 'Status Episode' ? (
                                         <>
                                             <td className="p-2">{body.code}</td>
-                                            <td className="p-2">{body.title}</td>
-                                            <td className="p-2">{body.premiere}</td>
+                                            <td className="p-2">{body.name}</td>
+                                            <td className="p-2">{body.premiere_at}</td>
                                             {type === 'Status Episode' && (
                                                 <td className="p-2">{body.episode}</td>
                                             )}
@@ -156,7 +157,7 @@ const Table = ({
                                         <td className="flex justify-center p-2">
                                             <IconButton
                                                 color="Primary"
-                                                onClick={() => HandleSlugRedirect(`${redirectUrl}`, getUserRole(), `${body.slug}`)}
+                                                onClick={() => HandleSlugRedirect(`${redirectUrl}`, useGetUserRole(), `${body.slug}`)}
                                                 icon="/icon/more-fill.svg"
                                                 style="Filled"
                                             />

@@ -23,6 +23,13 @@ class DatabaseSeeder extends Seeder
             'employee_id' => 'EMP-2020-0000',
         ])->assignRole('cameraman');
 
+        $user = User::create([
+            'email' => 'agustianto.d19@gmail.com',
+            'name' => 'Faiz cape html',
+            'phone_number' => '0822222222',
+            'employee_id' => 'EMP-2121-0000',
+        ])->assignRole('cameraman');
+
         Program::factory()
             ->has(Episode::factory()
             ->has(Video::factory()->count(5)))->create();

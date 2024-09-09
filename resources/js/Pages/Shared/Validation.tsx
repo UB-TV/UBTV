@@ -22,8 +22,6 @@ const Validation = () => {
         const filteredPrograms = programs.filter((program: any) =>
             program.title.toLowerCase().includes(searchInput.toLowerCase())
         );
-        console.log(filteredPrograms);
-
         return filteredPrograms;
     };
 
@@ -38,7 +36,7 @@ const Validation = () => {
     const validatedFalseSectionVisible = filteredValidationFalsePrograms.length > 0;
 
     return (
-        <Layout menus={getLayoutMenu()}>
+        <Layout>
             <>
                 <h1 className="heading-3 font-semibold">Perlu Validasi </h1>
                 <div className="flex items-center gap-6">

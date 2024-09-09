@@ -6,8 +6,12 @@ import { getLayoutMenu, getPrograms } from "@/util/RoleData"
 import SearchField from "@/Components/Dashboard/SearchField"
 import Table from "@/Components/Dashboard/Table"
 import Layout from "@/Layout"
+import { IGeneralPaginationTable } from "@/models/generalinterfaces"
+import { IVideoProgram } from "@/models/videprograminterfaces"
 
-const NotUploadedProgram = () => {
+const NotUploadedProgram = ({
+    data
+}: IGeneralPaginationTable<IVideoProgram[]>) => {
     const [searchInput, setSearchInput] = useState('');
 
     const ProgramsData = getPrograms();
@@ -16,30 +20,37 @@ const NotUploadedProgram = () => {
         setSearchInput(input);
     };
 
-    const filterPrograms = (programs: any, searchInput: string) => {
-        const filteredPrograms = programs.filter((program: any) =>
-            program.title.toLowerCase().includes(searchInput.toLowerCase())
+    const filterPrograms = (programs: IVideoProgram[], searchInput: string) => {
+        const filteredPrograms = programs.filter((program: IVideoProgram) =>
+            program.name.toLowerCase().includes(searchInput.toLowerCase())
         );
         return filteredPrograms;
     };
 
-    const filteredUploadedPrograms = useMemo(
-        () => filterPrograms(ProgramsData.filter((program: any) => !program.uploadStatus), searchInput),
+    const filteredPrograms = useMemo(
+        () => filterPrograms(data, searchInput),
         [ProgramsData, searchInput]
     );
 
     return (
-        <Layout menus={getLayoutMenu()}>
+        <Layout>
             <>
                 <h1 className="heading-3 font-semibold">Belum Upload </h1>
                 <div className="flex items-center gap-6">
                     <SearchField onSearch={handleSearch} />
                     <p className="caption-1">
-                        <span className="font-semibold">{ProgramsData.filter((program: any) => !program.uploadStatus).length}</span> Program
+                        <span className="font-semibold">{data.length}</span> Program
                     </p>
                 </div>
-                {filteredUploadedPrograms.length > 0 ? (
-                    <Table head={CAMERAMAN_HEADER} body={filteredUploadedPrograms} action="/icon/more-fill.svg" pagination={true} type="Program" redirectUrl="not-uploaded" />
+                {filteredPrograms.length > 0 ? (
+                    <Table
+                        head={CAMERAMAN_HEADER}
+                        body={filteredPrograms}
+                        action="/icon/more-fill.svg"
+                        pagination={true}
+                        type="Program"
+                        redirectUrl="pending"
+                    />
                 ) : (
                     <p className="body-1 font-semibol">Tidak ada program yang ditemukan</p>
                 )}

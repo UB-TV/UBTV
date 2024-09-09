@@ -74,9 +74,7 @@ class CameramanController extends Controller
             ->whereNull('user_video.id')
             ->groupBy('programs.id')
             ->paginate(15);
-        dd(json_encode($pendingVideoPrograms));
-        #TODO: render the correct page & delete dd
-        return Inertia::render('CHANGEME', $pendingVideoPrograms);
+        return Inertia::render('Shared/NotUploadedProgram', $pendingVideoPrograms);
     }
 
     #TODO: implement feature

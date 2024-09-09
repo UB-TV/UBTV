@@ -30,7 +30,7 @@ const NewProgram = () => {
     );
 
     return (
-        <Layout menus={getLayoutMenu()}>
+        <Layout>
             <>
                 <h1 className="heading-3 font-semibold">Program Baru</h1>
                 <div className="flex items-center gap-6">

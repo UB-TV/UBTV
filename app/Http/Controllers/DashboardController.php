@@ -41,10 +41,6 @@ class DashboardController extends Controller
             ->groupBy('programs.id')
             ->get();
 
-        dd(json_encode([
-            'pending_video_programs' => $pendingVideoPrograms,
-            'uploaded_video_programs' => $uploadedVideoPrograms
-        ]));
         return Inertia::render('Dashboard', [
             'pending_video_programs' => $pendingVideoPrograms,
             'uploaded_video_programs' => $uploadedVideoPrograms
