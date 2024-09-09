@@ -28,7 +28,7 @@ Route::middleware(['auth'])->group(function () {
     Route::controller(CameramanController::class)->prefix('/cameraman')->group(function () {
         Route::get('/pending', 'pending');
         Route::get('/uploaded', 'uploaded');
-        Route::get('/{slug}', 'program');
+        Route::get('/{program:slug}', 'program');
     });
     Route::get('/admin/new-users', [AdminController::class, 'approval']);
 
@@ -41,6 +41,7 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/', [CameramanController::class, 'createEpisode']);
         });
         Route::prefix('/users')->group(function () {
+            Route::patch('/{user}', [AdminController::class, 'updateUserStatus']);
             Route::delete('/{id}', [AdminController::class, 'deleteUser']);
         });
     });

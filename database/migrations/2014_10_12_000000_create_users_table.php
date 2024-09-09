@@ -16,7 +16,7 @@ return new class () extends Migration {
             $table->string('name');
             $table->string('phone_number')->unique();
             $table->string('employee_id')->unique();
-            $table->boolean('is_active');
+            $table->boolean('is_active')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

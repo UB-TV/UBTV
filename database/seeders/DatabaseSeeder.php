@@ -21,7 +21,8 @@ class DatabaseSeeder extends Seeder
             'name' => 'Mirza pengen Event-Driven',
             'phone_number' => '0811111111',
             'employee_id' => 'EMP-2020-0000',
-        ])->assignRole('cameraman');
+            'is_active' => true,
+        ])->assignRole('admin');
 
         Program::factory()
             ->has(Episode::factory()

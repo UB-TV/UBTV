@@ -29,6 +29,10 @@ class User extends Authenticatable
         'employee_id',
     ];
 
+    protected $casts = [
+        'is_active' => 'boolean',
+    ];
+
     /**
      * The attributes that should be hidden for serialization.
      *

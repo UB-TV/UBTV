@@ -28,9 +28,8 @@ class CameramanController extends Controller
         $this->driveService = new Drive($this->client);
     }
 
-    public function program(string $slug): Response
+    public function program(Program $program): Response
     {
-        $program = Program::where('slug', $slug)->firstOrFail();
         $episodes = $program->episodes()->get();
         $program->episode_count = $episodes->count();
         dd(json_encode([
