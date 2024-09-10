@@ -2,7 +2,6 @@
 
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\DDController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CameramanController;
 use App\Http\Controllers\DashboardController;
@@ -79,7 +78,6 @@ Route::middleware(['auth'])->group(function () {
         return Inertia::render('MCR/Program');
     })->name('mcr-program');
 
-    Route::get('/dd', DDController::class);
     Route::get('program/{slug}', function () {
         return Inertia::render('MCR/ProgramDetail');
     })->name('mcr-program-detail');

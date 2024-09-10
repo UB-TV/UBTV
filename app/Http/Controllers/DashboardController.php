@@ -59,7 +59,7 @@ class DashboardController extends Controller
     {
         $users = User::query()
             ->where('is_active', '=', false)
-            ->paginate(15);
+            ->paginate(15)->onEachSide(5);
         dd(json_encode($users));
         #TODO: render the correct page & delete dd
         return Inertia::render('CHANGEME', $users);
