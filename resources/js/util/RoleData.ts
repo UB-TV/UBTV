@@ -1,8 +1,8 @@
 //  This is just a temp function to mimic the server response
 //  You can set the role in local storage manually
 
+import { CameramanMenus } from "@/Constants/LayoutMenu";
 import {
-    CameramanMenus,
     CameramanPrograms,
     EditoProgram,
     EditorMenus,

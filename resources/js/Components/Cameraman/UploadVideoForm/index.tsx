@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import FileUpload from '@/Components/Form/FileUpload';
 import Button from '@/Components/Shared/Button';
+import useUploadEpisodeVideo from '@/repositories/Cameraman/useUploadVideo';
 
 type UploadVideoFormProps = {
   episodeNumber: number;
@@ -12,17 +13,29 @@ type FormValues = {
   files: FileList;
 };
 
-const UploadVideoForm = ({ episodeNumber }: UploadVideoFormProps) => {
+const UploadVideoForm: React.FC<UploadVideoFormProps> = ({ episodeNumber }) => {
   const [selectedEpisode, setSelectedEpisode] = useState<number | null>(1);
-  const { register, handleSubmit, setValue, } = useForm<FormValues>({
+  const { register, handleSubmit, setValue } = useForm<FormValues>({
     defaultValues: {
       episode: 1,
       files: undefined,
     },
   });
 
-  const onSubmit = (data: FormValues) => {
-    console.log('Form submitted:', data);
+  const { uploadVideo, isLoading, error } = useUploadEpisodeVideo();
+
+  const onSubmit = async (data: FormValues) => {
+    if (data.files && data.files.length > 0) {
+        console.log(data.files[0])
+      const result = await uploadVideo({
+        episode_id: data.episode,
+        attachment: data.files[0],
+      });
+
+      if (result && result.success) {
+        console.log('Video uploaded successfully:', result.file_id);
+      }
+    }
   };
 
   const handleEpisodeClick = (episode: number) => {
@@ -32,11 +45,9 @@ const UploadVideoForm = ({ episodeNumber }: UploadVideoFormProps) => {
 
   const renderEpisodeDivs = () => {
     const radioButtons = [];
-
     for (let i = 1; i <= episodeNumber; i++) {
       const isSelected = i === selectedEpisode;
       const borderClass = isSelected ? 'border-success-500' : 'border-primary-500';
-
       radioButtons.push(
         <label
           key={i}
@@ -54,7 +65,6 @@ const UploadVideoForm = ({ episodeNumber }: UploadVideoFormProps) => {
         </label>
       );
     }
-
     return radioButtons;
   };
 
@@ -70,7 +80,15 @@ const UploadVideoForm = ({ episodeNumber }: UploadVideoFormProps) => {
         encType="multipart/form-data"
       >
         <FileUpload register={register} setValue={setValue} />
-        <Button type="submit" label="Upload" style="Filled" color="Primary" width="Full" size="Large" />
+        {error && <p className="text-error-500">{error}</p>}
+        <Button
+          type="submit"
+          label={isLoading ? "Uploading..." : "Upload"}
+          style="Filled"
+          color="Primary"
+          width="Full"
+          size="Large"
+        />
       </form>
     </>
   );

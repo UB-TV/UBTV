@@ -14,8 +14,6 @@ const NotUploadedProgram = ({
 }: IGeneralPaginationTable<IVideoProgram[]>) => {
     const [searchInput, setSearchInput] = useState('');
 
-    const ProgramsData = getPrograms();
-
     const handleSearch = (input: string) => {
         setSearchInput(input);
     };
@@ -29,7 +27,7 @@ const NotUploadedProgram = ({
 
     const filteredPrograms = useMemo(
         () => filterPrograms(data, searchInput),
-        [ProgramsData, searchInput]
+        [searchInput]
     );
 
     return (

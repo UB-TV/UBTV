@@ -4,27 +4,27 @@ import { useRef } from "react"
 import Button from "@/Components/Shared/Button"
 import EpisodeForm from "../EpisodeForm"
 
-type ProgramCardProps = {
+interface IProgramCard {
     episodeNumber: number
-    thumbnail: string
+    thumbnail?: string
     code: string
     duration: string
     productionDate: string
     theme: string
     desc: string
-    isActive: boolean
+    isActive?: boolean
 }
 
 const ProgramCard = ({
     episodeNumber,
-    thumbnail,
+    thumbnail = '/image/program-thumbnail.jpg',
     code,
     duration,
     productionDate,
     theme,
     desc,
-    isActive
-}: ProgramCardProps) => {
+    isActive = false
+}: IProgramCard) => {
     const dialogRef = useRef<HTMLDialogElement>(null);
 
     function toggleDialog() {

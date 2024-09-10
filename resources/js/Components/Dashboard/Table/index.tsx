@@ -1,8 +1,8 @@
 import IconButton from "@/Components/Shared/IconButton.tsx"
 import { useGetUserRole } from "@/util/RoleData";
-import { HandleSlugRedirect } from "@/util/HandleSlugRedirect"
 import { useEffect, useState } from "react"
 import Button from "@/Components/Shared/Button";
+import { Link } from "@inertiajs/react";
 
 type TableHeaderProps = {
     label: string;
@@ -26,6 +26,9 @@ const Table = ({
     pagination,
     type
 }: TableProps) => {
+
+    const role = useGetUserRole();
+
     const ITEMS_PER_PAGE = 10;
     const totalPages = Math.ceil(body.length / ITEMS_PER_PAGE);
 
@@ -155,12 +158,15 @@ const Table = ({
                                     )}
                                     {(action) && (
                                         <td className="flex justify-center p-2">
-                                            <IconButton
-                                                color="Primary"
-                                                onClick={() => HandleSlugRedirect(`${redirectUrl}`, useGetUserRole(), `${body.slug}`)}
-                                                icon="/icon/more-fill.svg"
-                                                style="Filled"
-                                            />
+                                            <Link
+                                            href={`/${role}/${body.slug}`}
+                                            >
+                                                <IconButton
+                                                    color="Primary"
+                                                    icon="/icon/more-fill.svg"
+                                                    style="Filled"
+                                                />
+                                            </Link>
                                         </td>
                                     )}
                                 </>

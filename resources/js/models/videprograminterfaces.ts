@@ -8,4 +8,5 @@ export interface IVideoProgram {
     premiere_at: string;
     created_at: string;
     updated_at: string;
+    episode_count?: number;
 }

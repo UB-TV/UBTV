@@ -33,12 +33,7 @@ class CameramanController extends Controller
         $program = Program::where('slug', $slug)->firstOrFail();
         $episodes = $program->episodes()->get();
         $program->episode_count = $episodes->count();
-        dd(json_encode([
-            'program' => $program,
-            'episodes' => $episodes
-        ]));
-        #TODO: render the correct page & delete dd
-        return Inertia::render('CHANGEME', [
+        return Inertia::render('Cameraman/ProgramDetail', [
             'program' => $program,
             'episodes' => $episodes
         ]);
@@ -55,9 +50,8 @@ class CameramanController extends Controller
             ->where('user_video.user_id', '=', $user->id)
             ->groupBy('programs.id')
             ->paginate(15);
-        dd(json_encode($uploadedVideoPrograms));
-        #TODO: render the correct page & delete dd
-        return Inertia::render('CHANGEME', $uploadedVideoPrograms);
+
+        return Inertia::render('Shared/UploadedProgram', $uploadedVideoPrograms);
     }
 
     public function pending(Request $req): Response

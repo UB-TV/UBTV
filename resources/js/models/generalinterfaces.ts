@@ -27,3 +27,8 @@ export interface IPaginationLink {
     label: string;
     active: boolean;
 }
+
+export interface IGeneralAPIResponse {
+    success: boolean;
+    message: string;
+}
