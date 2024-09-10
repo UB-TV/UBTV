@@ -9,6 +9,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Program extends Model
 {
     use HasFactory;
+
+    protected $casts = [
+        'is_active' => 'boolean',
+    ];
+
     public function episodes(): HasMany
     {
         return $this->hasMany(Episode::class);

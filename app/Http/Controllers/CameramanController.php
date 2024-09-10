@@ -28,9 +28,8 @@ class CameramanController extends Controller
         $this->driveService = new Drive($this->client);
     }
 
-    public function program(string $slug): Response
+    public function program(Program $program): Response
     {
-        $program = Program::where('slug', $slug)->firstOrFail();
         $episodes = $program->episodes()->get();
         $program->episode_count = $episodes->count();
         return Inertia::render('Cameraman/ProgramDetail', [
@@ -49,7 +48,7 @@ class CameramanController extends Controller
             ->join('user_video', 'videos.id', '=', 'user_video.video_id')
             ->where('user_video.user_id', '=', $user->id)
             ->groupBy('programs.id')
-            ->paginate(15);
+            ->paginate(15)->onEachSide(5);
 
         return Inertia::render('Shared/UploadedProgram', $uploadedVideoPrograms);
     }
@@ -67,7 +66,7 @@ class CameramanController extends Controller
             })
             ->whereNull('user_video.id')
             ->groupBy('programs.id')
-            ->paginate(15);
+            ->paginate(15)->onEachSide(5);
         return Inertia::render('Shared/NotUploadedProgram', $pendingVideoPrograms);
     }
 
