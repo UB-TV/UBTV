@@ -66,7 +66,7 @@ class CameramanController extends Controller
             })
             ->whereNull('user_video.id')
             ->groupBy('programs.id')
-            ->paginate(1)->onEachSide(5);
+            ->paginate(15)->onEachSide(5);
         return Inertia::render('Shared/NotUploadedProgram', $pendingVideoPrograms);
     }
 
