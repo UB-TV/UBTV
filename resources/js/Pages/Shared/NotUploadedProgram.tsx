@@ -10,7 +10,8 @@ import { IGeneralPaginationTable } from "@/models/generalinterfaces"
 import { IVideoProgram } from "@/models/videprograminterfaces"
 
 const NotUploadedProgram = ({
-    data
+    data,
+    links
 }: IGeneralPaginationTable<IVideoProgram[]>) => {
     const [searchInput, setSearchInput] = useState('');
 
@@ -48,6 +49,7 @@ const NotUploadedProgram = ({
                         pagination={true}
                         type="Program"
                         redirectUrl="pending"
+                        pagination_link={links}
                     />
                 ) : (
                     <p className="body-1 font-semibol">Tidak ada program yang ditemukan</p>
