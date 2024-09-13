@@ -36,7 +36,7 @@ const ProgramValidation = () => {
     };
 
     return (
-        <Layout menus={getLayoutMenu()}>
+        <Layout>
             {program && (
                 <>
                     <IconButton color='Primary' onClick={handleBackButton} icon='/icon/back-arrow.svg' style='Filled' />

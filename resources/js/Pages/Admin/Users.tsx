@@ -24,9 +24,9 @@ const Users = () => {
         () => filterUsers(UsersData, searchInput),
         [UsersData, searchInput]
       );
-    
+
   return (
-    <Layout menus={AdminMenus}>
+    <Layout>
         <>
             <h1 className="heading-3 font-semibold">User</h1>
             <div className="flex items-center gap-6">
@@ -36,11 +36,11 @@ const Users = () => {
                 </p>
             </div>
             {filteredUsers.length > 0 ? (
-                    <Table 
-                    head={ADMIN_HEADER} 
-                    body={filteredUsers} 
-                    action={"accepted"} 
-                    pagination={true} 
+                    <Table
+                    head={ADMIN_HEADER}
+                    body={filteredUsers}
+                    action={"accepted"}
+                    pagination={true}
                     type="Admin"
                     />
                 ) : (

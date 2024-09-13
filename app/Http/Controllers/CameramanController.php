@@ -32,12 +32,7 @@ class CameramanController extends Controller
     {
         $episodes = $program->episodes()->get();
         $program->episode_count = $episodes->count();
-        dd(json_encode([
-            'program' => $program,
-            'episodes' => $episodes
-        ]));
-        #TODO: render the correct page & delete dd
-        return Inertia::render('CHANGEME', [
+        return Inertia::render('Cameraman/ProgramDetail', [
             'program' => $program,
             'episodes' => $episodes
         ]);
@@ -54,9 +49,8 @@ class CameramanController extends Controller
             ->where('user_video.user_id', '=', $user->id)
             ->groupBy('programs.id')
             ->paginate(15)->onEachSide(5);
-        dd(json_encode($uploadedVideoPrograms));
-        #TODO: render the correct page & delete dd
-        return Inertia::render('CHANGEME', $uploadedVideoPrograms);
+
+        return Inertia::render('Shared/UploadedProgram', $uploadedVideoPrograms);
     }
 
     public function pending(Request $req): Response
@@ -73,9 +67,7 @@ class CameramanController extends Controller
             ->whereNull('user_video.id')
             ->groupBy('programs.id')
             ->paginate(15)->onEachSide(5);
-        dd(json_encode($pendingVideoPrograms));
-        #TODO: render the correct page & delete dd
-        return Inertia::render('CHANGEME', $pendingVideoPrograms);
+        return Inertia::render('Shared/NotUploadedProgram', $pendingVideoPrograms);
     }
 
     #TODO: implement feature

@@ -1,20 +1,24 @@
 import IconButton from "@/Components/Shared/IconButton.tsx"
-import Button from "@/Components/Shared/Button";
-import { HandleSlugRedirect } from "@/util/HandleSlugRedirect"
-import { getUserRole } from "@/util/RoleData";
+import { useGetUserRole } from "@/util/RoleData";
 import { useEffect, useState } from "react"
+import Button from "@/Components/Shared/Button";
+import { Link } from "@inertiajs/react";
+import Pagination from "../Pagination/Index";
+import { IPaginationLink } from "@/models/generalinterfaces";
+
 type TableHeaderProps = {
     label: string;
     width: string
 };
 
-type TableProps = {
+interface TableProps {
     head: TableHeaderProps[];
     body: any;
     action?: string;
     redirectUrl?: string;
     pagination: boolean;
     type: 'Program' | 'Program Status' | 'Status Episode' | 'Message' | 'User Permission' | 'User' | 'Admin';
+    pagination_link?: IPaginationLink[]
 };
 
 const Table = ({
@@ -23,41 +27,11 @@ const Table = ({
     action,
     redirectUrl,
     pagination,
-    type
+    type,
+    pagination_link
 }: TableProps) => {
-    const ITEMS_PER_PAGE = 10;
-    const totalPages = Math.ceil(body.length / ITEMS_PER_PAGE);
 
-    const [currentPage, setCurrentPage] = useState(1);
-    const [paginatedData, setPaginatedData] = useState<any[]>();
-
-    const handlePageChange = (newPage: number) => {
-        setCurrentPage(newPage);
-    };
-
-    useEffect(() => {
-        const startIdx = (currentPage - 1) * ITEMS_PER_PAGE;
-        const endIdx = Math.min(startIdx + ITEMS_PER_PAGE, body.length);
-        setPaginatedData(body.slice(startIdx, endIdx));
-    }, [currentPage, body]);
-
-    const getVisiblePages = () => {
-        const visiblePages = [];
-        const maxVisiblePages = 3;
-
-        let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
-        let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-
-        if (endPage - startPage < maxVisiblePages - 1) {
-            startPage = Math.max(1, endPage - maxVisiblePages + 1);
-        }
-
-        for (let i = startPage; i <= endPage; i++) {
-            visiblePages.push(i);
-        }
-
-        return visiblePages;
-    };
+    const role = useGetUserRole();
 
     const handleAccept = (userId: number) => {
         alert(`User added to Users: ${userId}`);
@@ -88,7 +62,7 @@ const Table = ({
                     </tr>
                 </thead>
                 <tbody>
-                    {paginatedData && paginatedData.map((body, index) => (
+                    {body.map((body: any, index: number) => (
                         <tr key={index}>
                             {/* Please make one for User Permission and User Type for Admin Role */}
                             {type === 'Admin' ? (
@@ -116,13 +90,13 @@ const Table = ({
                                     )}
                                     {action === 'accepted' && (
                                         <td className="flex justify-center p-2">
-                                        <IconButton
-                                            onClick={() => handleDelete(body.id)}
-                                            icon="/icon/delete.svg"
-                                            color="Error"
-                                            style="Filled"
-                                        />
-                                    </td>
+                                            <IconButton
+                                                onClick={() => handleDelete(body.id)}
+                                                icon="/icon/delete.svg"
+                                                color="Error"
+                                                style="Filled"
+                                            />
+                                        </td>
                                     )}
                                 </>
                             ) : (
@@ -130,8 +104,8 @@ const Table = ({
                                     {type === 'Program' || type === 'Program Status' || type === 'Status Episode' ? (
                                         <>
                                             <td className="p-2">{body.code}</td>
-                                            <td className="p-2">{body.title}</td>
-                                            <td className="p-2">{body.premiere}</td>
+                                            <td className="p-2">{body.name}</td>
+                                            <td className="p-2">{body.premiere_at}</td>
                                             {type === 'Status Episode' && (
                                                 <td className="p-2">{body.episode}</td>
                                             )}
@@ -154,12 +128,15 @@ const Table = ({
                                     )}
                                     {(action) && (
                                         <td className="flex justify-center p-2">
-                                            <IconButton
-                                                color="Primary"
-                                                onClick={() => HandleSlugRedirect(`${redirectUrl}`, getUserRole(), `${body.slug}`)}
-                                                icon="/icon/more-fill.svg"
-                                                style="Filled"
-                                            />
+                                            <Link
+                                                href={`/${role}/${body.slug}`}
+                                            >
+                                                <IconButton
+                                                    color="Primary"
+                                                    icon="/icon/more-fill.svg"
+                                                    style="Filled"
+                                                />
+                                            </Link>
                                         </td>
                                     )}
                                 </>
@@ -168,30 +145,8 @@ const Table = ({
                     ))}
                 </tbody>
             </table>
-            {pagination && (
-                <div className="flex gap-3 items-center justify-center mt-4">
-                    <img
-                        src="/icon/pagination-arrow.svg"
-                        alt="pagination arrow"
-                        className={`cursor-pointer ${currentPage === 1 ? 'opacity-50' : ''} mr-3`}
-                        onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
-                    />
-                    {getVisiblePages().map((page) => (
-                        <button
-                            key={page}
-                            className={`${currentPage === page ? 'text-grey-900' : 'text-grey-400'} overlie-2 font-semibold`}
-                            onClick={() => handlePageChange(page)}
-                        >
-                            {page}
-                        </button>
-                    ))}
-                    <img
-                        src="/icon/pagination-arrow.svg"
-                        alt="pagination arrow"
-                        className={`cursor-pointer transform rotate-180  ${currentPage === totalPages ? 'opacity-50' : ''} ml-3`}
-                        onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
-                    />
-                </div>
+            {pagination && pagination_link && (
+                <Pagination links={pagination_link} />
             )}
         </div>
     );

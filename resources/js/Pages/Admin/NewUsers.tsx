@@ -26,9 +26,9 @@ const NewUsers = () => {
       );
 
 
-    
+
   return (
-    <Layout menus={AdminMenus}>
+    <Layout>
             <>
                 <h1 className="heading-3 font-semibold">User Baru</h1>
                 <div className="flex items-center gap-6">
@@ -38,11 +38,11 @@ const NewUsers = () => {
                     </p>
                 </div>
                 {filteredNewUsers.length > 0 ? (
-                    <Table 
-                    head={ADMIN_HEADER} 
-                    body={filteredNewUsers} 
-                    action={"new"} 
-                    pagination={true} 
+                    <Table
+                    head={ADMIN_HEADER}
+                    body={filteredNewUsers}
+                    action={"new"}
+                    pagination={true}
                     type="Admin"
                     />
                 ) : (

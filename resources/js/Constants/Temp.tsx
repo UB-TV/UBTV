@@ -1,20 +1,6 @@
 // **All CONSTANTS IN THIS FILE IS FOR REPLACING SERVER RESPONSE**
 
-export const CameramanMenus = [
-    {
-        link: '/',
-        label: 'Dashboard'
-    },
-    {
-        link: '/not-uploaded',
-        label: 'Belum Upload'
-    },
-    {
-        link: '/uploaded',
-        label: 'Sudah Upload'
-    },
-]
-
+// TODO: Move all menus to RoleMenu.tsx
 export const EditorMenus = [
     {
         link: '/',

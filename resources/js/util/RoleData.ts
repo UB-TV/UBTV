@@ -1,8 +1,8 @@
 //  This is just a temp function to mimic the server response
 //  You can set the role in local storage manually
 
+import { CameramanMenus } from "@/Constants/LayoutMenu";
 import {
-    CameramanMenus,
     CameramanPrograms,
     EditoProgram,
     EditorMenus,
@@ -12,19 +12,17 @@ import {
     ProducerProgram,
     AdminMenus
 } from "@/Constants/Temp";
+import { ILayoutMenu } from "@/models/generalinterfaces";
+import { usePage } from "@inertiajs/react";
 
-export const getUserRole = (): string => {
-    const storedRole = localStorage.getItem("role");
+export const useGetUserRole = (): string => {
+    const { user } = usePage<any>().props;
 
-    const role: string = storedRole ?? "";
-
-    return role;
+    return user.roles[0];
 };
 
-export const getLayoutMenu = (): any => {
-    const role: string = getUserRole();
+export const getLayoutMenu = (role: string): ILayoutMenu[] => {
 
-    if (!role) return;
 
     switch (role) {
         case "cameraman":
@@ -43,12 +41,13 @@ export const getLayoutMenu = (): any => {
             return AdminMenus;
 
         default:
-            return "";
+            return [];
     }
 };
 
 export const getPrograms = (): any => {
-    const role: string = getUserRole();
+
+    const role: string = useGetUserRole();
 
     if (!role) return;
 
