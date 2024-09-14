@@ -14,11 +14,13 @@ const useUploadEpisodeVideo = () => {
   const uploadVideo = async ({ episode_id, attachment }: IPayloadUploadVideoEpisode): Promise<IUploadEpisodeVideoResponse | null> => {
     console.log(attachment);
     setIsLoading(true);
+
+    console.log(attachment instanceof File);
     setError(null);
 
     const formData = new FormData();
-    formData.append('videos[episode_id]', episode_id.toString());
-    formData.append('videos[attachment]', attachment);
+    formData.append('episode_id', episode_id.toString());
+    formData.append('attachment', attachment);
 
 
     try {
