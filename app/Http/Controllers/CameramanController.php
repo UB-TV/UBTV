@@ -74,14 +74,12 @@ class CameramanController extends Controller
     public function upload(PostEpisodeVideosRequest $req)
     {
         $payload = $req->validated();
-        foreach ($payload->videos as $video) {
-            $metadata = new DriveFile(['name' => $video->attachment->getClientOriginalName()]);
-            $file = $this->driveService->files->create($metadata, [
-                'data' => $video->attachment,
-                'fields' => 'id',
-            ]);
-            dd($file->id);
-        }
+        $metadata = new DriveFile(['name' => $payload['videos']['attachment']->getClientOriginalName()]);
+        $file = $this->driveService->files->create($metadata, [
+            'data' => $payload['videos']['attachment'],
+            'fields' => 'id',
+        ]);
+        dd($file->id);
     }
 
     public function createEpisode(PostEpisodeRequest $req)
