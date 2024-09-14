@@ -15,9 +15,8 @@ class PostEpisodeVideosRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'videos' => ['required', 'array:episode_id,attachment'],
-            'videos.episode_id' => ['required', 'integer', 'numeric'],
-            'videos.attachment' => ['required', File::types(['mp4','mkv','mov'])],
+            'episode_id' => ['required', 'integer', 'numeric'],
+            'attachment' => ['required', File::types(['mp4','mkv','mov', 'webm'])],
         ];
     }
 }

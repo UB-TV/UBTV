@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Google\Client;
 use Inertia\Inertia;
+use App\Models\Video;
 use Inertia\Response;
 use App\Models\Episode;
 use App\Models\Program;
@@ -11,6 +12,7 @@ use Google\Service\Drive;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Google\Service\Drive\DriveFile;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\PostEpisodeRequest;
 use Illuminate\Database\Query\JoinClause;
 use App\Http\Requests\PostEpisodeVideosRequest;
@@ -71,18 +73,22 @@ class CameramanController extends Controller
     }
 
     #TODO: implement feature
-    public function upload(PostEpisodeVideosRequest $req)
+    public function upload(PostEpisodeVideosRequest $req): RedirectResponse
     {
         $payload = $req->validated();
-        $metadata = new DriveFile(['name' => $payload['videos']['attachment']->getClientOriginalName()]);
+        $metadata = new DriveFile(['name' => $payload->attachment->getClientOriginalName()]);
         $file = $this->driveService->files->create($metadata, [
-            'data' => $payload['videos']['attachment'],
+            'data' => $payload->attachment,
             'fields' => 'id',
         ]);
-        dd($file->id);
+        Video::create([
+            'episode_id' => $payload->episode_id,
+            'object_id' => $file->id,
+        ]);
+        return back();
     }
 
-    public function createEpisode(PostEpisodeRequest $req)
+    public function createEpisode(PostEpisodeRequest $req): RedirectResponse
     {
         $payload = $req->validated();
         Episode::create($payload);
