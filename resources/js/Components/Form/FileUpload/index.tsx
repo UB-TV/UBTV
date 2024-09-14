@@ -1,5 +1,5 @@
 import Button from '@/Components/Shared/Button';
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useRef } from 'react';
 import { useDropzone, FileRejection, DropEvent } from 'react-dropzone';
 
 type FileUploadProps = {
@@ -21,6 +21,7 @@ const FileUpload = ({
 }: FileUploadProps) => {
     const [previews, setPreviews] = useState<PreviewInfo[]>([]);
     const [rejected, setRejected] = useState<FileRejection[]>([]);
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
 
     const onDrop = useCallback(
         (acceptedFiles: File[], fileRejections: FileRejection[], event: DropEvent) => {
@@ -42,7 +43,7 @@ const FileUpload = ({
                 setRejected((previousFiles) => [...previousFiles, ...fileRejections]);
             }
         },
-        [previews, setValue, register]
+        [previews, setValue]
     );
 
     const {
@@ -58,6 +59,12 @@ const FileUpload = ({
         multiple: true,
     });
 
+    const handleButtonClick = () => {
+        if (fileInputRef.current) {
+            fileInputRef.current.click();
+        }
+    };
+
     return (
         <div>
             <div className="w-full min-h-[216px] h-fit p-3 mb-2 rounded-md border border-solid border-grey-300">
@@ -65,7 +72,11 @@ const FileUpload = ({
                     {...getRootProps()}
                     className={`${isDragActive ? 'bg-info-200' : ''} w-full min-h-[inherit] border border-dashed border-grey-300 rounded-sm flex justify-center items-center p-6 ease-in-out duration-300`}
                 >
-                    <input {...getInputProps()} {...register('files')} />
+                    <input
+                        {...getInputProps()}
+                        {...register('files')}
+                        ref={fileInputRef}
+                    />
                     {isDragActive ? (
                         <p className="body-2 text-secondary-text">Lepas file disini...</p>
                     ) : (
@@ -78,6 +89,7 @@ const FileUpload = ({
                                 color="Primary"
                                 width="Fit"
                                 size="Large"
+                                onClick={handleButtonClick}
                             />
                             <p className="body-2 text-secondary-text">
                                 Atau tarik dan lepas file di sini untuk menambahkannya.

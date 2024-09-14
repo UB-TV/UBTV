@@ -13,7 +13,7 @@ type FormValues = {
   files: FileList;
 };
 
-const UploadVideoForm: React.FC<UploadVideoFormProps> = ({ episodeNumber }) => {
+const UploadVideoForm = ({ episodeNumber }: UploadVideoFormProps) => {
   const [selectedEpisode, setSelectedEpisode] = useState<number | null>(1);
   const { register, handleSubmit, setValue } = useForm<FormValues>({
     defaultValues: {
@@ -21,17 +21,14 @@ const UploadVideoForm: React.FC<UploadVideoFormProps> = ({ episodeNumber }) => {
       files: undefined,
     },
   });
-
   const { uploadVideo, isLoading, error } = useUploadEpisodeVideo();
 
   const onSubmit = async (data: FormValues) => {
     if (data.files && data.files.length > 0) {
-        console.log(data.files[0])
       const result = await uploadVideo({
         episode_id: data.episode,
         attachment: data.files[0],
       });
-
       if (result && result.success) {
         console.log('Video uploaded successfully:', result.file_id);
       }

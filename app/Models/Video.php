@@ -10,6 +10,11 @@ class Video extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'episode_id',
+        'object_id'
+    ];
+
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class);
