@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Models\Program;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Query\JoinClause;
@@ -18,7 +19,9 @@ class DashboardController extends Controller
             return $this->cameraman($req);
         } elseif ($user->hasRole('admin')) {
             return $this->admin($req);
-        };
+        } elseif ($user->hasRole('editor')) {
+            return $this->editor($req);
+        }
     }
 
     private function cameraman(Request $req): Response
@@ -35,6 +38,7 @@ class DashboardController extends Controller
             })
             ->whereNull('user_video.id')
             ->groupBy('programs.id')
+            ->limit(5)
             ->get();
         $uploadedVideoPrograms = DB::table('programs')
             ->select('programs.*')
@@ -43,6 +47,7 @@ class DashboardController extends Controller
             ->join('user_video', 'videos.id', '=', 'user_video.video_id')
             ->where('user_video.user_id', '=', $user->id)
             ->groupBy('programs.id')
+            ->limit(5)
             ->get();
 
         return Inertia::render('Dashboard', [
@@ -59,5 +64,41 @@ class DashboardController extends Controller
         dd(json_encode($users));
         #TODO: render the correct page & delete dd
         return Inertia::render('CHANGEME', $users);
+    }
+
+    public function editor(Request $req): Response
+    {
+        $user = $req->user();
+        $raw = DB::table('programs')
+            ->select(['programs.*', DB::raw('sum(episodes.segment_count) as segment_total'), DB::raw('count(*) as video_count')])
+            ->join('episodes', 'programs.id', '=', 'episodes.program_id')
+            ->join('videos', function (JoinClause $join) {
+                $join->on('episodes.id', '=', 'videos.episode_id');
+                $join->on('episodes.segment_count', 'is', DB::raw('not null'));
+            })
+            ->join('user_video', 'videos.id', '=', 'user_video.video_id')
+            ->where('user_video.user_id', '=', $user->id)
+            ->groupBy('programs.id')
+            ->get();
+        $filtered = $raw->filter(function ($data, $key) {
+            return (int)$data->segment_total === $data->video_count;
+        });
+        $allEditedVideoPrograms = $filtered->transform(function ($data, $key) {
+            unset($data->segment_total, $data->video_count);
+            return $data;
+        });
+        $someUneditedVideoPrograms = Program::query()
+            ->whereNotIn('id', $allEditedVideoPrograms->pluck('id'))
+            ->limit(10)
+            ->get();
+        dd(json_encode([
+            'all_edited_video_programs' => $allEditedVideoPrograms,
+            'some_unedited_video_programs' => $someUneditedVideoPrograms,
+        ]));
+        #TODO: render the correct page & delete dd
+        return Inertia::render('CHANGEME', [
+            'all_edited_video_programs' => $allEditedVideoPrograms,
+            'some_unedited_video_programs' => $someUneditedVideoPrograms,
+        ]);
     }
 }

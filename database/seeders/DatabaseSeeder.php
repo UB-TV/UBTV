@@ -16,15 +16,16 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([RoleSeeder::class]);
-        $user = User::create([
+
+        $users = [];
+        $users[] = User::create([
             'email' => 'miruza.dev@gmail.com',
             'name' => 'Mirza pengen Event-Driven',
             'phone_number' => '0811111111',
             'employee_id' => 'EMP-2020-0000',
             'is_active' => true,
-        ])->assignRole('cameraman');
-
-        $user = User::create([
+        ])->assignRole('editor');
+        $users[] = User::create([
             'email' => 'agustianto.d19@gmail.com',
             'name' => 'Faiz cape html',
             'phone_number' => '0822222222',
@@ -32,15 +33,17 @@ class DatabaseSeeder extends Seeder
         ])->assignRole('cameraman');
 
         Program::factory()
-            ->has(Episode::factory()
+            ->has(Episode::factory()->count(3)
             ->has(Video::factory()->count(5)))->create();
         Program::factory()
-            ->has(Episode::factory()
+            ->has(Episode::factory()->count(3)
             ->has(Video::factory()->count(5)))->create();
         Program::factory()
-            ->has(Episode::factory()
+            ->has(Episode::factory()->count(3)
             ->has(Video::factory()->count(5)))->create();
 
-        $user->videos()->attach(Video::query()->limit(5)->get()->pluck('id'));
+        foreach ($users as $user) {
+            $user->videos()->attach(Video::query()->limit(5)->get()->pluck('id'));
+        }
     }
 }
