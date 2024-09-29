@@ -7,6 +7,7 @@ use App\Models\Video;
 use App\Models\Episode;
 use App\Models\Program;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -32,18 +33,40 @@ class DatabaseSeeder extends Seeder
             'employee_id' => 'EMP-2121-0000',
         ])->assignRole('cameraman');
 
-        Program::factory()
-            ->has(Episode::factory()->count(3)
-            ->has(Video::factory()->count(5)))->create();
-        Program::factory()
-            ->has(Episode::factory()->count(3)
-            ->has(Video::factory()->count(5)))->create();
-        Program::factory()
-            ->has(Episode::factory()->count(3)
-            ->has(Video::factory()->count(5)))->create();
+        User::factory()->create([
+            'is_active' => false,
+        ]);
 
+        $programs = Program::factory()->count(2)->create();
+
+        // Seed Episodes
+        foreach ($programs as $program) {
+            Episode::factory()->count(2)->create([
+                'program_id' => $program->id,
+            ]);
+        }
+
+        // Seed Videos
+        $episodes = $programs->random()->episodes;
+        foreach ($episodes as $episode) {
+            Video::factory()->count($episode->segment_count)->create([
+                'episode_id' => $episode->id,
+            ]);
+        }
+
+        // Seed User_Video Pivot Table
         foreach ($users as $user) {
-            $user->videos()->attach(Video::query()->limit(5)->get()->pluck('id'));
+            foreach ($episodes as $episode) {
+                if ($episode->videos === null) {
+                    continue;
+                }
+                foreach ($episode->videos as $video) {
+                    DB::table('user_video')->insert([
+                        'user_id' => $user->id,
+                        'video_id' => $video->id,
+                    ]);
+                }
+            }
         }
     }
 }

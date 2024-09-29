@@ -69,24 +69,15 @@ class DashboardController extends Controller
     public function editor(Request $req): Response
     {
         $user = $req->user();
-        $raw = DB::table('programs')
-            ->select(['programs.*', DB::raw('sum(episodes.segment_count) as segment_total'), DB::raw('count(*) as video_count')])
+        $allEditedVideoPrograms = Program::query()
             ->join('episodes', 'programs.id', '=', 'episodes.program_id')
             ->join('videos', function (JoinClause $join) {
-                $join->on('episodes.id', '=', 'videos.episode_id');
-                $join->on('episodes.segment_count', 'is', DB::raw('not null'));
+                $join->on('episodes.id', '=', 'videos.episode_id')
+                    ->whereNotNull('episodes.segment_count');
             })
             ->join('user_video', 'videos.id', '=', 'user_video.video_id')
-            ->where('user_video.user_id', '=', $user->id)
             ->groupBy('programs.id')
             ->get();
-        $filtered = $raw->filter(function ($data, $key) {
-            return (int)$data->segment_total === $data->video_count;
-        });
-        $allEditedVideoPrograms = $filtered->transform(function ($data, $key) {
-            unset($data->segment_total, $data->video_count);
-            return $data;
-        });
         $someUneditedVideoPrograms = Program::query()
             ->whereNotIn('id', $allEditedVideoPrograms->pluck('id'))
             ->limit(10)
