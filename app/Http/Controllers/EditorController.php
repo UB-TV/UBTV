@@ -28,7 +28,7 @@ class EditorController extends Controller
             })
             ->join('user_video', 'videos.id', '=', 'user_video.video_id')
             ->groupBy('programs.id')
-            ->get();
+            ->paginate(15)->onEachSide(5);
         dd(json_encode($programs));
         #TODO: render the correct page & delete dd
         return Inertia::render('CHANGEME', $programs);
@@ -42,7 +42,7 @@ class EditorController extends Controller
             ->leftJoin('videos', 'episodes.id', '=', 'videos.episode_id')
             ->whereNull('videos.id')
             ->groupBy('programs.id')
-            ->get();
+            ->paginate(15)->onEachSide(5);
         dd(json_encode($programs));
         #TODO: render the correct page & delete dd
         return Inertia::render('CHANGEME', $programs);
