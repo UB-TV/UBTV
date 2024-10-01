@@ -6,14 +6,15 @@ use Google\Client;
 use Inertia\Inertia;
 use App\Models\Video;
 use Inertia\Response;
+use App\Models\Episode;
 use App\Models\Program;
 use Google\Service\Drive;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Google\Service\Drive\DriveFile;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Database\Query\JoinClause;
 use App\Http\Requests\PostEpisodeSegmentRequest;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 
 class EditorController extends Controller
 {
@@ -50,32 +51,18 @@ class EditorController extends Controller
 
     public function program(Program $program): Response
     {
-        $episodes = $program->episodes()->get();
+        $episodes = Episode::with(['videos' => function (Builder $query) {
+            $query->orderBy('segment_number', 'asc');
+        }])->where('program_id', '=', $program->id)->get();
         $program->episode_count = $episodes->count();
-        $raw = DB::table('videos')
-            ->select('videos.*')
-            ->join('episodes', 'videos.episode_id', '=', 'episodes.id')
-            ->where('episodes.program_id', '=', $program->id)
-            ->orderBy('episodes.program_id', 'asc')
-            ->orderBy('videos.segment_number', 'asc')
-            ->get();
-        $uploadedSegments = [];
-        for ($i = 0, $j = 0; $i < $raw->count(); $i++) {
-            $uploadedSegments[$j][] = $raw[$i];
-            if (isset($raw[$i + 1]) && $raw[$i + 1]->episode_id != $raw[$i]->episode_id) {
-                ++$j;
-            }
-        }
         dd(json_encode([
             'program' => $program,
             'episodes' => $episodes,
-            'episode_with_segments' => $uploadedSegments,
         ]));
         #TODO: render the correct page & delete dd
         return Inertia::render('Cameraman/ProgramDetail', [
             'program' => $program,
             'episodes' => $episodes,
-            'episode_with_segments' => $uploadedSegments,
         ]);
     }
 
