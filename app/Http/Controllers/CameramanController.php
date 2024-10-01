@@ -72,7 +72,6 @@ class CameramanController extends Controller
         return Inertia::render('Shared/NotUploadedProgram', $pendingVideoPrograms);
     }
 
-    #TODO: implement feature
     public function upload(PostEpisodeVideosRequest $req): RedirectResponse
     {
         $payload = $req->validated();

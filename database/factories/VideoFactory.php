@@ -18,6 +18,7 @@ class VideoFactory extends Factory
     {
         return [
             'object_id' => fake()->lexify('?????????????????'),
+            'segment_number' => fake()->randomDigitNotNull(),
         ];
     }
 }

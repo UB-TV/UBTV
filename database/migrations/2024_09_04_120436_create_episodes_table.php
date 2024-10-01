@@ -14,8 +14,9 @@ return new class () extends Migration {
             $table->id();
             $table->unsignedBigInteger('program_id');
             $table->string('code')->unique();
-            $table->string('duration');
-            $table->string('themes');
+            $table->unsignedInteger('duration');
+            $table->string('theme');
+            $table->unsignedInteger('segment_count');
             $table->date('start_production');
             $table->text('description');
             $table->timestamps();

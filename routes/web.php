@@ -3,6 +3,7 @@
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\EditorController;
 use App\Http\Controllers\CameramanController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GoogleSSOController;
@@ -28,21 +29,26 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/pending', 'pending');
         Route::get('/uploaded', 'uploaded');
         Route::get('/{program:slug}', 'program');
+    })->middleware('role:cameraman');
+    Route::get('/admin/new-users', [AdminController::class, 'approval'])->middleware('role:admin');
+    Route::controller(EditorController::class)->prefix('/editor')->group(function () {
+        Route::get('/uploaded', 'uploaded');
+        Route::get('/pending', 'notUploaded');
+        Route::get('/{program:slug}', 'program');
     });
-    Route::get('/admin/new-users', [AdminController::class, 'approval']);
 
     # API
     Route::prefix('/api/v1')->group(function () {
         Route::prefix('/videos')->group(function () {
             Route::post('/', [CameramanController::class, 'upload']);
-        });
+        })->middleware('role:cameraman');
         Route::prefix('/episodes')->group(function () {
             Route::post('/', [CameramanController::class, 'createEpisode']);
-        });
+        })->middleware('role:cameraman');
         Route::prefix('/users')->group(function () {
             Route::patch('/{user}', [AdminController::class, 'updateUserStatus']);
             Route::delete('/{id}', [AdminController::class, 'deleteUser']);
-        });
+        })->middleware('role:admin');
     });
     #############################
 

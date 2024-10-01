@@ -14,6 +14,7 @@ return new class () extends Migration {
             $table->id();
             $table->unsignedBigInteger('episode_id');
             $table->string('object_id');
+            $table->unsignedInteger('segment_number')->nullable();
             $table->timestamps();
             $table->foreign('episode_id')
                 ->references('id')
