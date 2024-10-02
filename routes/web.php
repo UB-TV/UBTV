@@ -45,6 +45,9 @@ Route::middleware(['auth'])->group(function () {
         Route::prefix('/episodes')->group(function () {
             Route::post('/', [CameramanController::class, 'createEpisode']);
         })->middleware('role:cameraman');
+        Route::prefix('/segments')->group(function () {
+            Route::post('/', [EditorController::class, 'upload']);
+        })->middleware('role:editor');
         Route::prefix('/users')->group(function () {
             Route::patch('/{user}', [AdminController::class, 'updateUserStatus']);
             Route::delete('/{id}', [AdminController::class, 'deleteUser']);

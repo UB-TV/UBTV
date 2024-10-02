@@ -82,14 +82,15 @@ class DashboardController extends Controller
             ->whereNotIn('id', $allEditedVideoPrograms->pluck('id'))
             ->limit(10)
             ->get();
-        dd(json_encode([
-            'all_edited_video_programs' => $allEditedVideoPrograms,
-            'some_unedited_video_programs' => $someUneditedVideoPrograms,
-        ]));
+        // dd(json_encode([
+        //     'all_edited_video_programs' => $allEditedVideoPrograms,
+        //     'pending_video_programs' => $someUneditedVideoPrograms,
+        // ]));
         #TODO: render the correct page & delete dd
-        return Inertia::render('CHANGEME', [
+        return Inertia::render('Dashboard', [
             'all_edited_video_programs' => $allEditedVideoPrograms,
             'some_unedited_video_programs' => $someUneditedVideoPrograms,
+
         ]);
     }
 }

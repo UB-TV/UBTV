@@ -30,9 +30,8 @@ class EditorController extends Controller
             ->join('user_video', 'videos.id', '=', 'user_video.video_id')
             ->groupBy('programs.id')
             ->paginate(15)->onEachSide(5);
-        dd(json_encode($programs));
         #TODO: render the correct page & delete dd
-        return Inertia::render('CHANGEME', $programs);
+        return Inertia::render('Shared/UploadedProgram', $programs);
     }
 
     public function notUploaded(Request $req): Response
@@ -44,9 +43,9 @@ class EditorController extends Controller
             ->whereNull('videos.id')
             ->groupBy('programs.id')
             ->paginate(15)->onEachSide(5);
-        dd(json_encode($programs));
+        // dd(json_encode($programs));
         #TODO: render the correct page & delete dd
-        return Inertia::render('CHANGEME', $programs);
+        return Inertia::render('Shared/NotUploadedProgram', $programs);
     }
 
     public function program(Program $program): Response
@@ -55,12 +54,12 @@ class EditorController extends Controller
             $query->orderBy('segment_number', 'asc');
         }])->where('program_id', '=', $program->id)->get();
         $program->episode_count = $episodes->count();
+        #TODO: render the correct page & delete dd
         dd(json_encode([
             'program' => $program,
             'episodes' => $episodes,
         ]));
-        #TODO: render the correct page & delete dd
-        return Inertia::render('Cameraman/ProgramDetail', [
+        return Inertia::render('Editor/ProgramDetail', [
             'program' => $program,
             'episodes' => $episodes,
         ]);
@@ -69,19 +68,23 @@ class EditorController extends Controller
     public function upload(PostEpisodeSegmentRequest $req): RedirectResponse
     {
         $payload = $req->validated();
+        dd($payload['segment_number']);
         $client = new Client();
         $client->useApplicationDefaultCredentials();
-        client->addScope(Drive::DRIVE);
+        $client->addScope(Drive::DRIVE);
         $drive = new Drive($client);
         $metadata = new DriveFile(['name' => $payload['attachment']->getClientOriginalName()]);
-        $file = $this->driveService->files->create($metadata, [
+        $file = $drive->files->create($metadata, [
             'data' => $payload['attachment'],
             'fields' => 'id',
         ]);
+
+        $segment_number = (int) $payload['segment_number'];
+
         Video::create([
             'episode_id' => $payload['episode_id'],
             'object_id' => $file->id,
-            'segment_number' => $payload['segment_number'],
+            'segment_number' => $segment_number,
         ]);
         return back();
     }

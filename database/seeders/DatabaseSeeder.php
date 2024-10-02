@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Faiz cape html',
             'phone_number' => '0822222222',
             'employee_id' => 'EMP-2121-0000',
-        ])->assignRole('cameraman');
+        ])->assignRole('editor');
 
         User::factory()->create([
             'is_active' => false,
