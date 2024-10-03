@@ -79,9 +79,11 @@ class DashboardController extends Controller
             ->groupBy('programs.id')
             ->get();
         $someUneditedVideoPrograms = Program::query()
-            ->whereNotIn('id', $allEditedVideoPrograms->pluck('id'))
-            ->limit(10)
-            ->get();
+            ->join('episodes', 'programs.id', '=', 'episodes.program_id')
+            ->leftJoin('videos', 'episodes.id', '=', 'videos.episode_id')
+            ->whereNull('videos.id')
+            ->groupBy('programs.id')
+            ->paginate(15)->onEachSide(5);
         dd(json_encode([
             'all_edited_video_programs' => $allEditedVideoPrograms,
             'some_unedited_video_programs' => $someUneditedVideoPrograms,
