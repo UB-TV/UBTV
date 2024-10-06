@@ -25,16 +25,17 @@ class DatabaseSeeder extends Seeder
             'phone_number' => '0811111111',
             'employee_id' => 'EMP-2020-0000',
             'is_active' => true,
-        ])->assignRole('editor');
+        ])->assignRole('admin');
         $users[] = User::create([
             'email' => 'agustianto.d19@gmail.com',
             'name' => 'Faiz cape html',
             'phone_number' => '0822222222',
             'employee_id' => 'EMP-2121-0000',
+            'is_active' => true,
         ])->assignRole('cameraman');
 
         User::factory()->create([
-            'is_active' => false,
+            'is_active' => null,
         ]);
 
         $programs = Program::factory()->count(2)->create();
