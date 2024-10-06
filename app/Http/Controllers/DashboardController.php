@@ -59,7 +59,7 @@ class DashboardController extends Controller
     private function admin(Request $req): Response
     {
         $users = User::query()
-            ->where('is_active', '=', false)
+            ->where('is_active', '=', null)
             ->paginate(15)->onEachSide(5);
         dd(json_encode($users));
         #TODO: render the correct page & delete dd
