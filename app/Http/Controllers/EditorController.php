@@ -83,6 +83,6 @@ class EditorController extends Controller
             'object_id' => $file->id,
             'segment_number' => $payload['segment_number'],
         ]);
-        return back();
+        return redirect()->back();
     }
 }
