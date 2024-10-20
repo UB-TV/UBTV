@@ -26,12 +26,12 @@ class AdminController extends Controller
             $user->is_active = null;
         }
         $user->save();
-        return back();
+        return redirect()->back();
     }
 
     public function deleteUser(int $id): RedirectResponse
     {
         User::destroy($id);
-        return back();
+        return redirect()->back();
     }
 }
