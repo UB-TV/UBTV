@@ -18,7 +18,7 @@ const UneditedProgramTable = ({
         <section>
             <div className="flex items-end justify-between mb-3">
                 <h2 className="heading-5 font-semibold">Belum Diedit</h2>
-                <Hyperlink url={`/${role}/unedited`} label="Selengkapnya" />
+                <Hyperlink url={`/${role}/pending`} label="Selengkapnya" />
             </div>
             <Table
                 head={header}

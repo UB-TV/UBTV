@@ -19,15 +19,15 @@ export const EditorMenus = [
         label: 'Dashboard'
     },
     {
-        link: 'editor/pending',
+        link: '/editor/pending',
         label: 'Belum Upload'
     },
     {
-        link: 'editor/uploaded',
+        link: '/editor/uploaded',
         label: 'Sudah Upload'
     },
     {
-        link: 'editor/message',
+        link: '/editor/message',
         label: 'Pesan Masuk'
     },
 ]
