@@ -55,10 +55,10 @@ class EditorController extends Controller
         }])->where('program_id', '=', $program->id)->get();
         $program->episode_count = $episodes->count();
         #TODO: render the correct page & delete dd
-        dd(json_encode([
-            'program' => $program,
-            'episodes' => $episodes,
-        ]));
+        // dd(json_encode([
+        //     'program' => $program,
+        //     'episodes' => $episodes,
+        // ]));
         return Inertia::render('Editor/ProgramDetail', [
             'program' => $program,
             'episodes' => $episodes,
@@ -68,7 +68,6 @@ class EditorController extends Controller
     public function upload(PostEpisodeSegmentRequest $req): RedirectResponse
     {
         $payload = $req->validated();
-        dd($payload['segment_number']);
         $client = new Client();
         $client->useApplicationDefaultCredentials();
         $client->addScope(Drive::DRIVE);

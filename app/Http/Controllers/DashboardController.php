@@ -84,10 +84,10 @@ class DashboardController extends Controller
             ->whereNull('videos.id')
             ->groupBy('programs.id')
             ->paginate(15)->onEachSide(5);
-        dd(json_encode([
-            'all_edited_video_programs' => $allEditedVideoPrograms,
-            'some_unedited_video_programs' => $someUneditedVideoPrograms,
-        ]));
+        // dd(json_encode([
+        //     'all_edited_video_programs' => $allEditedVideoPrograms,
+        //     'some_unedited_video_programs' => $someUneditedVideoPrograms,
+        // ]));
         #TODO: render the correct page & delete dd
         return Inertia::render('Dashboard', [
             'all_edited_video_programs' => $allEditedVideoPrograms,

@@ -1,8 +1,14 @@
+// Dashboard.tsx
 import { useMemo, useState } from "react";
 // Function
 import { getPrograms, useGetUserRole } from "@/util/RoleData";
 // Data
-import { CAMERAMAN_HEADER, MCR_PROGRAM_HEADER, MCR_VALIDATION_HEADER } from "@/Constants/TableHeader";
+import {
+    CAMERAMAN_HEADER,
+    MCR_PROGRAM_HEADER,
+    MCR_VALIDATION_HEADER,
+    EDITOR_HEADER
+} from "@/Constants/TableHeader";
 // Component
 import SearchField from "@/Components/Dashboard/SearchField";
 import Layout from "@/Layout";
@@ -12,15 +18,21 @@ import ValidationTable from "@/Components/Dashboard/TableSection/ValidationTable
 import ProgramTable from "@/Components/Dashboard/TableSection/ProgramTable";
 import { IVideoProgram } from "@/models/videprograminterfaces";
 import { usePage } from "@inertiajs/react";
+import EditedProgramTable from "@/Components/Dashboard/TableSection/EditedProgramTable";
+import UneditedProgramTable from "@/Components/Dashboard/TableSection/UneditedProgramTable";
 
 interface IDashboard {
-    pending_video_programs: IVideoProgram[];
-    uploaded_video_programs: IVideoProgram[];
+    pending_video_programs?: IVideoProgram[];
+    uploaded_video_programs?: IVideoProgram[];
+    all_edited_video_programs?: IVideoProgram[];
+    some_unedited_video_programs?: IVideoProgram[];
 }
 
 const Dashboard = ({
-    pending_video_programs,
-    uploaded_video_programs
+    pending_video_programs = [],
+    uploaded_video_programs = [],
+    all_edited_video_programs = [],
+    some_unedited_video_programs = []
 }: IDashboard) => {
     const [searchInput, setSearchInput] = useState('');
 
@@ -29,18 +41,22 @@ const Dashboard = ({
     // TODO: Remove once all feature are integrated
     // const ProgramsData = getPrograms();
 
-    const allProgramLength = pending_video_programs.length + uploaded_video_programs.length;
+    const allProgramLength = pending_video_programs.length +
+                           uploaded_video_programs.length +
+                           all_edited_video_programs.length +
+                           some_unedited_video_programs.length;
 
     const handleSearch = (input: string) => {
         setSearchInput(input);
     };
 
-
-    const filterPrograms = (programs: IVideoProgram[], searchInput: string) => {
-        const filteredPrograms = programs.filter((program: IVideoProgram) =>
-            program.name.toLowerCase().includes(searchInput.toLowerCase())
+    const filterPrograms = (programs: IVideoProgram[] | undefined | null, searchInput: string) => {
+        if (!programs || !Array.isArray(programs)) {
+            return [];
+        }
+        return programs.filter((program: IVideoProgram) =>
+            program?.name?.toLowerCase().includes(searchInput.toLowerCase())
         );
-        return filteredPrograms;
     };
 
     const filteredNotUploadedPrograms = useMemo(
@@ -51,6 +67,16 @@ const Dashboard = ({
     const filteredUploadedPrograms = useMemo(
         () => filterPrograms(uploaded_video_programs, searchInput),
         [uploaded_video_programs, searchInput]
+    );
+
+    const filteredEditedPrograms = useMemo(
+        () => filterPrograms(all_edited_video_programs, searchInput),
+        [all_edited_video_programs, searchInput]
+    );
+
+    const filteredUneditedPrograms = useMemo(
+        () => filterPrograms(some_unedited_video_programs, searchInput),
+        [some_unedited_video_programs, searchInput]
     );
 
     // TODO: adjust based on MCR Response
@@ -70,6 +96,8 @@ const Dashboard = ({
 
     const notUploadSectionVisible = filteredNotUploadedPrograms.length > 0;
     const uploadSectionVisible = filteredUploadedPrograms.length > 0;
+    const editedSectionVisible = filteredEditedPrograms.length > 0;
+    const uneditedSectionVisible = filteredUneditedPrograms.length > 0;
 
     // TODO: adjust based on MCR Response
     // const validatedFalseSectionVisible = filteredNotUploadedPrograms.length > 0;
@@ -78,26 +106,26 @@ const Dashboard = ({
     return (
         <Layout>
             <>
-                <h1 className="heading-3 font-semibold">Selamat Datang, {user.name} </h1>
+                <h1 className="heading-3 font-semibold">Selamat Datang, {user.name}</h1>
                 <div className="flex items-center gap-6">
                     <SearchField onSearch={handleSearch} />
                     <p className="caption-1">
                         <span className="font-semibold">{allProgramLength}</span> Program
                     </p>
                 </div>
-                {!notUploadSectionVisible && !uploadSectionVisible ? (
-                    <p className="body-1 font-semibol">Tidak ada program yang ditemukan</p>
+                {!notUploadSectionVisible && !uploadSectionVisible && !editedSectionVisible && !uneditedSectionVisible ? (
+                    <p className="body-1 font-semibold">Tidak ada program yang ditemukan</p>
                 ) : (
-                    role !== 'mcr' ? (
+                    role === 'editor' ? (
                         <>
-                            {notUploadSectionVisible && (
-                                <NotUploadedTable header={CAMERAMAN_HEADER} program={filteredNotUploadedPrograms} />
+                            {editedSectionVisible && (
+                                <EditedProgramTable header={EDITOR_HEADER} program={filteredEditedPrograms} />
                             )}
-                            {uploadSectionVisible && (
-                                <UploadedTable header={CAMERAMAN_HEADER} program={filteredUploadedPrograms} />
+                            {uneditedSectionVisible && (
+                                <UneditedProgramTable header={EDITOR_HEADER} program={filteredUneditedPrograms} />
                             )}
                         </>
-                    ) : (
+                    ) : role === 'mcr' ? (
                         <>
                             // TODO: adjust based on MCR Response
                             {/* {validatedFalseSectionVisible && (
@@ -106,6 +134,15 @@ const Dashboard = ({
                             {programSectionVisible && (
                                 <ProgramTable header={MCR_PROGRAM_HEADER} program={allPrograms} />
                             )} */}
+                        </>
+                    ) : (
+                        <>
+                            {notUploadSectionVisible && (
+                                <NotUploadedTable header={CAMERAMAN_HEADER} program={filteredNotUploadedPrograms} />
+                            )}
+                            {uploadSectionVisible && (
+                                <UploadedTable header={CAMERAMAN_HEADER} program={filteredUploadedPrograms} />
+                            )}
                         </>
                     )
                 )}
