@@ -84,13 +84,13 @@ class CameramanController extends Controller
             'episode_id' => $payload['episode_id'],
             'object_id' => $file->id,
         ]);
-        return back();
+        return redirect()->back();
     }
 
     public function createEpisode(PostEpisodeRequest $req): RedirectResponse
     {
         $payload = $req->validated();
         Episode::create($payload);
-        return back();
+        return redirect()->back();
     }
 }

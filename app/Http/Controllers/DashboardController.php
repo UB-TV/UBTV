@@ -59,7 +59,7 @@ class DashboardController extends Controller
     private function admin(Request $req): Response
     {
         $users = User::query()
-            ->where('is_active', '=', false)
+            ->where('is_active', '=', null)
             ->paginate(15)->onEachSide(5);
         dd(json_encode($users));
         #TODO: render the correct page & delete dd
@@ -79,13 +79,15 @@ class DashboardController extends Controller
             ->groupBy('programs.id')
             ->get();
         $someUneditedVideoPrograms = Program::query()
-            ->whereNotIn('id', $allEditedVideoPrograms->pluck('id'))
-            ->limit(10)
-            ->get();
-        // dd(json_encode([
-        //     'all_edited_video_programs' => $allEditedVideoPrograms,
-        //     'pending_video_programs' => $someUneditedVideoPrograms,
-        // ]));
+            ->join('episodes', 'programs.id', '=', 'episodes.program_id')
+            ->leftJoin('videos', 'episodes.id', '=', 'videos.episode_id')
+            ->whereNull('videos.id')
+            ->groupBy('programs.id')
+            ->paginate(15)->onEachSide(5);
+        dd(json_encode([
+            'all_edited_video_programs' => $allEditedVideoPrograms,
+            'some_unedited_video_programs' => $someUneditedVideoPrograms,
+        ]));
         #TODO: render the correct page & delete dd
         return Inertia::render('Dashboard', [
             'all_edited_video_programs' => $allEditedVideoPrograms,

@@ -12,7 +12,7 @@ class AdminController extends Controller
 {
     public function approval(): Response
     {
-        $users = User::query()->paginate(15)->onEachSide(5);
+        $users = User::query()->where('is_active', '=', true)->paginate(15)->onEachSide(5);
         dd(json_encode($users));
         #TODO: render the correct page & delete dd
         return Inertia::render('CHANGEME', $users);
@@ -26,12 +26,12 @@ class AdminController extends Controller
             $user->is_active = null;
         }
         $user->save();
-        return back();
+        return redirect()->back();
     }
 
     public function deleteUser(int $id): RedirectResponse
     {
         User::destroy($id);
-        return back();
+        return redirect()->back();
     }
 }

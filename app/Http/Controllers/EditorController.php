@@ -86,6 +86,6 @@ class EditorController extends Controller
             'object_id' => $file->id,
             'segment_number' => $segment_number,
         ]);
-        return back();
+        return redirect()->back();
     }
 }

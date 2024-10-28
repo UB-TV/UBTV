@@ -30,7 +30,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/uploaded', 'uploaded');
         Route::get('/{program:slug}', 'program');
     })->middleware('role:cameraman');
-    Route::get('/admin/new-users', [AdminController::class, 'approval'])->middleware('role:admin');
+    Route::get('/admin/users', [AdminController::class, 'approval'])->middleware('role:admin');
     Route::controller(EditorController::class)->prefix('/editor')->group(function () {
         Route::get('/uploaded', 'uploaded');
         Route::get('/pending', 'notUploaded');
