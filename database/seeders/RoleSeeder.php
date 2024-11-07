@@ -13,7 +13,7 @@ class RoleSeeder extends Seeder
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
         foreach (RolesEnum::cases() as $role) {
-            Role::create(['name' => $role]);
+            Role::create(['name' => $role->value]);
         }
     }
 }

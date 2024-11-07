@@ -10,12 +10,14 @@ class GoogleSSOController extends Controller
 {
     public function redirect()
     {
-        return Socialite::driver('google')->redirect();
+        return Socialite::driver('google')->stateless()->redirect();
     }
 
     public function callback()
     {
-        $res = Socialite::driver('google')->user();
+
+        $res = Socialite::driver('google')->stateless()->user();
+
         $user = User::whereEmail($res->email)->first();
         if ($user === null) {
             abort(403);

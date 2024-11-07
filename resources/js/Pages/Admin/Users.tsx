@@ -3,27 +3,61 @@ import Table from "@/Components/Dashboard/Table"
 import { ADMIN_HEADER } from "@/Constants/TableHeader"
 import { AdminMenus, UsersData } from "@/Constants/Temp"
 import Layout from "@/Layout"
-import { useMemo, useState } from "react"
+import { useMemo, useState, useEffect } from "react"
 
-const Users = () => {
+interface User {
+    id: number;
+    email: string;
+    name: string;
+    phone_number: string;
+    employee_id: string;
+    is_active: boolean;
+    created_at: string;
+    updated_at: string;
+  }
+  
+  interface PaginatedUsersData {
+    current_page: number;
+    data: User[];
+    first_page_url: string;
+    from: number;
+    last_page: number;
+    last_page_url: string;
+    links: Array<{url: string | null, label: string, active: boolean}>;
+    next_page_url: string | null;
+    path: string;
+    per_page: number;
+    prev_page_url: string | null;
+    to: number;
+    total: number;
+  }
+
+const Users = ({ users }: { users: PaginatedUsersData }) => {
     const [searchInput, setSearchInput] = useState('');
 
     const handleSearch = (input: string) => {
         setSearchInput(input);
     };
 
-    const filterUsers = (users: any, searchInput: string) => {
-        return users.filter((user: any) =>
-            user.status === 'accepted' &&
+    useEffect(() => {
+        console.log("Users data:", users);
+    }, [users]);
+
+    const filterUsers = (users: User[], searchInput: string, isActive: boolean) => {
+        return users.filter(
+            (user: User) =>
+            user.is_active === isActive &&
             (user.name.toLowerCase().includes(searchInput.toLowerCase()) ||
             user.email.toLowerCase().includes(searchInput.toLowerCase()))
         );
     };
 
-      const filteredUsers = useMemo(
-        () => filterUsers(UsersData, searchInput),
-        [UsersData, searchInput]
-      );
+      const filteredUsers = useMemo(() => {
+        if (users && Array.isArray(users.data)) {
+            return filterUsers(users.data, searchInput, true);
+          }
+          return [];
+        }, [users, searchInput]);
 
   return (
     <Layout>
@@ -42,6 +76,7 @@ const Users = () => {
                     action={"accepted"}
                     pagination={true}
                     type="Admin"
+                    paginationData={users}
                     />
                 ) : (
                     <p className="body-1 font-semibol">Tidak ada user baru</p>
