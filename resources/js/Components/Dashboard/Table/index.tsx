@@ -95,7 +95,7 @@ const Table = ({
                                     <td className="p-2">{body.name}</td>
                                     <td className="p-2">{body.role}</td>
                                     <td className="p-2">{body.email}</td>
-                                    <td className="p-2">{body.phone}</td>
+                                    <td className="p-2">{body.phone_number}</td>
                                     {action === 'new' && (
                                         <td className="flex justify-center gap-3 p-2">
                                             <Button

@@ -22,9 +22,15 @@ class AdminController extends Controller
 
     public function approval(): Response
     {
-        $users = User::query()->where('is_active', '=', true)->paginate(15)->onEachSide(5);
-        // dd(json_encode($users));
-        #TODO: render the correct page & delete dd
+        $users = User::with('roles:name')
+            ->where('is_active', '=', true)
+            ->paginate(15)
+            ->onEachSide(5)
+            ->through(function ($user) { // Use 'through' for pagination with 'map'
+                $user->role = $user->roles->first()->name ?? null; // Assign the role's name as a property
+                unset($user->roles); // Remove the roles relationship to avoid redundancy
+                return $user;
+            });
         return Inertia::render('Admin/Users', [
             'users' => $users
         ]);
