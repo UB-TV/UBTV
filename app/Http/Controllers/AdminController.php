@@ -26,12 +26,12 @@ class AdminController extends Controller
             $user->is_active = null;
         }
         $user->save();
-        return redirect()->back();
+        return response(status: 200);
     }
 
     public function deleteUser(int $id): RedirectResponse
     {
         User::destroy($id);
-        return redirect()->back();
+        return response(status: 200);
     }
 }
