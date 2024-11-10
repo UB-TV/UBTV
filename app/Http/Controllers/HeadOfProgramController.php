@@ -1,0 +1,78 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Exception;
+use Inertia\Inertia;
+use Inertia\Response;
+use App\Models\Episode;
+use App\Models\Program;
+use App\Http\Requests\CreateEpisodeRequest;
+use App\Http\Requests\CreateProgramRequest;
+use App\Http\Requests\UpdateProgramRequest;
+use Illuminate\Http\Response as HttpResponse;
+use Illuminate\Contracts\Routing\ResponseFactory;
+
+class HeadOfProgramController extends Controller
+{
+    public function drafts(): Response
+    {
+        $programs = Program::query()
+            ->where('is_active', '=', false)
+            ->paginate(15)
+            ->onEachSide(5);
+        dd(json_encode($programs));
+        return Inertia::render('CHANGEME', $programs);
+    }
+
+    public function actives(): Response
+    {
+        $programs = Program::withCount('programs')
+            ->query()
+            ->where('is_active', '=', true)
+            ->paginate(15)
+            ->onEachSide(5);
+        dd(json_encode($programs));
+        return Inertia::render('CHANGEME', $programs);
+    }
+
+    // HACK: redundant api, might dry it later
+    public function program(Program $program): Response
+    {
+        dd(json_encode($program));
+        return Inertia::render('CHANGEME', $program);
+    }
+
+    public function create(CreateProgramRequest $req): HttpResponse|ResponseFactory
+    {
+        try {
+            $payload = $req->validated();
+            Program::create($payload);
+        } catch (Exception) {
+            return response(status: 500);
+        }
+        return response(status: 201);
+    }
+
+    public function update(UpdateProgramRequest $req): HttpResponse|ResponseFactory
+    {
+        try {
+            $payload = $req->validated();
+            Program::update($payload);
+        } catch (Exception) {
+            return response(status: 500);
+        }
+        return response(status: 200);
+    }
+
+    public function createEpisode(CreateEpisodeRequest $req): HttpResponse
+    {
+        try {
+            $payload = $req->validated();
+            Episode::create($payload);
+        } catch (Exception) {
+            return response(status: 500);
+        }
+        return response(status: 201);
+    }
+}
