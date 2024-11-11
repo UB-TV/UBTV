@@ -36,9 +36,10 @@ class HeadOfProgramController extends Controller
         return Inertia::render('CHANGEME', $programs);
     }
 
-    // HACK: redundant api, might dry it later
     public function program(Program $program): Response
     {
+        // TODO: status property
+        $program->episodes = $program->episodes();
         dd(json_encode($program));
         return Inertia::render('CHANGEME', $program);
     }

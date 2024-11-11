@@ -84,7 +84,7 @@ class CameramanController extends Controller
             Video::create([
                 'episode_id' => $payload['episode_id'],
                 'object_id' => $file->id,
-                ]);
+            ]);
         } catch (Exception) {
             return response(status: 500);
         }
