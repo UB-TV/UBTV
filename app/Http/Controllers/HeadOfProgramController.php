@@ -27,8 +27,8 @@ class HeadOfProgramController extends Controller
 
     public function actives(): Response
     {
-        $programs = Program::withCount('programs')
-            ->query()
+        $programs = Program::withCount('episodes')
+            ->getQuery()
             ->where('is_active', '=', true)
             ->paginate(15)
             ->onEachSide(5);

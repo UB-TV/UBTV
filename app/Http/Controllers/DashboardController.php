@@ -105,7 +105,7 @@ class DashboardController extends Controller
             ->limit(5)
             ->get();
         $activePrograms = Program::withCount('episodes')
-            ->query()
+            ->getQuery()
             ->where('is_active', '=', true)
             ->get();
         dd(json_encode([
