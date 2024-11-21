@@ -2,6 +2,7 @@
 
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\McrController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\EditorController;
 use App\Http\Controllers\CameramanController;
@@ -44,6 +45,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/actives', 'actives');
         Route::get('/{program:slug}', 'program');
     })->middleware('role:head_of_program');
+    Route::controller(McrController::class)->prefix('/mcr')->group(function () {
+        Route::get('/pending', 'pending');
+    })->middleware('role:mcr');
 
     # API
     Route::prefix('/api/v1')->group(function () {
