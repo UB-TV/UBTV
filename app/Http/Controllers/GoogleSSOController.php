@@ -20,7 +20,6 @@ class GoogleSSOController extends Controller
         if ($user === null) {
             abort(403);
         }
-
         Auth::login($user);
         return to_route('dashboard');
     }

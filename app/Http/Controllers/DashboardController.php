@@ -21,6 +21,8 @@ class DashboardController extends Controller
             return $this->admin($req);
         } elseif ($user->hasRole('editor')) {
             return $this->editor($req);
+        } elseif ($user->hasRole('head_of_program')) {
+            return $this->headOfProgram($req);
         }
     }
 
@@ -91,4 +93,27 @@ class DashboardController extends Controller
 
         ]);
     }
+
+    public function headOfProgram(Request $req): Response
+    {
+        $user = $req->user();
+        $draftPrograms = Program::query()
+            ->where('is_active', '=', false)
+            ->limit(5)
+            ->get();
+        $activePrograms = Program::withCount('episodes')
+            ->getQuery()
+            ->where('is_active', '=', true)
+            ->get();
+        dd(json_encode([
+            'draft_programs' => $draftPrograms,
+            'active_programs' => $activePrograms,
+        ]));
+        #TODO: render the correct page & delete dd
+        return Inertia::render('CHANGEME', [
+            'draft_programs' => $draftPrograms,
+            'active_programs' => $activePrograms,
+        ]);
+    }
+
 }
