@@ -30,6 +30,7 @@ const useUploadSegment = () => {
                 },
             });
             setIsLoading(false);
+            window.location.reload();
             return response.data;
         } catch (err) {
             setIsLoading(false);
