@@ -11,8 +11,8 @@ use App\Models\Program;
 use Google\Service\Drive;
 use Illuminate\Http\Request;
 use Google\Service\Drive\DriveFile;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Database\Query\JoinClause;
+use Illuminate\Http\Response as HttpResponse;
 use App\Http\Requests\PostEpisodeSegmentRequest;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 
@@ -65,7 +65,7 @@ class EditorController extends Controller
         ]);
     }
 
-    public function upload(PostEpisodeSegmentRequest $req): RedirectResponse
+    public function upload(PostEpisodeSegmentRequest $req): HttpResponse
     {
         $payload = $req->validated();
         $client = new Client();
