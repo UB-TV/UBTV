@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\Program;
@@ -13,9 +13,11 @@ use Illuminate\Database\Query\JoinClause;
 
 class DashboardController extends Controller
 {
-    public function __invoke(Request $req): Response | RedirectResponse
+    public const  MAX_RECORDS = 15;
+
+    public function __invoke(Request $req): Response
     {
-        $user = $req->user();
+        $user = Auth::user();
         if ($user->hasRole('cameraman')) {
             return $this->cameraman($req);
         } elseif ($user->hasRole('admin')) {
@@ -24,20 +26,22 @@ class DashboardController extends Controller
             return $this->editor($req);
         } elseif ($user->hasRole('head_of_program')) {
             return $this->headOfProgram($req);
+        } elseif ($user->hasRole('mcr')) {
+            return $this->headOfProgram($req);
         }
     }
 
-    private function cameraman(Request $req): Response
+    private function cameraman(Request $_): Response
     {
+        $id = Auth::id();
         # TODO: find better way to implement this
-        $user = $req->user();
         $pendingVideoPrograms = DB::table('programs')
             ->select('programs.*')
             ->join('episodes', 'programs.id', '=', 'episodes.program_id')
             ->join('videos', 'episodes.id', '=', 'videos.episode_id')
-            ->leftJoin('user_video', function (JoinClause $join) use ($user) {
+            ->leftJoin('user_video', function (JoinClause $join) use ($id) {
                 $join->on('user_video.video_id', '=', 'videos.id');
-                $join->on('user_video.user_id', '=', DB::raw($user->id));
+                $join->on('user_video.user_id', '=', DB::raw($id));
             })
             ->whereNull('user_video.id')
             ->groupBy('programs.id')
@@ -48,7 +52,7 @@ class DashboardController extends Controller
             ->join('episodes', 'programs.id', '=', 'episodes.program_id')
             ->join('videos', 'episodes.id', '=', 'videos.episode_id')
             ->join('user_video', 'videos.id', '=', 'user_video.video_id')
-            ->where('user_video.user_id', '=', $user->id)
+            ->where('user_video.user_id', '=', $id)
             ->groupBy('programs.id')
             ->limit(5)
             ->get();
@@ -61,17 +65,11 @@ class DashboardController extends Controller
 
     private function admin(): RedirectResponse
     {
-        // $users = User::query()
-        //     ->where('is_active', '=', null)
-        //     ->paginate(15)->onEachSide(5);
-        // dd(json_encode($users));
-        #TODO: render the correct page & delete dd
         return redirect('admin/new-users');
     }
 
-    public function editor(Request $req): Response
+    public function editor(Request $_): Response
     {
-        $user = $req->user();
         $allEditedVideoPrograms = Program::query()
             ->join('episodes', 'programs.id', '=', 'episodes.program_id')
             ->join('videos', function (JoinClause $join) {
@@ -98,7 +96,7 @@ class DashboardController extends Controller
         ]);
     }
 
-    public function headOfProgram(Request $req): Response
+    public function headOfProgram(Request $_): Response
     {
         $draftPrograms = Program::doesntHave('episodes')->limit(5)->get();
         $activePrograms = Program::has('episodes')
@@ -122,4 +120,25 @@ class DashboardController extends Controller
         ]);
     }
 
+    public function mcr(Request $_): Response
+    {
+        $programs = Program::query()
+            ->orderBy('created_at', 'desc')
+            ->limit($this->MAX_RECORD)
+            ->get();
+        $pendingPrograms = Program::query()
+            ->orderBy('created_at', 'desc')
+            ->where('is_active', '=', false)
+            ->limit($this->MAX_RECORD)
+            ->get();
+        dd(json_encode([
+            'programs' => $programs,
+            'pending_programs' => $pendingPrograms,
+        ]));
+        #TODO: render the correct page & delete dd
+        return Inertia::render('CHANGEME', [
+            'programs' => $programs,
+            'pending_programs' => $pendingPrograms,
+        ]);
+    }
 }
