@@ -29,6 +29,13 @@ class McrController extends Controller
             ->onEachSide(self::PAGINATION_EACH_SIDE_SIZE);
         dd(json_encode($programs));
         return Inertia::render('CHANGEME', $programs);
+    }
 
+    public function program(Program $program)
+    {
+        // TODO: videos segment
+        $program->episodes = $program->episodes();
+        dd(json_encode($program));
+        return Inertia::render('CHANGEME', $program);
     }
 }

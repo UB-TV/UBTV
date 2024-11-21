@@ -48,6 +48,7 @@ Route::middleware(['auth'])->group(function () {
     Route::controller(McrController::class)->prefix('/mcr')->group(function () {
         Route::get('/pending', 'pending');
         Route::get('/programs', 'programs');
+        Route::get('/{program:slug}', 'program');
     })->middleware('role:mcr');
 
     # API
