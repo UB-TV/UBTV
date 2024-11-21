@@ -47,6 +47,7 @@ Route::middleware(['auth'])->group(function () {
     })->middleware('role:head_of_program');
     Route::controller(McrController::class)->prefix('/mcr')->group(function () {
         Route::get('/pending', 'pending');
+        Route::get('/programs', 'programs');
     })->middleware('role:mcr');
 
     # API
