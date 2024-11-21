@@ -31,9 +31,17 @@ class McrController extends Controller
         return Inertia::render('CHANGEME', $programs);
     }
 
-    public function program(Program $program)
+    public function pendingProgram(Program $program)
     {
         // TODO: videos segment
+        $program->episodes = $program->episodes();
+        dd(json_encode($program));
+        return Inertia::render('CHANGEME', $program);
+    }
+
+    public function program(Program $program)
+    {
+        // TODO: videos status
         $program->episodes = $program->episodes();
         dd(json_encode($program));
         return Inertia::render('CHANGEME', $program);
