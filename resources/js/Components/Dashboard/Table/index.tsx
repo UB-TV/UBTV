@@ -5,6 +5,7 @@ import Button from "@/Components/Shared/Button";
 import { Link } from "@inertiajs/react";
 import Pagination from "../Pagination/Index";
 import { IPaginationLink } from "@/models/generalinterfaces";
+import { useFetchNewUsers } from "@/repositories/Admin/useFetchNewUsers";
 
 type TableHeaderProps = {
     label: string;
@@ -18,7 +19,8 @@ interface TableProps {
     redirectUrl?: string;
     pagination: boolean;
     type: 'Program' | 'Program Status' | 'Status Episode' | 'Message' | 'User Permission' | 'User' | 'Admin';
-    pagination_link?: IPaginationLink[]
+    pagination_link?: IPaginationLink[];
+    paginationData?: any;
 };
 
 const Table = ({
@@ -33,17 +35,39 @@ const Table = ({
 
     const role = useGetUserRole();
 
-    const handleAccept = (userId: number) => {
-        alert(`User added to Users: ${userId}`);
-    };
+    useEffect(() => {
+        localStorage.setItem('userRole', 'admin');
+    }, []);
 
-    const handleReject = (userId: number) => {
-        alert(`User rejected and data deleted: ${userId}`);
-    };
+    const { updateUserStatus, deleteUser, loading, error } = useFetchNewUsers();
 
-    const handleDelete = (userId: number) => {
-        alert(`User deleted: ${userId}`);
-    };
+    const handleAccept = async (userId: number) => {
+        try {
+          await updateUserStatus(userId, true);
+          window.location.reload();
+        } catch (err) {
+          console.error("Error accepting user:", err);
+        }
+      };
+    
+      const handleReject = async (userId: number) => {
+        try {
+          await updateUserStatus(userId, false);
+          window.location.reload();
+        } catch (err) {
+          console.error("Error rejecting user:", err);
+        }
+      };
+    
+      const handleDelete = async (userId: number) => {
+        try {
+          await deleteUser(userId);
+          window.location.reload();
+        } catch (err) {
+          console.error("Error deleting user:", err);
+          alert('Failed to delete user. Please try again.');
+        }
+      };
 
     return (
         <div>
@@ -71,7 +95,7 @@ const Table = ({
                                     <td className="p-2">{body.name}</td>
                                     <td className="p-2">{body.role}</td>
                                     <td className="p-2">{body.email}</td>
-                                    <td className="p-2">{body.phone}</td>
+                                    <td className="p-2">{body.phone_number}</td>
                                     {action === 'new' && (
                                         <td className="flex justify-center gap-3 p-2">
                                             <Button

@@ -9,16 +9,17 @@ use App\Models\Program;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Query\JoinClause;
+use Illuminate\Http\RedirectResponse;
 
 class DashboardController extends Controller
 {
-    public function __invoke(Request $req): Response
+    public function __invoke(Request $req): Response | RedirectResponse
     {
         $user = $req->user();
         if ($user->hasRole('cameraman')) {
             return $this->cameraman($req);
         } elseif ($user->hasRole('admin')) {
-            return $this->admin($req);
+            return $this->admin();
         } elseif ($user->hasRole('editor')) {
             return $this->editor($req);
         } elseif ($user->hasRole('head_of_program')) {
@@ -58,14 +59,14 @@ class DashboardController extends Controller
         ]);
     }
 
-    private function admin(Request $req): Response
+    private function admin(): RedirectResponse
     {
-        $users = User::query()
-            ->where('is_active', '=', null)
-            ->paginate(15)->onEachSide(5);
-        dd(json_encode($users));
+        // $users = User::query()
+        //     ->where('is_active', '=', null)
+        //     ->paginate(15)->onEachSide(5);
+        // dd(json_encode($users));
         #TODO: render the correct page & delete dd
-        return Inertia::render('CHANGEME', $users);
+        return redirect('admin/new-users');
     }
 
     public function editor(Request $req): Response

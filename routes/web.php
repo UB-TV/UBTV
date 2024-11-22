@@ -30,7 +30,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/uploaded', 'uploaded');
         Route::get('/{program:slug}', 'program');
     })->middleware('role:cameraman');
-    Route::get('/admin/users', [AdminController::class, 'approval'])->middleware('role:admin');
+    Route::controller(AdminController::class)->prefix('/admin')->group(function () {
+        Route::get('/users', 'approval');
+        Route::get('/new-users', 'newUsers');
+    })->middleware('role:admin');
     Route::controller(EditorController::class)->prefix('/editor')->group(function () {
         Route::get('/uploaded', 'uploaded');
         Route::get('/pending', 'notUploaded');
@@ -55,7 +58,7 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/', [CameramanController::class, 'upload']);
         })->middleware('role:cameraman');
         Route::prefix('/users')->group(function () {
-            Route::patch('/{user}', [AdminController::class, 'updateUserStatus']);
+            Route::patch('/{user:id}', [AdminController::class, 'updateUserStatus']);
             Route::delete('/{id}', [AdminController::class, 'deleteUser']);
         })->middleware('role:admin');
     });
@@ -108,12 +111,4 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/new-program/producer/{slug}', function () {
         return Inertia::render('Producer/ProgramDetail');
     })->name('producer-new-program-detail');
-
-    Route::get('/new-users', function () {
-        return Inertia::render('Admin/NewUsers');
-    })->name('new-users');
-
-    Route::get('/users', function () {
-        return Inertia::render('Admin/Users');
-    })->name('users');
 });

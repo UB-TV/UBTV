@@ -33,9 +33,17 @@ class DatabaseSeeder extends Seeder
             'employee_id' => 'EMP-2121-0000',
             'is_active' => true,
         ])->assignRole('cameraman');
+        $users[] = User::create([
+            'email' => 'achmalpradiptaaditama@gmail.com',
+            'name' => 'Achmal test',
+            'phone_number' => '0833333333',
+            'employee_id' => 'EMP-2323-0000',
+            'is_active' => true,
+        ])->assignRole('admin');
 
         User::factory()->create([
             'is_active' => null,
+            
         ]);
 
         $programs = Program::factory()->count(2)->create();
