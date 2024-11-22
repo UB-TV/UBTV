@@ -2,18 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Google\Client;
 use Inertia\Inertia;
 use App\Models\Video;
 use Inertia\Response;
-use App\Models\Episode;
 use App\Models\Program;
 use Google\Service\Drive;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Google\Service\Drive\DriveFile;
-use Illuminate\Http\RedirectResponse;
-use App\Http\Requests\PostEpisodeRequest;
 use Illuminate\Database\Query\JoinClause;
 use App\Http\Requests\PostEpisodeVideosRequest;
 
@@ -72,25 +70,22 @@ class CameramanController extends Controller
         return Inertia::render('Shared/NotUploadedProgram', $pendingVideoPrograms);
     }
 
-    public function upload(PostEpisodeVideosRequest $req): RedirectResponse
+    public function upload(PostEpisodeVideosRequest $req): Response
     {
-        $payload = $req->validated();
-        $metadata = new DriveFile(['name' => $payload['attachment']->getClientOriginalName()]);
-        $file = $this->driveService->files->create($metadata, [
-            'data' => $payload['attachment'],
-            'fields' => 'id',
-        ]);
-        Video::create([
-            'episode_id' => $payload['episode_id'],
-            'object_id' => $file->id,
-        ]);
-        return redirect()->back();
-    }
-
-    public function createEpisode(PostEpisodeRequest $req): RedirectResponse
-    {
-        $payload = $req->validated();
-        Episode::create($payload);
-        return redirect()->back();
+        try {
+            $payload = $req->validated();
+            $metadata = new DriveFile(['name' => $payload['attachment']->getClientOriginalName()]);
+            $file = $this->driveService->files->create($metadata, [
+                'data' => $payload['attachment'],
+                'fields' => 'id',
+            ]);
+            Video::create([
+                'episode_id' => $payload['episode_id'],
+                'object_id' => $file->id,
+            ]);
+        } catch (Exception) {
+            return response(status: 500);
+        }
+        return response(status: 200);
     }
 }

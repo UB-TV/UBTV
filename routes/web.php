@@ -7,6 +7,7 @@ use App\Http\Controllers\EditorController;
 use App\Http\Controllers\CameramanController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GoogleSSOController;
+use App\Http\Controllers\HeadOfProgramController;
 
 Route::controller(GoogleSSOController::class)->prefix('/sso/google')->group(function () {
     Route::get('/redirect', 'redirect')->name('sso.google.redirect');
@@ -22,7 +23,6 @@ Route::get('/register', function () {
 })->name('register');
 
 Route::middleware(['auth'])->group(function () {
-    ########### CLEAN ###########
     # UI (ideally only contain GET routes)
     Route::get('/', DashboardController::class)->name('dashboard');
     Route::controller(CameramanController::class)->prefix('/cameraman')->group(function () {
@@ -38,15 +38,24 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/uploaded', 'uploaded');
         Route::get('/pending', 'notUploaded');
         Route::get('/{program:slug}', 'program');
-    });
+    })->middleware('role:editor');
+    Route::controller(HeadOfProgramController::class)->prefix('/head-of-program')->group(function () {
+        Route::get('/drafts', 'drafts');
+        Route::get('/actives', 'actives');
+        Route::get('/{program:slug}', 'program');
+    })->middleware('role:head_of_program');
 
     # API
     Route::prefix('/api/v1')->group(function () {
+        Route::prefix('/programs')->group(function () {
+            Route::post('/', [HeadOfProgramController::class, 'create']);
+            Route::patch('/', [HeadOfProgramController::class, 'update']);
+        })->middleware('role:head_of_program');
+        Route::prefix('/episodes')->group(function () {
+            Route::post('/', [HeadOfProgramController::class, 'createEpisode']);
+        })->middleware('role:head_of_program');
         Route::prefix('/videos')->group(function () {
             Route::post('/', [CameramanController::class, 'upload']);
-        })->middleware('role:cameraman');
-        Route::prefix('/episodes')->group(function () {
-            Route::post('/', [CameramanController::class, 'createEpisode']);
         })->middleware('role:cameraman');
         Route::prefix('/users')->group(function () {
             Route::patch('/{user:id}', [AdminController::class, 'updateUserStatus']);
