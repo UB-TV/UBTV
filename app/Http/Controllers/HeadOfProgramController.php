@@ -17,22 +17,24 @@ class HeadOfProgramController extends Controller
 {
     public function drafts(): Response
     {
-        $programs = Program::query()
-            ->where('is_active', '=', false)
-            ->paginate(15)
+        $programs = Program::doesntHave('episodes')
+            ->paginate()
             ->onEachSide(5);
-        dd(json_encode($programs));
+        dd(json_encode($programs, JSON_PRETTY_PRINT));
         return Inertia::render('CHANGEME', $programs);
     }
 
     public function actives(): Response
     {
-        $programs = Program::withCount('episodes')
-            ->getQuery()
-            ->where('is_active', '=', true)
-            ->paginate(15)
-            ->onEachSide(5);
-        dd(json_encode($programs));
+        $programs = Program::with('latestEpisode')
+            ->has('episodes')
+            ->paginate()
+            ->through(function (Program $program): Program {
+                $program->status = $program->latestEpisode->status;
+                unset($program->latestEpisode);
+                return $program;
+            })->onEachSide(5);
+        dd(json_encode($programs, JSON_PRETTY_PRINT));
         return Inertia::render('CHANGEME', $programs);
     }
 

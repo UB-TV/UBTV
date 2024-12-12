@@ -16,4 +16,7 @@ devdb:
 		--env POSTGRES_PASSWORD=${DB_PASSWORD} \
 		postgres:17.1-alpine3.20
 
-.PHONY: cleanup run devdb
+migration:
+	@php artisan migrate:fresh --seed
+
+.PHONY: cleanup run devdb migration
