@@ -19,6 +19,13 @@ return new class () extends Migration {
             $table->unsignedInteger('segment_count');
             $table->date('start_production');
             $table->text('description');
+            $table->enum("status", [
+                "SHOOTING",
+                "EDITING",
+                "PRODUCER_VALIDATION",
+                "MCR_VALIDATION",
+                "ON_AIR",
+            ]);
             $table->timestamps();
             $table->foreign('program_id')
                 ->references('id')
