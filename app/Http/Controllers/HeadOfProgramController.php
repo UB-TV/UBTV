@@ -26,8 +26,9 @@ class HeadOfProgramController extends Controller
 
     public function actives(): Response
     {
-        $programs = Program::with('latestEpisode')
-            ->has('episodes')
+        $programs = Program::has('episodes')
+            ->with('latestEpisode')
+            ->withCount('episodes')
             ->paginate()
             ->through(function (Program $program): Program {
                 $program->status = $program->latestEpisode->status;
