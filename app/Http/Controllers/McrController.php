@@ -23,8 +23,7 @@ class McrController extends Controller
             ->paginate(self::PAGINATION_PAGE_SIZE)
             ->onEachSide(self::PAGINATION_EACH_SIDE_SIZE);
 
-        dd(json_encode($programs, JSON_PRETTY_PRINT));
-        return Inertia::render('CHANGEME', $programs);
+        return Inertia::render('MCR/ProgramValidation', $programs);
     }
 
     public function programs()
@@ -33,24 +32,23 @@ class McrController extends Controller
             ->paginate(self::PAGINATION_PAGE_SIZE)
             ->onEachSide(self::PAGINATION_EACH_SIDE_SIZE);
 
-        dd(json_encode($programs, JSON_PRETTY_PRINT));
-        return Inertia::render('CHANGEME', $programs);
+        return Inertia::render('MCR/Program', $programs);
     }
 
     public function pendingProgram(Program $program)
     {
         // TODO: videos segment
         $program->load('episodes.videos');
-        dd(json_encode($program, JSON_PRETTY_PRINT));
-        return Inertia::render('CHANGEME', $program);
+        // dd(json_encode($program, JSON_PRETTY_PRINT));
+        return Inertia::render('MCR/ProgramDetail', $program);
     }
 
     public function program(Program $program)
     {
         // TODO: videos status
         $program->load('episodes');
-        dd(json_encode($program, JSON_PRETTY_PRINT));
-        return Inertia::render('CHANGEME', $program);
+        // dd(json_encode($program, JSON_PRETTY_PRINT));
+        return Inertia::render('MCR/ProgramDetail', $program);
     }
 
     public function update(Episode $episode, Request $request)

@@ -17,6 +17,7 @@ interface TableProps {
     body: any;
     action?: string;
     redirectUrl?: string;
+    isRedirectPrefix?: boolean;
     pagination: boolean;
     type: 'Program' | 'Program Status' | 'Status Episode' | 'Message' | 'User Permission' | 'User' | 'Admin';
     pagination_link?: IPaginationLink[];
@@ -28,6 +29,7 @@ const Table = ({
     body,
     action,
     redirectUrl,
+    isRedirectPrefix = false,
     pagination,
     type,
     pagination_link
@@ -43,31 +45,31 @@ const Table = ({
 
     const handleAccept = async (userId: number) => {
         try {
-          await updateUserStatus(userId, true);
-          window.location.reload();
+            await updateUserStatus(userId, true);
+            window.location.reload();
         } catch (err) {
-          console.error("Error accepting user:", err);
+            console.error("Error accepting user:", err);
         }
-      };
-    
-      const handleReject = async (userId: number) => {
+    };
+
+    const handleReject = async (userId: number) => {
         try {
-          await updateUserStatus(userId, false);
-          window.location.reload();
+            await updateUserStatus(userId, false);
+            window.location.reload();
         } catch (err) {
-          console.error("Error rejecting user:", err);
+            console.error("Error rejecting user:", err);
         }
-      };
-    
-      const handleDelete = async (userId: number) => {
+    };
+
+    const handleDelete = async (userId: number) => {
         try {
-          await deleteUser(userId);
-          window.location.reload();
+            await deleteUser(userId);
+            window.location.reload();
         } catch (err) {
-          console.error("Error deleting user:", err);
-          alert('Failed to delete user. Please try again.');
+            console.error("Error deleting user:", err);
+            alert('Failed to delete user. Please try again.');
         }
-      };
+    };
 
     return (
         <div>
@@ -152,15 +154,27 @@ const Table = ({
                                     )}
                                     {(action) && (
                                         <td className="flex justify-center p-2">
-                                            <Link
-                                                href={`/${role}/${body.slug}`}
-                                            >
-                                                <IconButton
-                                                    color="Primary"
-                                                    icon="/icon/more-fill.svg"
-                                                    style="Filled"
-                                                />
-                                            </Link>
+                                            {isRedirectPrefix ? (
+                                                <Link
+                                                    href={`/${role}/${redirectUrl}/${body.slug}`}
+                                                >
+                                                    <IconButton
+                                                        color="Primary"
+                                                        icon="/icon/more-fill.svg"
+                                                        style="Filled"
+                                                    />
+                                                </Link>
+                                            ) : (
+                                                <Link
+                                                    href={`/${role}/${body.slug}`}
+                                                >
+                                                    <IconButton
+                                                        color="Primary"
+                                                        icon="/icon/more-fill.svg"
+                                                        style="Filled"
+                                                    />
+                                                </Link>
+                                            )}
                                         </td>
                                     )}
                                 </>

@@ -1,21 +1,39 @@
 import { useEffect, useRef } from 'react';
-import { MCRMenus, MCRProgram } from "@/Constants/Temp";
+import { MCRProgram } from "@/Constants/Temp";
 // Component
 import Dialog from "@/Components/Shared/Dialog";
 import Layout from "@/Layout";
 import IconButton from '@/Components/Shared/IconButton.tsx';
 import Button from '@/Components/Shared/Button';
 import EpisodeCard from '@/Components/MCR/EpisodeCard';
+import { IEpisode } from '@/models/episodeinterfaces';
+import useFormatDate from '@/util/useFormatDate';
 
-const ProgramDetail = () => {
-    const slug = window.location.pathname.split('/').pop();
-    const program = MCRProgram.find((program) => program.slug === slug);
+interface IMCRProgramDetail {
+    id: number;
+    code: string;
+    slug: string;
+    name: string;
+    description: string;
+    is_active: boolean;
+    premiere_at: string;
+    created_at: string;
+    updated_at: string;
+    episodes: IEpisode[]
+}
 
-    useEffect(() => {
-        if (!program) {
-            window.location.href = '/';
-        }
-    }, [slug, program]);
+const ProgramDetail = ({
+    id,
+    code,
+    slug,
+    name,
+    description,
+    is_active,
+    premiere_at,
+    created_at,
+    updated_at,
+    episodes
+}: IMCRProgramDetail) => {
 
     const dialogRef = useRef<HTMLDialogElement>(null);
 
@@ -32,71 +50,85 @@ const ProgramDetail = () => {
         window.history.back();
     };
 
+    const isRevision = episodes[0]?.videos ? true : false;
+
     return (
-        <Layout menus={MCRMenus}>
-            {program && (
-                <>
-                    <IconButton color='Primary' onClick={handleBackButton} icon='/icon/back-arrow.svg' style='Filled' />
-                    <section className="w-full flex flex-col gap-3">
-                        <div className="w-full flex items-start justify-between">
-                            <div className="max-w-[48%] w-full flex flex-col gap-3">
-                                <div>
-                                    <h1 className="heading-5 font-semibold mb-[6px]">Status Program</h1>
-                                    <p className="body-2 font-semibold text-secondary-text">{program.status}</p>
-                                </div>
-                                <div>
-                                    <h1 className="heading-5 font-semibold mb-[6px]">Kode</h1>
-                                    <p className="body-2 font-semibold text-secondary-text">{program.code}</p>
-                                </div>
-                                <div>
-                                    <h1 className="heading-5 font-semibold mb-[6px]">Nama</h1>
-                                    <p className="body-2 font-semibold text-secondary-text">{program.title}</p>
-                                </div>
-                                <div>
-                                    <h1 className="heading-5 font-semibold mb-[6px]">Waktu Premiere</h1>
-                                    <p className="body-2 font-semibold text-secondary-text">{program.premiere}</p>
-                                </div>
+        <Layout>
+            <>
+                <IconButton color='Primary' onClick={handleBackButton} icon='/icon/back-arrow.svg' style='Filled' />
+                <section className="w-full flex flex-col gap-3">
+                    <div className="w-full flex items-start justify-between">
+                        <div className="max-w-[48%] w-full flex flex-col gap-3">
+                            <div>
+                                <h1 className="heading-5 font-semibold mb-[6px]">Status Program</h1>
+                                <p className="body-2 font-semibold text-secondary-text">{is_active ? 'Aktif' : 'Tidak Aktif'}</p>
                             </div>
-                            <div className="max-w-[48%] w-full flex flex-col gap-3">
-                                <div>
-                                    <h1 className="heading-5 font-semibold mb-[6px]">Jumlah Episode</h1>
-                                    <p className="body-2 font-semibold text-secondary-text">{program.episode.length}</p>
-                                </div>
-                                <div>
-                                    <h1 className="heading-5 font-semibold mb-[6px]">Tim</h1>
-                                    <ol className="body-2 text-secondary-text font-semibold pl-5">
+                            <div>
+                                <h1 className="heading-5 font-semibold mb-[6px]">Kode</h1>
+                                <p className="body-2 font-semibold text-secondary-text">{code}</p>
+                            </div>
+                            <div>
+                                <h1 className="heading-5 font-semibold mb-[6px]">Nama</h1>
+                                <p className="body-2 font-semibold text-secondary-text">{name}</p>
+                            </div>
+                        </div>
+                        <div className="max-w-[48%] w-full flex flex-col gap-3">
+                            <div>
+                                <h1 className="heading-5 font-semibold mb-[6px]">Waktu Premiere</h1>
+                                <p className="body-2 font-semibold text-secondary-text">{useFormatDate(premiere_at)}</p>
+                            </div>
+                            <div>
+                                <h1 className="heading-5 font-semibold mb-[6px]">Jumlah Episode</h1>
+                                <p className="body-2 font-semibold text-secondary-text">{episodes.length}</p>
+                            </div>
+                            <div>
+                                <h1 className="heading-5 font-semibold mb-[6px]">Tim</h1>
+                                {/* TODO: Uncomment when member is provided in response */}
+                                {/* <ol className="body-2 text-secondary-text font-semibold pl-5">
                                         {program.members.map((member, index) => {
                                             return (
                                                 <li key={index} className="list-disc">{member.name}({member.role})</li>
                                             )
                                         })}
-                                    </ol>
-                                </div>
+                                    </ol> */}
                             </div>
                         </div>
-                        <div>
-                            <h1 className="heading-5 font-semibold mb-[6px]">Deskripsi</h1>
-                            <p className="body-2 font-semibold text-secondary-text text-justify">{program.desc}</p>
+                    </div>
+                    <div>
+                        <h1 className="heading-5 font-semibold mb-[6px]">Deskripsi</h1>
+                        <p className="body-2 font-semibold text-secondary-text text-justify">{description}</p>
+                    </div>
+                </section>
+                <section className="flex flex-col gap-3 w-full mt-6">
+                    <div className="flex flex-col gap-3">
+                        <h1 className="heading-5 font-semibold">Hasil Video</h1>
+                        <div className='flex items-center gap-1'>
+                            <div className='border-2 border-solid border-success-600 rounded-full w-3 h-3' />
+                            <p className='body-2'>On Air</p>
                         </div>
-                    </section>
-                    <section className="flex flex-col gap-3 w-full mt-6">
-                        <div className="flex flex-col gap-3">
-                            <h1 className="heading-5 font-semibold">Episode</h1>
-                            <div className='flex items-center gap-1'>
-                                <div className='border-2 border-solid border-success-600 rounded-full w-3 h-3' />
-                                <p className='body-2'>On Air</p>
-                            </div>
-                            <div className='flex gap-6 flex-wrap'>
-                                {program.episode.map((episode, index) => {
-                                    return (
-                                        <EpisodeCard key={index} {...episode} airingStatus={episode.airingStatus} segment={episode.segmen.length} />
-                                    )
-                                })}
-                            </div>
+                        <div className='flex gap-6 flex-wrap'>
+                            {episodes.map((episode, index) => {
+                                return (
+                                    <EpisodeCard key={index}
+                                        {...episode}
+                                        thumbnail={'/image/program-thumbnail.jpg'}
+                                        desc={episode.description}
+                                        episodeNumber={index + 1}
+                                        productionDate={useFormatDate(episode.start_production)}
+                                        airingStatus={episode.status ?? 'MCR_VALIDATION'}
+                                        productionStatus={episode.status ?? 'MCR_VALIDATION'}
+                                        segment={episode.segment_count ?? 0}
+                                        isRevision={isRevision}
+                                    />
+                                )
+                            })}
                         </div>
-                    </section>
-                </>
-            )}
+                    </div>
+                </section>
+                <section>
+                    {/* SEGMENT SECTION */}
+                </section>
+            </>
         </Layout>
     );
 };

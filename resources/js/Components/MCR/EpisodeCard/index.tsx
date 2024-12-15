@@ -16,6 +16,7 @@ type EpisodeCardProps = {
     airingStatus: string
     productionStatus: string
     segment: number
+    isRevision?: boolean;
 }
 
 const EpisodeCard = ({
@@ -27,8 +28,8 @@ const EpisodeCard = ({
     theme,
     desc,
     airingStatus,
-    productionStatus,
-    segment
+    segment,
+    isRevision = false
 }: EpisodeCardProps) => {
     const dialogRef = useRef<HTMLDialogElement>(null);
 
@@ -43,11 +44,31 @@ const EpisodeCard = ({
 
     return (
         <>
-            <div className={`${airingStatus === 'On Air' ? 'border-2 border-solid border-success-600' : ''} max-w-[172px] h-fit flex flex-col gap-3 p-3 shadow-1 rounded-md`}>
-                <img src={thumbnail} alt={`episode ${episodeNumber}`} className="w-[148px] h-[111px] rounded-md" />
+            <div className={`${airingStatus === 'ON_AIR' ? 'border-2 border-solid border-success-600' : ''} max-w-[200px] h-fit flex flex-col gap-3 p-3 shadow-1 rounded-md`}>
+                <img src={thumbnail} alt={`episode ${episodeNumber}`} className="w-[170px] h-[120px] rounded-md" />
                 <p className="body-2 font-bold">Episode {episodeNumber}</p>
-                <p className="caption-1">{productionStatus}</p>
-                <Button type="button" label="Detail" style="Outlined" color="Primary" width="Full" size="Small" onClick={toggleDialog} />
+                <div className="flex items-center justify-between gap-2">
+                    <Button
+                        type="button"
+                        label="Detail"
+                        style="Filled"
+                        color="Primary"
+                        width="Full"
+                        size="Small"
+                        onClick={toggleDialog}
+                    />
+                    {isRevision && (
+                        <Button
+                            type="button"
+                            label="Revisi"
+                            style="Outlined"
+                            color="Primary"
+                            width="Full"
+                            size="Small"
+                            onClick={toggleDialog}
+                        />
+                    )}
+                </div>
             </div>
             <Dialog size="Normal" toggleDialog={toggleDialog} ref={dialogRef}>
                 <h1 className="heading-2 font-semibold text-left">Episode {episodeNumber}</h1>

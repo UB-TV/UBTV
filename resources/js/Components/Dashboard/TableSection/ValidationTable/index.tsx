@@ -15,9 +15,9 @@ const ValidationTable = ({
         <section>
             <div className="flex items-end justify-between mb-3">
                 <h2 className="heading-5 font-semibold">Perlu Validasi</h2>
-                <Hyperlink url="/validation" label="Selengkapnya" />
+                <Hyperlink url="/mcr/pending" label="Selengkapnya" />
             </div>
-            <Table head={header} body={program} action="/icon/more-fill.svg" pagination={false} type="Program" />
+            <Table head={header} body={program} action="/icon/more-fill.svg" pagination={false} type="Program" redirectUrl='pending' isRedirectPrefix />
         </section>
     )
 }

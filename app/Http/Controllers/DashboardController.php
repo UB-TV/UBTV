@@ -130,12 +130,7 @@ class DashboardController extends Controller
         $pendingPrograms = Program::whereHas('episodes', function (Builder $query) {
             $query->where('status', '=', StatusEnum::MCR_VALIDATION);
         })->limit(self::MAX_RECORDS)->get();
-        dd(json_encode([
-            'programs' => $programs,
-            'pending_programs' => $pendingPrograms,
-        ], JSON_PRETTY_PRINT));
-        #TODO: render the correct page & delete dd
-        return Inertia::render('CHANGEME', [
+        return Inertia::render('Dashboard', [
             'programs' => $programs,
             'pending_programs' => $pendingPrograms,
         ]);

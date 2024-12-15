@@ -1,17 +1,17 @@
 import { useMemo, useState } from "react";
-// Function
-import { getLayoutMenu, getPrograms } from "@/util/RoleData";
-// Data
-import { MCR_PROGRAM_HEADER } from "@/Constants/TableHeader";
+import { MCR_HEADER } from "@/Constants/TableHeader";
 // Component
-import SearchField from "@/Components/Dashboard/SearchField";
+import { IGeneralPaginationTable } from "@/models/generalinterfaces";
+import { IVideoProgram } from "@/models/videprograminterfaces";
 import Layout from "@/Layout";
+import SearchField from "@/Components/Dashboard/SearchField";
 import Table from "@/Components/Dashboard/Table";
 
-const Program = () => {
+const Program = ({
+    data,
+    links
+}: IGeneralPaginationTable<IVideoProgram[]>) => {
     const [searchInput, setSearchInput] = useState('');
-
-    const ProgramsData = getPrograms();
 
     const handleSearch = (input: string) => {
         setSearchInput(input);
@@ -20,30 +20,37 @@ const Program = () => {
 
     const filterPrograms = (programs: any, searchInput: string) => {
         const filteredPrograms = programs.filter((program: any) =>
-            program.title.toLowerCase().includes(searchInput.toLowerCase())
+            program.name.toLowerCase().includes(searchInput.toLowerCase())
         );
         return filteredPrograms;
     };
 
-    const allPrograms = useMemo(
-        () => filterPrograms(ProgramsData, searchInput),
-        [ProgramsData, searchInput]
-    );
-
-    const programSectionVisible = allPrograms.length > 0;
+    const filteredPrograms = useMemo(
+        () => filterPrograms(data, searchInput),
+        [searchInput]
+    );;
 
     return (
         <Layout>
             <>
-                <h1 className="heading-3 font-semibold">Program</h1>
+                <h1 className="heading-3 font-semibold">Sudah Upload </h1>
                 <div className="flex items-center gap-6">
                     <SearchField onSearch={handleSearch} />
                     <p className="caption-1">
-                        <span className="font-semibold">{allPrograms.length}</span> Program
+                        <span className="font-semibold">{data.length}</span> Program
                     </p>
                 </div>
-                {programSectionVisible ? (
-                    <Table head={MCR_PROGRAM_HEADER} body={allPrograms} action="/icon/more-fill.svg" pagination={true} type="Program Status" />
+                {filteredPrograms.length > 0 ? (
+                    <Table
+                        head={MCR_HEADER}
+                        body={filteredPrograms}
+                        action="/icon/more-fill.svg"
+                        pagination={true}
+                        type="Program"
+                        redirectUrl="programs"
+                        isRedirectPrefix
+                        pagination_link={links}
+                    />
                 ) : (
                     <p className="body-1 font-semibol">Tidak ada program yang ditemukan</p>
                 )}

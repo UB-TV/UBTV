@@ -3,9 +3,10 @@ export interface IEpisode {
     program_id: 2;
     code: string;
     duration: string;
-    themes: string;
+    theme: string;
     start_production: string;
     segment_count?: number;
+    status?: string;
     description: string;
     videos: IVideo[];
     created_at: string;
