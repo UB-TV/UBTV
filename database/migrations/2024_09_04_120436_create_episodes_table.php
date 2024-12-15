@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\StatusEnum;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -19,6 +20,7 @@ return new class () extends Migration {
             $table->unsignedInteger('segment_count');
             $table->date('start_production');
             $table->text('description');
+            $table->enum("status", array_column(StatusEnum::cases(), 'value'));
             $table->timestamps();
             $table->foreign('program_id')
                 ->references('id')

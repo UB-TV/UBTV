@@ -22,7 +22,14 @@ class EpisodeFactory extends Factory
             'theme' => fake()->lexify(),
             'segment_count' => fake()->randomDigitNotNull(),
             'start_production' => fake()->dateTimeBetween('+0 days', '+1 years'),
-            'description' => fake()->paragraph(),
+            'description' => fake()->sentence(),
+            'status' => fake()->randomElement([
+                "SHOOTING",
+                "EDITING",
+                "PRODUCER_VALIDATION",
+                "MCR_VALIDATION",
+                "ON_AIR",
+            ]),
         ];
     }
 }

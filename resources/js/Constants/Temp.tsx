@@ -38,11 +38,11 @@ export const ProducerMenus = [
 
 export const AdminMenus = [
     {
-        link: '/new-users',
+        link: '/admin/new-users',
         label: 'User Baru'
     },
     {
-        link: '/users',
+        link: '/admin/users',
         label: 'User'
     }
 ]

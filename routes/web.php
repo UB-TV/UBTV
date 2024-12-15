@@ -2,6 +2,7 @@
 
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\McrController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\EditorController;
 use App\Http\Controllers\CameramanController;
@@ -30,7 +31,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/uploaded', 'uploaded');
         Route::get('/{program:slug}', 'program');
     })->middleware('role:cameraman');
-    Route::get('/admin/users', [AdminController::class, 'approval'])->middleware('role:admin');
+    Route::controller(AdminController::class)->prefix('/admin')->group(function () {
+        Route::get('/users', 'approval');
+        Route::get('/new-users', 'newUsers');
+    })->middleware('role:admin');
     Route::controller(EditorController::class)->prefix('/editor')->group(function () {
         Route::get('/uploaded', 'uploaded');
         Route::get('/pending', 'notUploaded');
@@ -41,15 +45,23 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/actives', 'actives');
         Route::get('/{program:slug}', 'program');
     })->middleware('role:head_of_program');
+    Route::controller(McrController::class)->prefix('/mcr')->group(function () {
+        Route::get('/pending', 'pending');
+        Route::get('/programs', 'programs');
+        Route::get('/pending/{program:slug}', 'pendingProgram');
+        Route::get('/programs/{program:slug}', 'program');
+    })->middleware('role:mcr');
 
     # API
     Route::prefix('/api/v1')->group(function () {
         Route::prefix('/programs')->group(function () {
             Route::post('/', [HeadOfProgramController::class, 'create']);
             Route::patch('/', [HeadOfProgramController::class, 'update']);
+            Route::delete('/{program:slug}', [HeadOfProgramController::class, 'delete']);
         })->middleware('role:head_of_program');
         Route::prefix('/episodes')->group(function () {
             Route::post('/', [HeadOfProgramController::class, 'createEpisode']);
+            Route::patch('/{episode:id}', [McrController::class, 'update']);
         })->middleware('role:head_of_program');
         Route::prefix('/videos')->group(function () {
             Route::post('/', [CameramanController::class, 'upload']);
@@ -58,7 +70,7 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/', [EditorController::class, 'upload']);
         })->middleware('role:editor');
         Route::prefix('/users')->group(function () {
-            Route::patch('/{user}', [AdminController::class, 'updateUserStatus']);
+            Route::patch('/{user:id}', [AdminController::class, 'updateUserStatus']);
             Route::delete('/{id}', [AdminController::class, 'deleteUser']);
         })->middleware('role:admin');
     });
@@ -111,12 +123,4 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/new-program/producer/{slug}', function () {
         return Inertia::render('Producer/ProgramDetail');
     })->name('producer-new-program-detail');
-
-    Route::get('/new-users', function () {
-        return Inertia::render('Admin/NewUsers');
-    })->name('new-users');
-
-    Route::get('/users', function () {
-        return Inertia::render('Admin/Users');
-    })->name('users');
 });

@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Video;
 use App\Models\Episode;
 use App\Models\Program;
+use App\Enums\StatusEnum;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -25,7 +26,7 @@ class DatabaseSeeder extends Seeder
             'phone_number' => '0811111111',
             'employee_id' => 'EMP-2020-0000',
             'is_active' => true,
-        ])->assignRole('editor');
+        ])->assignRole('mcr');
         $users[] = User::create([
             'email' => 'agustianto.d19@gmail.com',
             'name' => 'Faiz cape html',
@@ -33,6 +34,13 @@ class DatabaseSeeder extends Seeder
             'employee_id' => 'EMP-2121-0000',
             'is_active' => true,
         ])->assignRole('editor');
+        $users[] = User::create([
+            'email' => 'achmalpradiptaaditama@gmail.com',
+            'name' => 'Achmal test',
+            'phone_number' => '0833333333',
+            'employee_id' => 'EMP-2323-0000',
+            'is_active' => true,
+        ])->assignRole('admin');
 
         User::factory()->create([
             'is_active' => null,
@@ -44,6 +52,12 @@ class DatabaseSeeder extends Seeder
         foreach ($programs as $program) {
             Episode::factory()->count(2)->create([
                 'program_id' => $program->id,
+            ]);
+        }
+        foreach ($programs as $program) {
+            Episode::factory()->count(2)->create([
+                'program_id' => $program->id,
+                'status' => StatusEnum::MCR_VALIDATION
             ]);
         }
 
