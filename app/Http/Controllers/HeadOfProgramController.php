@@ -79,4 +79,14 @@ class HeadOfProgramController extends Controller
         }
         return response(status: 201);
     }
+
+    public function delete(Program $program): Response
+    {
+        try {
+            $program->delete();
+        } catch (Exception) {
+            return response(status: 500);
+        }
+        return response(status: 200);
+    }
 }

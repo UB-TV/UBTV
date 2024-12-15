@@ -50,6 +50,7 @@ Route::middleware(['auth'])->group(function () {
         Route::prefix('/programs')->group(function () {
             Route::post('/', [HeadOfProgramController::class, 'create']);
             Route::patch('/', [HeadOfProgramController::class, 'update']);
+            Route::delete('/{program:slug}', [HeadOfProgramController::class, 'delete']);
         })->middleware('role:head_of_program');
         Route::prefix('/episodes')->group(function () {
             Route::post('/', [HeadOfProgramController::class, 'createEpisode']);
