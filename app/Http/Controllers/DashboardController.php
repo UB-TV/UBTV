@@ -6,9 +6,11 @@ use Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\Program;
+use App\Enums\StatusEnum;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\JoinClause;
 
 class DashboardController extends Controller
@@ -17,6 +19,7 @@ class DashboardController extends Controller
 
     public function __invoke(Request $req): Response
     {
+        /** @var App\Models\User */
         $user = Auth::user();
         if ($user->hasRole('cameraman')) {
             return $this->cameraman($req);
@@ -98,11 +101,13 @@ class DashboardController extends Controller
 
     public function headOfProgram(Request $_): Response
     {
-        $draftPrograms = Program::doesntHave('episodes')->limit(5)->get();
+        $draftPrograms = Program::doesntHave('episodes')
+            ->limit(self::MAX_RECORDS)
+            ->get();
         $activePrograms = Program::has('episodes')
             ->with('latestEpisode')
             ->withCount('episodes')
-            ->limit(5)
+            ->limit(self::MAX_RECORDS)
             ->get()
             ->transform(function (Program $program): Program {
                 $program->status = $program->latestEpisode->status;
@@ -122,19 +127,16 @@ class DashboardController extends Controller
 
     public function mcr(Request $_): Response
     {
-        $programs = Program::query()
-            ->orderBy('created_at', 'desc')
-            ->limit($this->MAX_RECORD)
+        $programs = Program::orderBy('created_at', 'desc')
+            ->limit(self::MAX_RECORDS)
             ->get();
-        $pendingPrograms = Program::query()
-            ->orderBy('created_at', 'desc')
-            ->where('is_active', '=', false)
-            ->limit($this->MAX_RECORD)
-            ->get();
+        $pendingPrograms = Program::whereHas('episodes', function (Builder $query) {
+            $query->where('status', '=', StatusEnum::PRODUCER_VALIDATION);
+        })->limit(self::MAX_RECORDS)->get();
         dd(json_encode([
             'programs' => $programs,
             'pending_programs' => $pendingPrograms,
-        ]));
+        ], JSON_PRETTY_PRINT));
         #TODO: render the correct page & delete dd
         return Inertia::render('CHANGEME', [
             'programs' => $programs,
