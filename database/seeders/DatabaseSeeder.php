@@ -43,7 +43,6 @@ class DatabaseSeeder extends Seeder
 
         User::factory()->create([
             'is_active' => null,
-            
         ]);
 
         $programs = Program::factory()->count(2)->create();

@@ -8,8 +8,8 @@ use Inertia\Response;
 use App\Models\Program;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Query\JoinClause;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Database\Query\JoinClause;
 
 class DashboardController extends Controller
 {
@@ -100,19 +100,21 @@ class DashboardController extends Controller
 
     public function headOfProgram(Request $req): Response
     {
-        $user = $req->user();
-        $draftPrograms = Program::query()
-            ->where('is_active', '=', false)
+        $draftPrograms = Program::doesntHave('episodes')->limit(5)->get();
+        $activePrograms = Program::has('episodes')
+            ->with('latestEpisode')
+            ->withCount('episodes')
             ->limit(5)
-            ->get();
-        $activePrograms = Program::withCount('episodes')
-            ->getQuery()
-            ->where('is_active', '=', true)
-            ->get();
+            ->get()
+            ->transform(function (Program $program): Program {
+                $program->status = $program->latestEpisode->status;
+                unset($program->latestEpisode);
+                return $program;
+            });
         dd(json_encode([
             'draft_programs' => $draftPrograms,
             'active_programs' => $activePrograms,
-        ]));
+        ], JSON_PRETTY_PRINT));
         #TODO: render the correct page & delete dd
         return Inertia::render('CHANGEME', [
             'draft_programs' => $draftPrograms,

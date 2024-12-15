@@ -23,6 +23,13 @@ class EpisodeFactory extends Factory
             'segment_count' => fake()->randomDigitNotNull(),
             'start_production' => fake()->dateTimeBetween('+0 days', '+1 years'),
             'description' => fake()->paragraph(),
+            'status' => fake()->randomElement([
+                "SHOOTING",
+                "EDITING",
+                "PRODUCER_VALIDATION",
+                "MCR_VALIDATION",
+                "ON_AIR",
+            ]),
         ];
     }
 }

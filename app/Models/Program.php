@@ -3,10 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 /**
+ * 
  *
  * @property int $id
  * @property string $code
@@ -32,6 +35,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|Program wherePremiereAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Program whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Program whereUpdatedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Video> $videos
+ * @property-read int|null $videos_count
+ * @property-read \App\Models\Episode|null $latestEpisode
  * @mixin \Eloquent
  */
 class Program extends Model
@@ -45,5 +51,15 @@ class Program extends Model
     public function episodes(): HasMany
     {
         return $this->hasMany(Episode::class);
+    }
+
+    public function latestEpisode(): HasOne
+    {
+        return $this->hasOne(Episode::class)->latestOfMany("created_at");
+    }
+
+    public function videos(): HasManyThrough
+    {
+        return $this->hasManyThrough(Video::class, Episode::class);
     }
 }
