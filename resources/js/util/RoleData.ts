@@ -1,11 +1,12 @@
 //  This is just a temp function to mimic the server response
 //  You can set the role in local storage manually
 
-import { CameramanMenus } from "@/Constants/LayoutMenu";
 import {
-    CameramanPrograms,
+    CameramanMenus,
+    EditorMenus
+} from "@/Constants/LayoutMenu";
+import {
     EditoProgram,
-    EditorMenus,
     MCRMenus,
     MCRProgram,
     ProducerMenus,
@@ -52,8 +53,6 @@ export const getPrograms = (): any => {
     if (!role) return;
 
     switch (role) {
-        case "cameraman":
-            return CameramanPrograms;
 
         case "editor":
             return EditoProgram;

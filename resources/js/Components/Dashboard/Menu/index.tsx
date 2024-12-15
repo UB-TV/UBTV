@@ -6,6 +6,7 @@ type MenuProps = {
 }
 
 const Menu = ({ link, label }: MenuProps) => {
+
     const currentPath = window.location.pathname;
     const isActive = link === '/' ? currentPath === link : currentPath.startsWith(link);
 
