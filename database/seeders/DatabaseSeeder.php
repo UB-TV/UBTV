@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Video;
 use App\Models\Episode;
 use App\Models\Program;
+use App\Enums\StatusEnum;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -51,6 +52,12 @@ class DatabaseSeeder extends Seeder
         foreach ($programs as $program) {
             Episode::factory()->count(2)->create([
                 'program_id' => $program->id,
+            ]);
+        }
+        foreach ($programs as $program) {
+            Episode::factory()->count(2)->create([
+                'program_id' => $program->id,
+                'status' => StatusEnum::MCR_VALIDATION
             ]);
         }
 

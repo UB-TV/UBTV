@@ -30,7 +30,7 @@ class DashboardController extends Controller
         } elseif ($user->hasRole('head_of_program')) {
             return $this->headOfProgram($req);
         } elseif ($user->hasRole('mcr')) {
-            return $this->headOfProgram($req);
+            return $this->mcr($req);
         }
     }
 
@@ -131,7 +131,7 @@ class DashboardController extends Controller
             ->limit(self::MAX_RECORDS)
             ->get();
         $pendingPrograms = Program::whereHas('episodes', function (Builder $query) {
-            $query->where('status', '=', StatusEnum::PRODUCER_VALIDATION);
+            $query->where('status', '=', StatusEnum::MCR_VALIDATION);
         })->limit(self::MAX_RECORDS)->get();
         dd(json_encode([
             'programs' => $programs,

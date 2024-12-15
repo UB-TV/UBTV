@@ -61,6 +61,7 @@ Route::middleware(['auth'])->group(function () {
         })->middleware('role:head_of_program');
         Route::prefix('/episodes')->group(function () {
             Route::post('/', [HeadOfProgramController::class, 'createEpisode']);
+            Route::patch('/{episode:id}', [McrController::class, 'update']);
         })->middleware('role:head_of_program');
         Route::prefix('/videos')->group(function () {
             Route::post('/', [CameramanController::class, 'upload']);

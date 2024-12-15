@@ -22,7 +22,7 @@ class ProgramFactory extends Factory
             'code' => fake()->regexify('[A-Z]{5}[0-4]{3}'),
             'slug' => Str::slug($name),
             'name' => $name,
-            'description' => fake()->paragraph(),
+            'description' => fake()->sentence(),
             'is_active' => fake()->boolean(),
             'premiere_at' => fake()->dateTimeBetween('+0 days', '+1 years'),
         ];
