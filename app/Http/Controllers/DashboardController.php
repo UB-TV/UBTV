@@ -109,15 +109,14 @@ class DashboardController extends Controller
             ->getQuery()
             ->where('is_active', '=', true)
             ->get();
-        dd(json_encode([
-            'draft_programs' => $draftPrograms,
-            'active_programs' => $activePrograms,
-        ]));
+        // dd(json_encode([
+        //     'draft_programs' => $draftPrograms,
+        //     'active_programs' => $activePrograms,
+        // ]));
         #TODO: render the correct page & delete dd
-        return Inertia::render('CHANGEME', [
+        return Inertia::render('Dashboard', [
             'draft_programs' => $draftPrograms,
             'active_programs' => $activePrograms,
         ]);
     }
-
 }
