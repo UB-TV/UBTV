@@ -17,7 +17,7 @@ const ProgramTable = ({
                 <h2 className="heading-5 font-semibold">Program</h2>
                 <Hyperlink url="/mcr/programs" label="Selengkapnya" />
             </div>
-            <Table head={header} body={program} action="/icon/more-fill.svg" pagination={false} type="Program" redirectUrl='programs' isRedirectPrefix />
+            <Table head={header} body={program} action="/icon/more-fill.svg" pagination={false} type="Program Status" redirectUrl='programs' isRedirectPrefix />
         </section>
     )
 }

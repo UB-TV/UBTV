@@ -6,7 +6,8 @@ import { getPrograms, useGetUserRole } from "@/util/RoleData";
 import {
     CAMERAMAN_HEADER,
     EDITOR_HEADER,
-    MCR_HEADER
+    MCR_PROGRAM_HEADER,
+    MCR_VALIDATION_HEADER,
 } from "@/Constants/TableHeader";
 // Component
 import SearchField from "@/Components/Dashboard/SearchField";
@@ -126,10 +127,10 @@ const Dashboard = ({
                     ) : role === 'mcr' ? (
                         <>
                             {pendingProgramSectionVisible && (
-                                <ValidationTable header={MCR_HEADER} program={filteredPendingPrograms} />
+                                <ValidationTable header={MCR_VALIDATION_HEADER} program={filteredPendingPrograms} />
                             )}
                             {programSectionVisible && (
-                                <ProgramTable header={MCR_HEADER} program={filteredPrograms} />
+                                <ProgramTable header={MCR_PROGRAM_HEADER} program={filteredPrograms} />
                             )}
                         </>
                     ) : (

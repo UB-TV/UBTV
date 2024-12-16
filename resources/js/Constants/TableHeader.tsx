@@ -51,18 +51,41 @@ export const EDITOR_MESSAGE_HEADER = [
     },
 ]
 
-export const MCR_HEADER = [
+export const MCR_VALIDATION_HEADER = [
     {
         label: 'Kode',
         width: '10%'
     },
     {
         label: 'Nama',
-        width: '35%'
+        width: '30%'
     },
     {
         label: 'Waktu  Premiere',
-        width: '35%'
+        width: '30%'
+    },
+    {
+        label: 'Status',
+        width: '10%'
+    }
+]
+
+export const MCR_PROGRAM_HEADER = [
+    {
+        label: 'Kode',
+        width: '10%'
+    },
+    {
+        label: 'Nama',
+        width: '30%'
+    },
+    {
+        label: 'Waktu  Premiere',
+        width: '30%'
+    },
+    {
+        label: 'Status',
+        width: '10%'
     }
 ]
 

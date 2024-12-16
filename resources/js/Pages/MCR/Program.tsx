@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { MCR_HEADER } from "@/Constants/TableHeader";
+import { MCR_PROGRAM_HEADER } from "@/Constants/TableHeader";
 // Component
 import { IGeneralPaginationTable } from "@/models/generalinterfaces";
 import { IVideoProgram } from "@/models/videprograminterfaces";
@@ -42,11 +42,11 @@ const Program = ({
                 </div>
                 {filteredPrograms.length > 0 ? (
                     <Table
-                        head={MCR_HEADER}
+                        head={MCR_PROGRAM_HEADER}
                         body={filteredPrograms}
                         action="/icon/more-fill.svg"
                         pagination={true}
-                        type="Program"
+                        type="Program Status"
                         redirectUrl="programs"
                         isRedirectPrefix
                         pagination_link={links}

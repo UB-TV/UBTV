@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 // Component
 import { IGeneralPaginationTable } from '@/models/generalinterfaces';
 import { IVideoProgram } from '@/models/videprograminterfaces';
-import { MCR_HEADER } from '@/Constants/TableHeader';
+import { MCR_VALIDATION_HEADER } from '@/Constants/TableHeader';
 import Layout from "@/Layout";
 import SearchField from '@/Components/Dashboard/SearchField';
 import Table from '@/Components/Dashboard/Table';
@@ -42,11 +42,11 @@ const ProgramValidation = ({
                 </div>
                 {filteredPrograms.length > 0 ? (
                     <Table
-                        head={MCR_HEADER}
+                        head={MCR_VALIDATION_HEADER}
                         body={filteredPrograms}
                         action="/icon/more-fill.svg"
                         pagination={true}
-                        type="Program"
+                        type="Program Status"
                         redirectUrl="pending"
                         isRedirectPrefix
                         pagination_link={links}

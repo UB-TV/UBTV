@@ -6,6 +6,7 @@ import { Link } from "@inertiajs/react";
 import Pagination from "../Pagination/Index";
 import { IPaginationLink } from "@/models/generalinterfaces";
 import { useFetchNewUsers } from "@/repositories/Admin/useFetchNewUsers";
+import useFormatDate from "@/util/useFormatDate";
 
 type TableHeaderProps = {
     label: string;
@@ -131,12 +132,12 @@ const Table = ({
                                         <>
                                             <td className="p-2">{body.code}</td>
                                             <td className="p-2">{body.name}</td>
-                                            <td className="p-2">{body.premiere_at}</td>
+                                            <td className="p-2">{useFormatDate(body.premiere_at)}</td>
                                             {type === 'Status Episode' && (
                                                 <td className="p-2">{body.episode}</td>
                                             )}
                                             {(type === 'Status Episode' || type === 'Program Status') && (
-                                                <td className="p-2">{body.status}</td>
+                                                <td className="p-2">{body.is_active ? 'Aktif': 'Tidak Aktif'}</td>
                                             )}
                                         </>
                                     ) : type === 'Message' ? (

@@ -17,7 +17,7 @@ const ValidationTable = ({
                 <h2 className="heading-5 font-semibold">Perlu Validasi</h2>
                 <Hyperlink url="/mcr/pending" label="Selengkapnya" />
             </div>
-            <Table head={header} body={program} action="/icon/more-fill.svg" pagination={false} type="Program" redirectUrl='pending' isRedirectPrefix />
+            <Table head={header} body={program} action="/icon/more-fill.svg" pagination={false} type="Program Status" redirectUrl='pending' isRedirectPrefix />
         </section>
     )
 }
