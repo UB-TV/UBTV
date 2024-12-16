@@ -82,6 +82,7 @@ class User extends Authenticatable
      */
 
     protected $hidden = ['remember_token'];
+
     public function videos(): BelongsToMany
     {
         return $this->belongsToMany(Video::class);
