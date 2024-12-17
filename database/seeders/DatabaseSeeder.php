@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
             'phone_number' => '0811111111',
             'employee_id' => 'EMP-2020-0000',
             'is_active' => true,
-        ])->assignRole('mcr');
+        ])->assignRole('producer');
         $users[] = User::create([
             'email' => 'agustianto.d19@gmail.com',
             'name' => 'Faiz cape html',
