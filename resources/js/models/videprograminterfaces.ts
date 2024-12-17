@@ -10,5 +10,5 @@ export interface IVideoProgram {
     updated_at: string;
     episode_count?: number;
     episodes_count?: number;
-    episodes?: any;
+    episodes?: [];
 }

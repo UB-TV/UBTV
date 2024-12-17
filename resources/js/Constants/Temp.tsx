@@ -1,6 +1,21 @@
 // **All CONSTANTS IN THIS FILE IS FOR REPLACING SERVER RESPONSE**
 
 // TODO: Move all menus to RoleMenu.tsx
+export const HeadOfProgramMenus = [
+    {
+        link: "/",
+        label: "Dashboard",
+    },
+    {
+        link: "/head-of-program/drafts",
+        label: "Terdaftar",
+    },
+    {
+        link: "/head-of-program/actives",
+        label: "Proses",
+    },
+];
+
 export const EditorMenus = [
     {
         link: "/",
@@ -17,21 +32,6 @@ export const EditorMenus = [
     {
         link: "/message",
         label: "Pesan Masuk",
-    },
-];
-
-export const HeadOfProgramMenus = [
-    {
-        link: "/",
-        label: "Dashboard",
-    },
-    {
-        link: "/head-of-program/drafts",
-        label: "Terdaftar",
-    },
-    {
-        link: "/head-of-program/actives",
-        label: "Proses",
     },
 ];
 

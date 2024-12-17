@@ -17,11 +17,10 @@ class HeadOfProgramController extends Controller
 {
     public function drafts(): Response
     {
-        $programs = Program::query()
-            ->where('is_active', '=', false)
-            ->paginate(15)
+        $programs = Program::doesntHave('episodes')
+            ->paginate()
             ->onEachSide(5);
-        // dd(json_encode($programs));
+        // dd(json_encode($programs, JSON_PRETTY_PRINT));
         return Inertia::render('HeadOfProgram/RegisteredProgram', [
             'programs' => $programs
         ]);
@@ -29,12 +28,16 @@ class HeadOfProgramController extends Controller
 
     public function actives(): Response
     {
-        $programs = Program::withCount('episodes')
-            ->getQuery()
-            ->where('is_active', '=', true)
-            ->paginate(15)
-            ->onEachSide(5);
-        // dd(json_encode($programs));
+        $programs = Program::has('episodes')
+            ->with('latestEpisode')
+            ->withCount('episodes')
+            ->paginate()
+            ->through(function (Program $program): Program {
+                $program->status = $program->latestEpisode->status;
+                unset($program->latestEpisode);
+                return $program;
+            })->onEachSide(5);
+        dd(json_encode($programs, JSON_PRETTY_PRINT));
         return Inertia::render('HeadOfProgram/ActiveProgram', [
             'programs' => $programs
         ]);
@@ -88,5 +91,15 @@ class HeadOfProgramController extends Controller
             return response(status: 500);
         }
         return response(status: 201);
+    }
+
+    public function delete(Program $program): Response
+    {
+        try {
+            $program->delete();
+        } catch (Exception) {
+            return response(status: 500);
+        }
+        return response(status: 200);
     }
 }

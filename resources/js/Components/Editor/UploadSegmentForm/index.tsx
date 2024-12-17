@@ -1,17 +1,14 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+// Models
+import { IEpisode } from '@/models/episodeinterfaces';
 // Component
-import FileUpload from '@/Components/Form/FileUpload';
 import Button from '@/Components/Shared/Button';
+import FileUpload from '@/Components/Form/FileUpload';
+import useUploadSegment from '@/repositories/Editor/useUploadSegment';
 
 type UploadSegmentFormProps = {
-    episode: {
-        episodeNumber: number;
-        segmen: {
-            segmentNumber: number;
-            preview: string;
-        }[];
-    }[];
+    episode: IEpisode[]
 };
 
 type FormValues = {
@@ -21,8 +18,8 @@ type FormValues = {
 };
 
 const UploadSegmentForm = ({ episode }: UploadSegmentFormProps) => {
-    const [selectedEpisode, setSelectedEpisode] = useState(1);
-    const [selectedSegment, setSelectedSegment] = useState(1);
+    const [selectedEpisode, setSelectedEpisode] = useState<number>(episode[0].id);
+    const [selectedSegment, setSelectedSegment] = useState<number>(1);
     const { register, handleSubmit, setValue } = useForm<FormValues>({
         defaultValues: {
             episode: 1,
@@ -31,56 +28,71 @@ const UploadSegmentForm = ({ episode }: UploadSegmentFormProps) => {
         },
     });
 
-    const onSubmit = (data: FormValues) => {
-        console.log('Form submitted:', data);
-        // Add upload logic here
+    const {
+        uploadSegment,
+        isLoading,
+        error,
+    } = useUploadSegment();
+
+    const onSubmit = async (data: FormValues) => {
+        if (data.files && data.files.length > 0) {
+
+            const result = await uploadSegment({
+                episode_id: data.episode,
+                segment_number: data.segment,
+                attachment: data.files[0],
+            });
+
+            if (result && result.success) {
+                console.log('Video uploaded successfully:', result.message);
+            } else {
+                console.error('Upload failed:', result?.message || 'Unknown error');
+            }
+        }
     };
 
-    const handleEpisodeClick = (episode: any) => {
-        setSelectedEpisode(episode === selectedEpisode ? null : episode);
-        setValue('episode', episode);
+    const handleEpisodeClick = (episodeId: number) => {
+        setSelectedEpisode(episodeId);
+        setValue('episode', episodeId);
     };
 
-    const handleSegmentClick = (segment: any) => {
-        setSelectedSegment(segment === selectedSegment ? null : segment);
+    const handleSegmentClick = (segment: number) => {
+        setSelectedSegment(segment);
         setValue('segment', segment);
     };
 
     const renderEpisodeDivs = () => {
-        const radioButtons = [];
-
-        for (let i = 1; i <= episode.length; i++) {
-            const isSelected = i === selectedEpisode;
+        return episode.map((ep, i) => {
+            const isSelected = ep.id === selectedEpisode;
             const borderClass = isSelected ? 'border-success-500' : 'border-primary-500';
 
-            radioButtons.push(
+            return (
                 <label
-                    key={i}
+                    key={ep.id}
                     className={`body-2 font-bold min-w-[46px] min-h-[46px] flex justify-center items-center p-3 border-2 border-solid rounded-md shadow-1 cursor-pointer ${borderClass}`}
                 >
                     <input
                         type="radio"
                         {...register('episode')}
-                        value={i}
+                        value={ep.id}
                         checked={isSelected}
-                        onChange={() => handleEpisodeClick(i)}
+                        onChange={() => handleEpisodeClick(ep.id)}
                         style={{ display: 'none' }}
                     />
-                    {i}
+                    {i + 1}
                 </label>
             );
-        }
-
-        return radioButtons;
+        });
     };
 
     const renderSegmentDivs = () => {
-        const selectedEpisodeData = episode.find((ep) => ep.episodeNumber === selectedEpisode);
+        const selectedEpisodeData = episode.find((ep) => ep.id === selectedEpisode);
         if (!selectedEpisodeData) return null;
 
+        const segmentCount = selectedEpisodeData.segment_count ?? 0;
         const radioButtons = [];
 
-        for (let i = 1; i <= selectedEpisodeData.segmen.length; i++) {
+        for (let i = 1; i <= segmentCount; i++) {
             const isSelected = i === selectedSegment;
             const borderClass = isSelected ? 'border-success-500' : 'border-primary-500';
 

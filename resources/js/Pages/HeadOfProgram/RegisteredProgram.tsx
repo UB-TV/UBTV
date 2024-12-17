@@ -43,30 +43,24 @@ const RegisteredProgram = ({
         setSearchInput(input);
     };
 
-    const filterPrograms = (
-        programs: Program[],
-        searchInput: string,
-        isActive: boolean
-    ) => {
-        const filtered = programs.filter(
+    const filterPrograms = (programs: Program[], searchInput: string) => {
+        return programs.filter(
             (program: Program) =>
-                program.is_active === isActive &&
-                (program.name
+                program.name
                     .toLowerCase()
                     .includes(searchInput.toLowerCase()) ||
-                    program.code
-                        .toLowerCase()
-                        .includes(searchInput.toLowerCase()) ||
-                    program.description
-                        .toLowerCase()
-                        .includes(searchInput.toLowerCase()))
+                program.code
+                    .toLowerCase()
+                    .includes(searchInput.toLowerCase()) ||
+                program.description
+                    .toLowerCase()
+                    .includes(searchInput.toLowerCase())
         );
-        return filtered;
     };
 
     const filteredPrograms = useMemo(() => {
         if (programs && Array.isArray(programs.data)) {
-            return filterPrograms(programs.data, searchInput, false);
+            return filterPrograms(programs.data, searchInput);
         }
         return [];
     }, [programs, searchInput]);

@@ -2,14 +2,36 @@ import { useEffect, useRef } from "react";
 // Component
 import Button from "@/Components/Shared/Button";
 import ProgramCard from "@/Components/Cameraman/ProgramCard";
-import UploadVideoForm from "@/Components/Cameraman/UploadVideoForm";
 import Dialog from "@/Components/Shared/Dialog";
 import Layout from "@/Layout";
 import IconButton from "@/Components/Shared/IconButton.tsx";
-import { IVideoProgram } from "@/models/videprograminterfaces";
-import { IEpisode } from "@/models/episodeinterfaces";
-import useFormatDate from "@/util/useFormatDate";
 import EditProgramButton from "@/Components/HeadOfProgram/EditProgramButton";
+
+interface IEpisode {
+    id: number;
+    program_id: number;
+    code: string;
+    duration: number;
+    theme: string;
+    segment_count: number;
+    start_production: string;
+    description: string;
+    created_at: string;
+    updated_at: string;
+}
+
+interface IVideoProgram {
+    id: number;
+    code: string;
+    slug: string;
+    name: string;
+    description: string;
+    is_active: boolean;
+    premiere_at: string;
+    created_at: string;
+    updated_at: string;
+    episodes?: IEpisode[];
+}
 
 interface IProgramDetail {
     program: IVideoProgram;
@@ -17,7 +39,7 @@ interface IProgramDetail {
 
 const ProgramDetail = ({ program }: IProgramDetail) => {
     const slug = window.location.pathname.split("/").pop();
-    console.log("Program detail :", program);
+
     useEffect(() => {
         if (!program) {
             window.location.href = "/";
@@ -35,9 +57,51 @@ const ProgramDetail = ({ program }: IProgramDetail) => {
             : dialogRef.current.showModal();
     }
 
+    function formatDate(dateString: string) {
+        const days = [
+            "Minggu",
+            "Senin",
+            "Selasa",
+            "Rabu",
+            "Kamis",
+            "Jumat",
+            "Sabtu",
+        ];
+        const months = [
+            "Januari",
+            "Februari",
+            "Maret",
+            "April",
+            "Mei",
+            "Juni",
+            "Juli",
+            "Agustus",
+            "September",
+            "Oktober",
+            "November",
+            "Desember",
+        ];
+
+        const date = new Date(dateString);
+
+        const dayName = days[date.getDay()];
+        const day = date.getDate();
+        const month = months[date.getMonth()];
+        const year = date.getFullYear();
+        const hours = String(date.getHours()).padStart(2, "0");
+        const minutes = String(date.getMinutes()).padStart(2, "0");
+
+        return `${dayName}, ${day} ${month} ${year} ${hours}:${minutes}`;
+    }
+
     const handleBackButton = () => {
         window.history.back();
     };
+
+    const hasEpisodes =
+        program?.episodes &&
+        Array.isArray(program.episodes) &&
+        program.episodes.length > 0;
 
     return (
         <Layout>
@@ -51,8 +115,8 @@ const ProgramDetail = ({ program }: IProgramDetail) => {
                             style="Filled"
                         />
                         <div>
-                            {/* <EditProgramButton program={program} /> */}ini
-                            edit nih
+                            {/* <EditProgramButton program={program} /> */}
+                            ini edit
                         </div>
                     </div>
                     <section className="w-full flex flex-col gap-3">
@@ -63,7 +127,9 @@ const ProgramDetail = ({ program }: IProgramDetail) => {
                                         Status Program
                                     </h1>
                                     <p className="body-2 font-semibold text-secondary-text">
-                                        {program.is_active}
+                                        {program.is_active
+                                            ? "Aktif"
+                                            : "Tidak Aktif"}
                                     </p>
                                 </div>
                                 <div>
@@ -84,34 +150,31 @@ const ProgramDetail = ({ program }: IProgramDetail) => {
                                 </div>
                                 <div>
                                     <h1 className="heading-5 font-semibold mb-[6px]">
-                                        Jumlah Episode
+                                        Waktu Premiere
                                     </h1>
                                     <p className="body-2 font-semibold text-secondary-text">
-                                        {program.episodes?.length || 0}
+                                        {formatDate(program.premiere_at)}
                                     </p>
                                 </div>
                             </div>
                             <div className="max-w-[48%] w-full flex flex-col gap-3">
                                 <div>
                                     <h1 className="heading-5 font-semibold mb-[6px]">
-                                        Waktu Premiere
+                                        Jumlah Episode
                                     </h1>
                                     <p className="body-2 font-semibold text-secondary-text">
-                                        {program.premiere_at}
+                                        {hasEpisodes
+                                            ? program?.episodes?.length
+                                            : "-"}
                                     </p>
                                 </div>
                                 <div>
                                     <h1 className="heading-5 font-semibold mb-[6px]">
                                         Tim
                                     </h1>
-                                    {/* TODO: Uncomment when member is provided in response */}
-                                    {/* <ol className="body-2 text-secondary-text font-semibold pl-5">
-                                        {program.members.map((member, index) => {
-                                            return (
-                                                <li key={index} className="list-disc">{member.name}({member.role})</li>
-                                            )
-                                        })}
-                                    </ol> */}
+                                    <p className="body-2 font-semibold text-secondary-text">
+                                        belum sih ini
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -124,53 +187,36 @@ const ProgramDetail = ({ program }: IProgramDetail) => {
                             </p>
                         </div>
                     </section>
-                    {/* <section className="flex flex-col gap-3 w-full mt-6">
-                        <div className="flex items-center justify-between">
-                            <h1 className="heading-5 font-semibold">
-                                Upload Video
+                    {hasEpisodes && program.episodes && (
+                        <section className="flex flex-col gap-3 w-full mt-6">
+                            <h1 className="heading-5 font-semibold mb-[6px]">
+                                Episode
                             </h1>
-                            <Button
-                                type="button"
-                                label="Upload Video"
-                                style="Filled"
-                                color="Primary"
-                                width="Fit"
-                                size="Medium"
-                                icon="/icon/plus-white.svg"
-                                iconPosition="Left"
-                                onClick={toggleDialog}
-                            />
-                        </div>
-                        <div className="flex gap-6 flex-wrap">
-                            {episodes.map((episode, index) => {
-                                return (
-                                    <ProgramCard
-                                        key={index}
-                                        episodeNumber={index + 1}
-                                        code={episode.code}
-                                        duration={episode.duration}
-                                        desc={episode.description}
-                                        productionDate={useFormatDate(
-                                            episode.start_production
-                                        )}
-                                        theme={episode.themes}
-                                    />
-                                );
-                            })}
-                        </div>
-                        <Dialog
-                            size="Normal"
-                            toggleDialog={toggleDialog}
-                            ref={dialogRef}
-                        >
-                            <h1 className="heading-2 font-semibold text-left">
-                                Upload Video
-                            </h1>
-                            <UploadVideoForm
-                                episodeNumber={program.episode_count}
-                            />
-                        </Dialog>
-                    </section> */}
+                            <p className="heading-6 flex gap-1 items-center w-max h-full">
+                                <span className="h-full mb-1.5 text-success-600">
+                                    o
+                                </span>{" "}
+                                On Air
+                            </p>
+                            <div className="flex gap-6 flex-wrap">
+                                {program.episodes.map(
+                                    (episode: IEpisode, index: number) => (
+                                        <ProgramCard
+                                            key={episode.id}
+                                            episodeNumber={index + 1}
+                                            code={episode.code}
+                                            duration={episode.duration.toString()}
+                                            theme={episode.theme}
+                                            productionDate={
+                                                episode.start_production
+                                            }
+                                            desc={episode.description}
+                                        />
+                                    )
+                                )}
+                            </div>
+                        </section>
+                    )}
                 </>
             )}
         </Layout>

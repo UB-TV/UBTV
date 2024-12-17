@@ -2,6 +2,7 @@
 
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\McrController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\EditorController;
 use App\Http\Controllers\CameramanController;
@@ -44,19 +45,30 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/actives', 'actives');
         Route::get('/{program:slug}', 'program');
     })->middleware('role:head_of_program');
+    Route::controller(McrController::class)->prefix('/mcr')->group(function () {
+        Route::get('/pending', 'pending');
+        Route::get('/programs', 'programs');
+        Route::get('/pending/{program:slug}', 'pendingProgram');
+        Route::get('/programs/{program:slug}', 'program');
+    })->middleware('role:mcr');
 
     # API
     Route::prefix('/api/v1')->group(function () {
         Route::prefix('/programs')->group(function () {
             Route::post('/', [HeadOfProgramController::class, 'create']);
             Route::patch('/', [HeadOfProgramController::class, 'update']);
+            Route::delete('/{program:slug}', [HeadOfProgramController::class, 'delete']);
         })->middleware('role:head_of_program');
         Route::prefix('/episodes')->group(function () {
             Route::post('/', [HeadOfProgramController::class, 'createEpisode']);
+            Route::patch('/{episode:id}', [McrController::class, 'update']);
         })->middleware('role:head_of_program');
         Route::prefix('/videos')->group(function () {
             Route::post('/', [CameramanController::class, 'upload']);
         })->middleware('role:cameraman');
+        Route::prefix('/segments')->group(function () {
+            Route::post('/', [EditorController::class, 'upload']);
+        })->middleware('role:editor');
         Route::prefix('/users')->group(function () {
             Route::patch('/{user:id}', [AdminController::class, 'updateUserStatus']);
             Route::delete('/{id}', [AdminController::class, 'deleteUser']);

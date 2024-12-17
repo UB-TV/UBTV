@@ -59,12 +59,6 @@ const FileUpload = ({
         multiple: true,
     });
 
-    const handleButtonClick = () => {
-        if (fileInputRef.current) {
-            fileInputRef.current.click();
-        }
-    };
-
     return (
         <div>
             <div className="w-full min-h-[216px] h-fit p-3 mb-2 rounded-md border border-solid border-grey-300">
@@ -82,17 +76,8 @@ const FileUpload = ({
                     ) : (
                         <div className="flex flex-col gap-3 justify-center items-center">
                             <img src="/icon/upload.svg" alt="Upload File" className="w-12 h-12" />
-                            <Button
-                                type="button"
-                                label="Jelajah"
-                                style="Filled"
-                                color="Primary"
-                                width="Fit"
-                                size="Large"
-                                onClick={handleButtonClick}
-                            />
                             <p className="body-2 text-secondary-text">
-                                Atau tarik dan lepas file di sini untuk menambahkannya.
+                                Tarik dan lepas file di sini untuk menambahkannya.
                             </p>
                             <div className="flex flex-wrap gap-3">
                                 {previews.map((preview, index) => (

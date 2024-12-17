@@ -1,6 +1,4 @@
 import { useEffect, useRef } from 'react';
-// Data
-import { CameramanPrograms } from "@/Constants/Temp";
 // Component
 import Button from "@/Components/Shared/Button";
 import ProgramCard from "@/Components/Cameraman/ProgramCard";

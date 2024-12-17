@@ -6,6 +6,7 @@ import { Link } from "@inertiajs/react";
 import Pagination from "../Pagination/Index";
 import { IPaginationLink } from "@/models/generalinterfaces";
 import { useFetchNewUsers } from "@/repositories/Admin/useFetchNewUsers";
+import { useProgramService } from "@/repositories/HeadOfProgram/useProgramService";
 
 type TableHeaderProps = {
     label: string;
@@ -47,7 +48,8 @@ const Table = ({
         localStorage.setItem("userRole", "admin");
     }, []);
 
-    const { updateUserStatus, deleteUser, loading, error } = useFetchNewUsers();
+    const { updateUserStatus, deleteUser } = useFetchNewUsers();
+    const { deleteProgram } = useProgramService();
 
     const handleAccept = async (userId: number) => {
         try {
@@ -67,13 +69,25 @@ const Table = ({
         }
     };
 
-    const handleDelete = async (userId: number) => {
+    const handleDeleteUser = async (userId: number) => {
         try {
             await deleteUser(userId);
             window.location.reload();
         } catch (err) {
             console.error("Error deleting user:", err);
             alert("Failed to delete user. Please try again.");
+        }
+    };
+
+    const handleDeleteProgram = async (programSlug: string) => {
+        try {
+            const result = await deleteProgram(programSlug);
+            if (result) {
+                window.location.reload();
+            }
+        } catch (err) {
+            console.error("Error deleting program:", err);
+            alert("Failed to delete program. Please try again.");
         }
     };
 
@@ -137,7 +151,7 @@ const Table = ({
                                         <td className="flex justify-center p-2">
                                             <IconButton
                                                 onClick={() =>
-                                                    handleDelete(body.id)
+                                                    handleDeleteUser(body.id)
                                                 }
                                                 icon="/icon/delete.svg"
                                                 color="Error"
@@ -164,8 +178,7 @@ const Table = ({
                                                         {body.episodes_count}
                                                     </td>
                                                     <td className="p-2">
-                                                        {body.last_episode_status ||
-                                                            "belum ada"}
+                                                        {body.status || "null"}
                                                     </td>
                                                 </>
                                             )}
@@ -206,8 +219,8 @@ const Table = ({
                                                 {showDelete && (
                                                     <IconButton
                                                         onClick={() =>
-                                                            handleDelete(
-                                                                body.id
+                                                            handleDeleteProgram(
+                                                                body.slug
                                                             )
                                                         }
                                                         icon="/icon/delete.svg"

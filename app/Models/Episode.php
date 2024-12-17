@@ -35,6 +35,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|Episode whereStartProduction($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Episode whereTheme($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Episode whereUpdatedAt($value)
+ * @property string $status
+ * @method static \Illuminate\Database\Eloquent\Builder|Episode whereStatus($value)
  * @mixin \Eloquent
  */
 class Episode extends Model
