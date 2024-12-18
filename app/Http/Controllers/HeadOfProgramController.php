@@ -5,9 +5,7 @@ namespace App\Http\Controllers;
 use Exception;
 use Inertia\Inertia;
 use Inertia\Response;
-use App\Models\Episode;
 use App\Models\Program;
-use App\Http\Requests\CreateEpisodeRequest;
 use App\Http\Requests\CreateProgramRequest;
 use App\Http\Requests\UpdateProgramRequest;
 use Illuminate\Http\Response as HttpResponse;
@@ -37,7 +35,7 @@ class HeadOfProgramController extends Controller
                 unset($program->latestEpisode);
                 return $program;
             })->onEachSide(5);
-        dd(json_encode($programs, JSON_PRETTY_PRINT));
+        // dd(json_encode($programs, JSON_PRETTY_PRINT));
         return Inertia::render('HeadOfProgram/ActiveProgram', [
             'programs' => $programs
         ]);
@@ -80,17 +78,6 @@ class HeadOfProgramController extends Controller
             return response(status: 500);
         }
         return response(status: 200);
-    }
-
-    public function createEpisode(CreateEpisodeRequest $req): HttpResponse
-    {
-        try {
-            $payload = $req->validated();
-            Episode::create($payload);
-        } catch (Exception) {
-            return response(status: 500);
-        }
-        return response(status: 201);
     }
 
     public function delete(Program $program): Response

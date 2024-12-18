@@ -43,16 +43,15 @@ const ActiveProgram = ({ programs }: { programs: PaginatedProgramData }) => {
     const filterPrograms = (programs: Program[], searchInput: string) => {
         return programs.filter(
             (program) =>
-                program.is_active &&
-                (program.name
+                program.name
                     .toLowerCase()
                     .includes(searchInput.toLowerCase()) ||
-                    program.code
-                        .toLowerCase()
-                        .includes(searchInput.toLowerCase()) ||
-                    program.description
-                        .toLowerCase()
-                        .includes(searchInput.toLowerCase()))
+                program.code
+                    .toLowerCase()
+                    .includes(searchInput.toLowerCase()) ||
+                program.description
+                    .toLowerCase()
+                    .includes(searchInput.toLowerCase())
         );
     };
 
@@ -66,7 +65,7 @@ const ActiveProgram = ({ programs }: { programs: PaginatedProgramData }) => {
     return (
         <Layout>
             <>
-                <h1 className="heading-3 font-semibold">Program Aktif</h1>
+                <h1 className="heading-3 font-semibold">Proses</h1>
                 <div className="flex items-center gap-6">
                     <SearchField onSearch={handleSearch} />
                     <p className="caption-1">

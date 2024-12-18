@@ -17,7 +17,7 @@ class DashboardController extends Controller
 {
     public const  MAX_RECORDS = 15;
 
-    public function __invoke(Request $req): Response
+    public function __invoke(Request $req)
     {
         /** @var App\Models\User */
         $user = Auth::user();
@@ -31,6 +31,8 @@ class DashboardController extends Controller
             return $this->headOfProgram($req);
         } elseif ($user->hasRole('mcr')) {
             return $this->mcr($req);
+        } elseif ($user->hasRole('producer')) {
+            return redirect('/producer/new-programs');
         }
     }
 
@@ -111,10 +113,10 @@ class DashboardController extends Controller
                 unset($program->latestEpisode);
                 return $program;
             });
-        dd(json_encode([
-            'draft_programs' => $draftPrograms,
-            'active_programs' => $activePrograms,
-        ], JSON_PRETTY_PRINT));
+        // dd(json_encode([
+        //     'draft_programs' => $draftPrograms,
+        //     'active_programs' => $activePrograms,
+        // ], JSON_PRETTY_PRINT));
         #TODO: render the correct page & delete dd
         return Inertia::render('Dashboard', [
             'draft_programs' => $draftPrograms,

@@ -5,7 +5,7 @@ export const useProgramService = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const deleteProgram = async (slug: string) => {
+    const deleteProgram = async (slug: string): Promise<boolean> => {
         setLoading(true);
         setError(null);
         try {
@@ -19,17 +19,14 @@ export const useProgramService = () => {
                             ?.getAttribute("content") || "",
                 },
             });
-            return response.status === 200;
-        } catch (err: any) {
-            if (err.response) {
-                setError(
-                    err.response.data.message || "Failed to delete program"
-                );
-            } else if (err.request) {
-                setError("Network error. Please check your connection.");
+            if (response.status === 200) {
+                return response.data;
             } else {
-                setError("An unexpected error occurred");
+                throw new Error("Failed to delete program");
             }
+        } catch (err: any) {
+            setError(err.message);
+            console.error("Error deleting program:", err);
             return false;
         } finally {
             setLoading(false);

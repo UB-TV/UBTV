@@ -5,9 +5,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\McrController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\EditorController;
+use App\Http\Controllers\ProducerController;
 use App\Http\Controllers\CameramanController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GoogleSSOController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\HeadOfProgramController;
 
 Route::controller(GoogleSSOController::class)->prefix('/sso/google')->group(function () {
@@ -50,7 +52,13 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/programs', 'programs');
         Route::get('/pending/{program:slug}', 'pendingProgram');
         Route::get('/programs/{program:slug}', 'program');
+        Route::get('/notifications', 'notifications');
     })->middleware('role:mcr');
+    Route::controller(ProducerController::class)->prefix('/producer')->group(function () {
+        Route::get('/new-programs', 'newPrograms');
+        Route::get('/pending', 'pending');
+        Route::get('/notifications', 'notifications');
+    });
 
     # API
     Route::prefix('/api/v1')->group(function () {
@@ -60,7 +68,7 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('/{program:slug}', [HeadOfProgramController::class, 'delete']);
         })->middleware('role:head_of_program');
         Route::prefix('/episodes')->group(function () {
-            Route::post('/', [HeadOfProgramController::class, 'createEpisode']);
+            Route::post('/', [ProducerController::class, 'createEpisode']);
             Route::patch('/{episode:id}', [McrController::class, 'update']);
         })->middleware('role:head_of_program');
         Route::prefix('/videos')->group(function () {
@@ -73,6 +81,9 @@ Route::middleware(['auth'])->group(function () {
             Route::patch('/{user:id}', [AdminController::class, 'updateUserStatus']);
             Route::delete('/{id}', [AdminController::class, 'deleteUser']);
         })->middleware('role:admin');
+        Route::prefix('/notifications')->group(function () {
+            Route::post('/', [NotificationController::class, 'store']);
+        })->middleware("role:producer,mcr");
     });
     #############################
 
