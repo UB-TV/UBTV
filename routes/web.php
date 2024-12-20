@@ -70,7 +70,7 @@ Route::middleware(['auth'])->group(function () {
         Route::prefix('/episodes')->group(function () {
             Route::post('/', [ProducerController::class, 'createEpisode']);
             Route::patch('/{episode:id}', [McrController::class, 'update']);
-        })->middleware('role:head_of_program');
+        })->middleware('role:producer,mcr');
         Route::prefix('/videos')->group(function () {
             Route::post('/', [CameramanController::class, 'upload']);
         })->middleware('role:cameraman');
