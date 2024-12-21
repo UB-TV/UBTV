@@ -6,10 +6,8 @@ use App\Models\User;
 use App\Models\Video;
 use App\Models\Episode;
 use App\Models\Program;
-use App\Enums\StatusEnum;
 use App\Models\Notification;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
@@ -48,41 +46,23 @@ class DatabaseSeeder extends Seeder
             'is_active' => null,
         ]);
 
-        $programs = Program::factory()->count(2)->create();
-
-        // Seed Episodes
+        $programs = Program::factory(10)->create();
         foreach ($programs as $program) {
-            Episode::factory()->count(2)->create([
-                'program_id' => $program->id,
-            ]);
-        }
-        foreach ($programs as $program) {
-            Episode::factory()->count(2)->create([
-                'program_id' => $program->id,
-                'status' => StatusEnum::MCR_VALIDATION
-            ]);
-        }
-
-        // Seed Videos
-        $episodes = $programs->random()->episodes;
-        foreach ($episodes as $episode) {
-            Video::factory()->count($episode->segment_count)->create([
-                'episode_id' => $episode->id,
-            ]);
-        }
-
-        // Seed User_Video Pivot Table
-        foreach ($users as $user) {
+            $episodes = Episode::factory(rand(5, 10))
+                ->create(['program_id' => $program->id]);
             foreach ($episodes as $episode) {
-                if ($episode->videos === null) {
-                    continue;
-                }
-                foreach ($episode->videos as $video) {
-                    DB::table('user_video')->insert([
-                        'user_id' => $user->id,
-                        'video_id' => $video->id,
-                    ]);
-                }
+                Video::factory(rand(3, 8))
+                    ->create(['episode_id' => $episode->id]);
+            }
+        }
+
+        // Assign random Videos to each predefined User
+        $videos = Video::all();
+
+        foreach ($users as $user) {
+            $randomVideos = $videos->random(rand(5, 15));
+            foreach ($randomVideos as $video) {
+                $user->videos()->attach($video->id);
             }
         }
 

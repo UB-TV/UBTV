@@ -12,15 +12,10 @@ return new class () extends Migration {
     {
         Schema::create('videos', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('episode_id');
+            $table->foreignId('episode_id')->constrained();
             $table->string('object_id');
             $table->unsignedInteger('segment_number')->nullable();
             $table->timestamps();
-            $table->foreign('episode_id')
-                ->references('id')
-                ->on('episodes')
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
         });
     }
 

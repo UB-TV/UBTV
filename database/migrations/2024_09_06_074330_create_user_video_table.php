@@ -12,20 +12,10 @@ return new class () extends Migration {
     {
         Schema::create('user_video', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('video_id');
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('video_id')->constrained();
             $table->timestamps();
             $table->unique(['user_id', 'video_id']);
-            $table->foreign('user_id')
-                ->references('id')
-                ->on('users')
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
-            $table->foreign('video_id')
-                ->references('id')
-                ->on('videos')
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
         });
     }
 
