@@ -17,7 +17,7 @@ class DashboardController extends Controller
 {
     public const  MAX_RECORDS = 15;
 
-    public function __invoke(Request $req): Response
+    public function __invoke(Request $req)
     {
         /** @var App\Models\User */
         $user = Auth::user();
@@ -31,6 +31,8 @@ class DashboardController extends Controller
             return $this->headOfProgram($req);
         } elseif ($user->hasRole('mcr')) {
             return $this->mcr($req);
+        } elseif ($user->hasRole('producer')) {
+            return redirect('/producer/new-programs');
         }
     }
 

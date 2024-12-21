@@ -2,70 +2,49 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
+use HttpResponse;
 use Inertia\Inertia;
 use App\Models\Episode;
 use App\Models\Program;
 use App\Enums\RolesEnum;
 use App\Enums\StatusEnum;
 use App\Models\Notification;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use Illuminate\Database\Eloquent\Builder;
+use App\Http\Requests\CreateEpisodeRequest;
 
-class McrController extends Controller
+class ProducerController extends Controller
 {
     public const PAGINATION_PAGE_SIZE = 15;
     public const PAGINATION_EACH_SIDE_SIZE = 5;
 
-    public function pending(): \Inertia\Response
-    {
-        $programs = Program::whereHas('episodes', function (Builder $query) {
-            $query->where('status', '=', StatusEnum::MCR_VALIDATION);
-        })
-            ->paginate(self::PAGINATION_PAGE_SIZE)
-            ->onEachSide(self::PAGINATION_EACH_SIDE_SIZE);
-
-        return Inertia::render('MCR/ProgramValidation', $programs);
-    }
-
-    public function programs(): \Inertia\Response
+    public function newPrograms(): \Inertia\Response
     {
         $programs = Program::orderBy('created_at', 'desc')
             ->paginate(self::PAGINATION_PAGE_SIZE)
             ->onEachSide(self::PAGINATION_EACH_SIDE_SIZE);
 
-        return Inertia::render('MCR/Program', $programs);
+        dd(json_encode($programs, JSON_PRETTY_PRINT));
+        return Inertia::render('CHANGEME', $programs);
     }
 
-    public function pendingProgram(Program $program): \Inertia\Response
+    public function pending(): \Inertia\Response
     {
-        $program->load('episodes.videos');
-        // dd(json_encode($program, JSON_PRETTY_PRINT));
-        return Inertia::render('MCR/ProgramDetail', $program);
-    }
+        $programs = Program::whereHas('episodes', function (Builder $query) {
+            $query->where('status', '=', StatusEnum::PRODUCER_VALIDATION);
+        })
+            ->paginate(self::PAGINATION_PAGE_SIZE)
+            ->onEachSide(self::PAGINATION_EACH_SIDE_SIZE);
 
-    public function program(Program $program): \Inertia\Response
-    {
-        $program->load('episodes');
-        // dd(json_encode($program, JSON_PRETTY_PRINT));
-        return Inertia::render('MCR/ProgramDetail', $program);
-    }
-
-    public function update(Episode $episode, Request $request): \Illuminate\Http\Response
-    {
-        $validated = $request->validate([
-            'episode_id' => ['required'],
-            'status' => ['required', Rule::enum(StatusEnum::class)],
-        ]);
-        $episode->status = $validated['status'];
-        return response(status: 200);
+        dd(json_encode($programs, JSON_PRETTY_PRINT));
+        return Inertia::render('CHANGEME', $programs);
     }
 
     public function notifications(): \Inertia\Response
     {
         $notifications = Notification::with(['user', 'program', 'episode', 'role'])
             ->whereHas('role', function (Builder $query) {
-                $query->where('name', '=', RolesEnum::MCR);
+                $query->where('name', '=', RolesEnum::PRODUCER);
             })
             ->orderBy('created_at', 'desc')
             ->paginate(self::PAGINATION_PAGE_SIZE)
@@ -87,5 +66,23 @@ class McrController extends Controller
         dd(json_encode($notifications, JSON_PRETTY_PRINT));
 
         return Inertia::render('CHANGEME', $notifications);
+    }
+
+    public function pendingProgram(Program $program): \Inertia\Response
+    {
+        $program->load('episodes.videos');
+        dd(json_encode($program, JSON_PRETTY_PRINT));
+        return Inertia::render('CHANGEME', $program);
+    }
+
+    public function createEpisode(CreateEpisodeRequest $req): HttpResponse
+    {
+        try {
+            $payload = $req->validated();
+            Episode::create($payload);
+        } catch (Exception) {
+            return response(status: 500);
+        }
+        return response(status: 201);
     }
 }
