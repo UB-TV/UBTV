@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Exception;
 use HttpResponse;
 use Inertia\Inertia;
+use App\Models\Video;
 use App\Models\Episode;
 use App\Models\Program;
 use App\Enums\RolesEnum;
@@ -71,6 +72,9 @@ class ProducerController extends Controller
     public function pendingProgram(Program $program): \Inertia\Response
     {
         $program->load('episodes.videos');
+        $program->videos->transform(function (Video $video, int $key) {
+            $video->url = "https://drive.google.com/uc?export=download&id={$video->object_id}";
+        });
         dd(json_encode($program, JSON_PRETTY_PRINT));
         return Inertia::render('CHANGEME', $program);
     }
