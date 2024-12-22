@@ -5,25 +5,18 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 return new class () extends Migration {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('user_video', function (Blueprint $table) {
+        Schema::create('user_team', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
-            $table->foreignId('video_id')->constrained();
+            $table->foreignId('team_id')->constrained();
             $table->timestamps();
-            $table->unique(['user_id', 'video_id']);
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('');
+        Schema::dropIfExists('user_team');
     }
 };
