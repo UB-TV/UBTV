@@ -11,10 +11,10 @@ use App\Models\Program;
 use Google\Service\Drive;
 use Illuminate\Http\Request;
 use Google\Service\Drive\DriveFile;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Http\Response as HttpResponse;
 use App\Http\Requests\PostEpisodeSegmentRequest;
-use Illuminate\Contracts\Database\Eloquent\Builder;
 
 class EditorController extends Controller
 {
@@ -54,11 +54,10 @@ class EditorController extends Controller
             $query->orderBy('segment_number', 'asc');
         }])->where('program_id', '=', $program->id)->get();
         $program->episode_count = $episodes->count();
-        #TODO: render the correct page & delete dd
-        // dd(json_encode([
-        //     'program' => $program,
-        //     'episodes' => $episodes,
-        // ]));
+        $episodes->transform(function (Video $video, int $_) {
+            $video->url = "https://drive.google.com/uc?export=download&id={$video->object_id}";
+        });
+
         return Inertia::render('Editor/ProgramDetail', [
             'program' => $program,
             'episodes' => $episodes,
