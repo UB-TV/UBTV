@@ -13,7 +13,10 @@ return new class () extends Migration {
         Schema::create('user_video', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
-            $table->foreignId('video_id')->constrained();
+            $table->foreignId('video_id')
+                ->constrained()
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
             $table->timestamps();
             $table->unique(['user_id', 'video_id']);
         });
