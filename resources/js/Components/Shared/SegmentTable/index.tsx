@@ -93,7 +93,7 @@ const SegmentTable = ({
                 <thead>
                     <tr className="font-medium text-secondary-text text-left bg-grey-100 border-b border-grey-200 rounded-md">
                         {SEGMENT_HEADER.map((dx, idx) => (
-                            <th key={idx * 101} className={`p-2 w-[${dx.width}] text-center whitespace-nowrap`}>
+                            <th key={idx * 101} className={`p-2 w-[${dx.width}] text-left whitespace-nowrap`}>
                                 {dx.label}
                             </th>
                         ))}
@@ -102,8 +102,8 @@ const SegmentTable = ({
                 <tbody>
                     {data.map((dx, idx) => (
                         <tr key={idx * 101}>
-                            <td className="p-2 text-center">{dx.episode_id}</td>
-                            <td className="p-2 text-center">
+                            <td className="p-2">{dx.episode_id}</td>
+                            <td className="p-2">
                                 <div className="flex flex-col gap-1">
                                     <Select
                                         id={`status-${dx.id}`}
@@ -121,19 +121,21 @@ const SegmentTable = ({
                                     )}
                                 </div>
                             </td>
-                            <td className="p-2 text-center">{dx.segment_number}</td>
-                            <td className="p-2">
-                                <img
-                                    src='/image/program-thumbnail.jpg'
-                                    alt='segment thumbnail'
-                                    className="w-[170px] h-[120px] rounded-md"
-                                />
+                            <td className="p-2">{dx.segment_number}</td>
+                            <td className="p-2 flex items-center justify-center">
+                                <div className="p-2 rounded-md shadow-lg">
+                                    <img
+                                        src='/image/program-thumbnail.jpg'
+                                        alt='segment thumbnail'
+                                        className="w-[150px] h-[100px] rounded-md"
+                                    />
+                                </div>
                             </td>
-                            <td className="p-2 text-center">
+                            <td className="p-2">
                                 <div className="w-full h-full flex items-center justify-center">
-                                <Button
+                                    <Button
                                         type="button"
-                                        label= "Unduh"
+                                        label="Unduh"
                                         style="Filled"
                                         color="Primary"
                                         width="Fit"
