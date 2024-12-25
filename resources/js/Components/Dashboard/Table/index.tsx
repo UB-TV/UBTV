@@ -6,6 +6,7 @@ import { Link } from "@inertiajs/react";
 import Pagination from "../Pagination/Index";
 import { IPaginationLink } from "@/models/generalinterfaces";
 import { useFetchNewUsers } from "@/repositories/Admin/useFetchNewUsers";
+import useFormatDate from "@/util/useFormatDate";
 
 type TableHeaderProps = {
     label: string;
@@ -17,6 +18,7 @@ interface TableProps {
     body: any;
     action?: string;
     redirectUrl?: string;
+    isRedirectPrefix?: boolean;
     pagination: boolean;
     type: 'Program' | 'Program Status' | 'Status Episode' | 'Message' | 'User Permission' | 'User' | 'Admin';
     pagination_link?: IPaginationLink[];
@@ -28,6 +30,7 @@ const Table = ({
     body,
     action,
     redirectUrl,
+    isRedirectPrefix = false,
     pagination,
     type,
     pagination_link
@@ -43,31 +46,31 @@ const Table = ({
 
     const handleAccept = async (userId: number) => {
         try {
-          await updateUserStatus(userId, true);
-          window.location.reload();
+            await updateUserStatus(userId, true);
+            window.location.reload();
         } catch (err) {
-          console.error("Error accepting user:", err);
+            console.error("Error accepting user:", err);
         }
-      };
-    
-      const handleReject = async (userId: number) => {
+    };
+
+    const handleReject = async (userId: number) => {
         try {
-          await updateUserStatus(userId, false);
-          window.location.reload();
+            await updateUserStatus(userId, false);
+            window.location.reload();
         } catch (err) {
-          console.error("Error rejecting user:", err);
+            console.error("Error rejecting user:", err);
         }
-      };
-    
-      const handleDelete = async (userId: number) => {
+    };
+
+    const handleDelete = async (userId: number) => {
         try {
-          await deleteUser(userId);
-          window.location.reload();
+            await deleteUser(userId);
+            window.location.reload();
         } catch (err) {
-          console.error("Error deleting user:", err);
-          alert('Failed to delete user. Please try again.');
+            console.error("Error deleting user:", err);
+            alert('Failed to delete user. Please try again.');
         }
-      };
+    };
 
     return (
         <div>
@@ -129,20 +132,20 @@ const Table = ({
                                         <>
                                             <td className="p-2">{body.code}</td>
                                             <td className="p-2">{body.name}</td>
-                                            <td className="p-2">{body.premiere_at}</td>
+                                            <td className="p-2">{useFormatDate(body.premiere_at)}</td>
                                             {type === 'Status Episode' && (
                                                 <td className="p-2">{body.episode}</td>
                                             )}
                                             {(type === 'Status Episode' || type === 'Program Status') && (
-                                                <td className="p-2">{body.status}</td>
+                                                <td className="p-2">{body.is_active ? 'Aktif': 'Tidak Aktif'}</td>
                                             )}
                                         </>
                                     ) : type === 'Message' ? (
                                         <>
-                                            <td className="p-2">{body.sender}</td>
-                                            <td className="p-2">{body.programTitle}</td>
-                                            <td className="p-2">{body.programEpisode}</td>
-                                            <td className="p-2">{body.senderRole}</td>
+                                            <td className="p-2">{body.from}</td>
+                                            <td className="p-2 capitalize">{body.program_name}</td>
+                                            <td className="p-2">{body.episode_id}</td>
+                                            <td className="p-2">{body.role_name}</td>
                                             <td className="p-2">{body.message}</td>
                                         </>
                                     ) : (
@@ -152,15 +155,27 @@ const Table = ({
                                     )}
                                     {(action) && (
                                         <td className="flex justify-center p-2">
-                                            <Link
-                                                href={`/${role}/${body.slug}`}
-                                            >
-                                                <IconButton
-                                                    color="Primary"
-                                                    icon="/icon/more-fill.svg"
-                                                    style="Filled"
-                                                />
-                                            </Link>
+                                            {isRedirectPrefix ? (
+                                                <Link
+                                                    href={`/${role}/${redirectUrl}/${body.slug}`}
+                                                >
+                                                    <IconButton
+                                                        color="Primary"
+                                                        icon="/icon/more-fill.svg"
+                                                        style="Filled"
+                                                    />
+                                                </Link>
+                                            ) : (
+                                                <Link
+                                                    href={`/${role}/${body.slug}`}
+                                                >
+                                                    <IconButton
+                                                        color="Primary"
+                                                        icon="/icon/more-fill.svg"
+                                                        style="Filled"
+                                                    />
+                                                </Link>
+                                            )}
                                         </td>
                                     )}
                                 </>

@@ -31,3 +31,22 @@ export const EditorMenus = [
         label: 'Pesan Masuk'
     },
 ]
+
+export const MCRMenus = [
+    {
+        link: '/',
+        label: 'Dashboard'
+    },
+    {
+        link: '/mcr/pending',
+        label: 'Perlu Validasi'
+    },
+    {
+        link: '/mcr/programs',
+        label: 'Program'
+    },
+    {
+        link: '/mcr/notifications',
+        label: 'Pesan Masuk'
+    },
+]

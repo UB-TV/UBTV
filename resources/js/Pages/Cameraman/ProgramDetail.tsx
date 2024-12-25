@@ -71,7 +71,7 @@ const ProgramDetail = ({
                             <div className="max-w-[48%] w-full flex flex-col gap-3">
                                 <div>
                                     <h1 className="heading-5 font-semibold mb-[6px]">Waktu Premiere</h1>
-                                    <p className="body-2 font-semibold text-secondary-text">{program.premiere_at}</p>
+                                    <p className="body-2 font-semibold text-secondary-text">{useFormatDate(program.premiere_at)}</p>
                                 </div>
                                 <div>
                                     <h1 className="heading-5 font-semibold mb-[6px]">Tim</h1>
@@ -106,7 +106,7 @@ const ProgramDetail = ({
                                         duration={episode.duration}
                                         desc={episode.description}
                                         productionDate={useFormatDate(episode.start_production)}
-                                        theme={episode.themes}
+                                        theme={episode.theme}
                                     />
                                 )
                             })}

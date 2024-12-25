@@ -58,11 +58,15 @@ export const MCR_VALIDATION_HEADER = [
     },
     {
         label: 'Nama',
-        width: '35%'
+        width: '30%'
     },
     {
         label: 'Waktu  Premiere',
-        width: '35%'
+        width: '30%'
+    },
+    {
+        label: 'Status',
+        width: '10%'
     }
 ]
 
@@ -73,15 +77,15 @@ export const MCR_PROGRAM_HEADER = [
     },
     {
         label: 'Nama',
-        width: '25%'
+        width: '30%'
     },
     {
         label: 'Waktu  Premiere',
-        width: '25%'
+        width: '30%'
     },
     {
-        label: 'Status Program',
-        width: '20%'
+        label: 'Status',
+        width: '10%'
     }
 ]
 
@@ -143,5 +147,28 @@ export const ADMIN_HEADER = [
     {
         label: 'No. Telepon',
         width: '20%'
+    },
+]
+
+export const SEGMENT_HEADER = [
+    {
+        label: 'Episode',
+        width: '10%'
+    },
+    {
+        label: 'Status',
+        width: '45%'
+    },
+    {
+        label: 'Segmen',
+        width: '10%'
+    },
+    {
+        label: 'Video',
+        width: '20%'
+    },
+    {
+        label: 'Aksi',
+        width: '15%'
     },
 ]

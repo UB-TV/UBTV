@@ -33,7 +33,7 @@ class DatabaseSeeder extends Seeder
             'phone_number' => '0822222222',
             'employee_id' => 'EMP-2121-0000',
             'is_active' => true,
-        ])->assignRole('editor');
+        ])->assignRole('mcr');
         $users[] = User::create([
             'email' => 'achmalpradiptaaditama@gmail.com',
             'name' => 'Achmal test',
