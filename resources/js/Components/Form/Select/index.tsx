@@ -9,6 +9,7 @@ type SelectProps = {
         value: string;
     }[];
     control: any;
+    disabled?: boolean
     onChange?: (value: string) => void;
     value?: string;
 };
@@ -20,6 +21,7 @@ const Select = ({
     options,
     control,
     onChange,
+    disabled = false,
     value: propValue = ''
 }: SelectProps) => {
     const {
@@ -43,6 +45,7 @@ const Select = ({
                     onChange && onChange(e.target.value);
                 }}
                 className="p-[10px] body-2 rounded-lg"
+                disabled={disabled}
             >
                 <option value="" disabled>
                     {placeholder}

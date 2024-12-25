@@ -4,8 +4,11 @@ import { useRef } from "react"
 import Dialog from "@/Components/Shared/Dialog"
 import Button from "@/Components/Shared/Button"
 import DetailEpisodeForm from "../DetailEpisodeForm"
+import RevisionForm from "../RevisionForm"
 
 type EpisodeCardProps = {
+    program_id?: number
+    epsideo_id?: number
     episodeNumber: number
     thumbnail: string
     code: string
@@ -20,6 +23,8 @@ type EpisodeCardProps = {
 }
 
 const EpisodeCard = ({
+    program_id,
+    epsideo_id,
     episodeNumber,
     thumbnail,
     code,
@@ -32,6 +37,7 @@ const EpisodeCard = ({
     isRevision = false
 }: EpisodeCardProps) => {
     const dialogRef = useRef<HTMLDialogElement>(null);
+    const revisionDialogRef = useRef<HTMLDialogElement>(null);
 
     function toggleDialog() {
         if (!dialogRef.current) {
@@ -40,6 +46,15 @@ const EpisodeCard = ({
         dialogRef.current.hasAttribute("open")
             ? dialogRef.current.close()
             : dialogRef.current.showModal();
+    }
+
+    function toggleRevisionDialog() {
+        if (!revisionDialogRef.current) {
+            return;
+        }
+        revisionDialogRef.current.hasAttribute("open")
+            ? revisionDialogRef.current.close()
+            : revisionDialogRef.current.showModal();
     }
 
     return (
@@ -65,7 +80,7 @@ const EpisodeCard = ({
                             color="Primary"
                             width="Full"
                             size="Small"
-                            onClick={toggleDialog}
+                            onClick={toggleRevisionDialog}
                         />
                     )}
                 </div>
@@ -74,6 +89,13 @@ const EpisodeCard = ({
                 <h1 className="heading-2 font-semibold text-left">Episode {episodeNumber}</h1>
                 <DetailEpisodeForm code={code} productionDate={productionDate} theme={theme} desc={desc} duration={duration} segment={segment} />
                 <Button type="button" label="Kembali" style="Filled" color="Primary" width="Full" size="Large" onClick={toggleDialog} />
+            </Dialog>
+            <Dialog size="Normal" toggleDialog={toggleRevisionDialog} ref={revisionDialogRef}>
+                <h1 className="heading-2 font-semibold text-left">Revisi</h1>
+                <RevisionForm
+                    programId={program_id ?? 0}
+                    episodeId={epsideo_id ?? 0}
+                />
             </Dialog>
         </>
     )

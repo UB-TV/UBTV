@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
- * 
+ *
  *
  * @method static \Database\Factories\NotificationFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Notification newModelQuery()
@@ -23,6 +23,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Notification extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'program_id',
+        'episode_id',
+        'role_id',
+        'message'
+    ];
 
     public function user(): BelongsTo
     {

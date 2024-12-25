@@ -149,3 +149,26 @@ export const ADMIN_HEADER = [
         width: '20%'
     },
 ]
+
+export const SEGMENT_HEADER = [
+    {
+        label: 'Episode',
+        width: '10%'
+    },
+    {
+        label: 'Status',
+        width: '45%'
+    },
+    {
+        label: 'Segmen',
+        width: '10%'
+    },
+    {
+        label: 'Video',
+        width: '20%'
+    },
+    {
+        label: 'Aksi',
+        width: '15%'
+    },
+]

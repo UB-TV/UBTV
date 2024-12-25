@@ -6,8 +6,10 @@ import Layout from "@/Layout";
 import IconButton from '@/Components/Shared/IconButton.tsx';
 import Button from '@/Components/Shared/Button';
 import EpisodeCard from '@/Components/MCR/EpisodeCard';
-import { IEpisode } from '@/models/episodeinterfaces';
+import { IEpisode, IVideoWithStatus } from '@/models/episodeinterfaces';
 import useFormatDate from '@/util/useFormatDate';
+import SegmentTable from '@/Components/Shared/SegmentTable';
+import { useForm } from 'react-hook-form';
 
 interface IMCRProgramDetail {
     id: number;
@@ -36,21 +38,24 @@ const ProgramDetail = ({
 }: IMCRProgramDetail) => {
 
     const dialogRef = useRef<HTMLDialogElement>(null);
+    const { control } = useForm();
 
-    function toggleDialog() {
-        if (!dialogRef.current) {
-            return;
+    const allVideos: IVideoWithStatus[] = episodes.reduce<IVideoWithStatus[]>((acc, episode) => {
+        if (episode.videos) {
+            const videosWithStatus = episode.videos.map(video => ({
+                ...video,
+                episodeStatus: episode.status || 'MCR_VALIDATION'
+            }));
+            return [...acc, ...videosWithStatus];
         }
-        dialogRef.current.hasAttribute("open")
-            ? dialogRef.current.close()
-            : dialogRef.current.showModal();
-    }
+        return acc;
+    }, []);
+
+    const isRevision = episodes[0]?.videos ? true : false;
 
     const handleBackButton = () => {
         window.history.back();
     };
-
-    const isRevision = episodes[0]?.videos ? true : false;
 
     return (
         <Layout>
@@ -111,6 +116,8 @@ const ProgramDetail = ({
                                 return (
                                     <EpisodeCard key={index}
                                         {...episode}
+                                        program_id={id}
+                                        epsideo_id={episode.id}
                                         thumbnail={'/image/program-thumbnail.jpg'}
                                         desc={episode.description}
                                         episodeNumber={index + 1}
@@ -126,7 +133,12 @@ const ProgramDetail = ({
                     </div>
                 </section>
                 <section>
-                    {/* SEGMENT SECTION */}
+                    <section>
+                        <SegmentTable
+                            data={allVideos}
+                            control={control}
+                        />
+                    </section>
                 </section>
             </>
         </Layout>

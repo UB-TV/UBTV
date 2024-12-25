@@ -1,32 +1,47 @@
-import TextArea from "@/Components/Form/TextArea";
-import Button from "@/Components/Shared/Button";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Button from "@/Components/Shared/Button";
+import TextArea from "@/Components/Form/TextArea";
+import useSubmitRevision from "@/repositories/shared/useSubmitRevision";
 
 const schema = z.object({
-    revisionMessage: z.string()
+    revisionMessage: z.string().min(1, "Pesan revisi tidak boleh kosong")
 });
 
 type FormFields = z.infer<typeof schema>;
 
+interface RevisionFormProps {
+    programId: number;
+    episodeId: number;
+    onSuccess?: () => void;
+}
 
-type RevisionFormProps = {}
+const RevisionForm = ({ programId, episodeId, onSuccess }: RevisionFormProps) => {
+    const { submitRevision, isLoading, error } = useSubmitRevision();
 
-const RevisionForm = (RevisionFormProps: RevisionFormProps) => {
     const {
-        register,
         handleSubmit,
         formState,
-        control
+        control,
+        reset
     } = useForm<FormFields>({
         resolver: zodResolver(schema),
     });
 
     const { errors } = formState;
 
-    const onSubmit: SubmitHandler<FormFields> = (data) => {
-        console.log(data);
+    const onSubmit: SubmitHandler<FormFields> = async (data) => {
+        try {
+            const response = await submitRevision({
+                program_id: programId,
+                episode_id: episodeId,
+                message: data.revisionMessage
+            });
+
+        } catch (err) {
+            console.error("Failed to submit revision:", err);
+        }
     };
 
     return (
@@ -43,16 +58,21 @@ const RevisionForm = (RevisionFormProps: RevisionFormProps) => {
                     <span className="text-error-500">{errors.revisionMessage.message}</span>
                 )}
             </div>
+            {error && (
+                <div className="p-2 bg-error-50 text-error-700 rounded">
+                    {error}
+                </div>
+            )}
             <Button
                 type="submit"
-                label="Kirim"
+                label={isLoading ? "Mengirim..." : "Kirim"}
                 style="Filled"
                 color="Primary"
                 width="Full"
                 size="Large"
             />
         </form>
-    )
-}
+    );
+};
 
-export default RevisionForm
+export default RevisionForm;

@@ -17,7 +17,12 @@ export interface IVideo {
     id: string;
     episode_id: string;
     object_id: string;
+    url?: string;
     segment_number: number;
     created_at: string;
     updated_at: string;
+}
+
+export interface IVideoWithStatus extends IVideo {
+    episodeStatus: string;
 }

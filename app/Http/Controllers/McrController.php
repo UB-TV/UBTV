@@ -48,14 +48,12 @@ class McrController extends Controller
             });
             return $episode;
         });
-        dd(json_encode($program, JSON_PRETTY_PRINT));
-        return Inertia::render('CHANGEME', $program);
+        return Inertia::render('MCR/ProgramDetail', $program);
     }
 
     public function program(Program $program): \Inertia\Response
     {
         $program->load('episodes');
-        // dd(json_encode($program, JSON_PRETTY_PRINT));
         return Inertia::render('MCR/ProgramDetail', $program);
     }
 
