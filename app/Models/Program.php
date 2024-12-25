@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $code
@@ -46,6 +46,11 @@ class Program extends Model
 
     protected $casts = [
         'is_active' => 'boolean',
+    ];
+
+
+    protected $fillable = [
+        'code', 'slug', 'name', 'description', 'is_active', 'premiere_at'
     ];
 
     public function episodes(): HasMany
