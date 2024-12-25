@@ -33,7 +33,7 @@ const RevisionForm = ({ programId, episodeId, onSuccess }: RevisionFormProps) =>
 
     const onSubmit: SubmitHandler<FormFields> = async (data) => {
         try {
-            const response = await submitRevision({
+            await submitRevision({
                 program_id: programId,
                 episode_id: episodeId,
                 message: data.revisionMessage
@@ -65,7 +65,7 @@ const RevisionForm = ({ programId, episodeId, onSuccess }: RevisionFormProps) =>
             )}
             <Button
                 type="submit"
-                label={isLoading ? "Mengirim..." : "Kirim"}
+                label="Kirim"
                 style="Filled"
                 color="Primary"
                 width="Full"

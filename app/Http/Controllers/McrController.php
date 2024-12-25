@@ -91,8 +91,8 @@ class McrController extends Controller
             })
             ->onEachSide(self::PAGINATION_EACH_SIDE_SIZE);
 
-        dd(json_encode($notifications, JSON_PRETTY_PRINT));
+        // dd(json_encode($notifications, JSON_PRETTY_PRINT));
 
-        return Inertia::render('CHANGEME', $notifications);
+        return Inertia::render('Shared/Notification', $notifications);
     }
 }

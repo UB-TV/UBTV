@@ -142,10 +142,10 @@ const Table = ({
                                         </>
                                     ) : type === 'Message' ? (
                                         <>
-                                            <td className="p-2">{body.sender}</td>
-                                            <td className="p-2">{body.programTitle}</td>
-                                            <td className="p-2">{body.programEpisode}</td>
-                                            <td className="p-2">{body.senderRole}</td>
+                                            <td className="p-2">{body.from}</td>
+                                            <td className="p-2 capitalize">{body.program_name}</td>
+                                            <td className="p-2">{body.episode_id}</td>
+                                            <td className="p-2">{body.role_name}</td>
                                             <td className="p-2">{body.message}</td>
                                         </>
                                     ) : (

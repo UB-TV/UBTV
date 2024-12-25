@@ -17,7 +17,6 @@ const Program = ({
         setSearchInput(input);
     };
 
-
     const filterPrograms = (programs: any, searchInput: string) => {
         const filteredPrograms = programs.filter((program: any) =>
             program.name.toLowerCase().includes(searchInput.toLowerCase())
@@ -28,7 +27,7 @@ const Program = ({
     const filteredPrograms = useMemo(
         () => filterPrograms(data, searchInput),
         [searchInput]
-    );;
+    );
 
     return (
         <Layout>

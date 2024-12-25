@@ -101,7 +101,7 @@ Route::middleware(['auth'])->group(function () {
     })->name('cameraman-not-uploaded-program-detail');
 
     Route::get('/message', function () {
-        return Inertia::render('Shared/ProgramMessage');
+        return Inertia::render('Shared/Notification');
     })->name('program-message');
 
     Route::get('/not-uploaded/editor/{slug}', function () {

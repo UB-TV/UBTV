@@ -45,4 +45,8 @@ export const MCRMenus = [
         link: '/mcr/programs',
         label: 'Program'
     },
+    {
+        link: '/mcr/notifications',
+        label: 'Pesan Masuk'
+    },
 ]

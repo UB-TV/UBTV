@@ -132,14 +132,14 @@ const ProgramDetail = ({
                         </div>
                     </div>
                 </section>
-                <section>
+                {allVideos.length > 0 && (
                     <section>
                         <SegmentTable
                             data={allVideos}
                             control={control}
                         />
                     </section>
-                </section>
+                )}
             </>
         </Layout>
     );
