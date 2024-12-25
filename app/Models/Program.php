@@ -50,7 +50,12 @@ class Program extends Model
 
 
     protected $fillable = [
-        'code', 'slug', 'name', 'description', 'is_active', 'premiere_at'
+        'code',
+        'slug',
+        'name',
+        'description',
+        'is_active',
+        'premiere_at',
     ];
 
     public function episodes(): HasMany
