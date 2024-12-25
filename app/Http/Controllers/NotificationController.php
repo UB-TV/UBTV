@@ -27,7 +27,7 @@ class NotificationController extends Controller
 
         $episode = Episode::where('program_id', '=', 'program_id')
             ->where('id', '=', $payload['episode_id'])
-            ->get();
+            ->first();
         if ($episode === null) {
             return response(status: 404);
         }

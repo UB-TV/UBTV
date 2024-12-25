@@ -68,6 +68,7 @@ class McrController extends Controller
             'status' => ['required', Rule::enum(StatusEnum::class)],
         ]);
         $episode->status = $validated['status'];
+        $episode->save();
         return response(status: 200);
     }
 
