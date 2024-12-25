@@ -67,7 +67,7 @@ class HeadOfProgramController extends Controller
         return response(status: 200);
     }
 
-    public function delete(Program $program): Response
+    public function delete(Program $program): HttpResponse
     {
         try {
             $program->delete();
