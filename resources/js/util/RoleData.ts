@@ -3,11 +3,11 @@
 
 import {
     CameramanMenus,
-    EditorMenus
+    EditorMenus,
+    MCRMenus
 } from "@/Constants/LayoutMenu";
 import {
     EditoProgram,
-    MCRMenus,
     MCRProgram,
     ProducerMenus,
     ProducerProgram,

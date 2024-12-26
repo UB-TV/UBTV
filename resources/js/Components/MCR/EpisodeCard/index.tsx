@@ -4,8 +4,11 @@ import { useRef } from "react"
 import Dialog from "@/Components/Shared/Dialog"
 import Button from "@/Components/Shared/Button"
 import DetailEpisodeForm from "../DetailEpisodeForm"
+import RevisionForm from "../RevisionForm"
 
 type EpisodeCardProps = {
+    program_id?: number
+    epsideo_id?: number
     episodeNumber: number
     thumbnail: string
     code: string
@@ -16,9 +19,12 @@ type EpisodeCardProps = {
     airingStatus: string
     productionStatus: string
     segment: number
+    isRevision?: boolean;
 }
 
 const EpisodeCard = ({
+    program_id,
+    epsideo_id,
     episodeNumber,
     thumbnail,
     code,
@@ -27,10 +33,11 @@ const EpisodeCard = ({
     theme,
     desc,
     airingStatus,
-    productionStatus,
-    segment
+    segment,
+    isRevision = false
 }: EpisodeCardProps) => {
     const dialogRef = useRef<HTMLDialogElement>(null);
+    const revisionDialogRef = useRef<HTMLDialogElement>(null);
 
     function toggleDialog() {
         if (!dialogRef.current) {
@@ -41,18 +48,54 @@ const EpisodeCard = ({
             : dialogRef.current.showModal();
     }
 
+    function toggleRevisionDialog() {
+        if (!revisionDialogRef.current) {
+            return;
+        }
+        revisionDialogRef.current.hasAttribute("open")
+            ? revisionDialogRef.current.close()
+            : revisionDialogRef.current.showModal();
+    }
+
     return (
         <>
-            <div className={`${airingStatus === 'On Air' ? 'border-2 border-solid border-success-600' : ''} max-w-[172px] h-fit flex flex-col gap-3 p-3 shadow-1 rounded-md`}>
-                <img src={thumbnail} alt={`episode ${episodeNumber}`} className="w-[148px] h-[111px] rounded-md" />
+            <div className={`${airingStatus === 'ON_AIR' ? 'border-2 border-solid border-success-600' : ''} max-w-[200px] h-fit flex flex-col gap-3 p-3 shadow-1 rounded-md`}>
+                <img src={thumbnail} alt={`episode ${episodeNumber}`} className="w-[170px] h-[120px] rounded-md" />
                 <p className="body-2 font-bold">Episode {episodeNumber}</p>
-                <p className="caption-1">{productionStatus}</p>
-                <Button type="button" label="Detail" style="Outlined" color="Primary" width="Full" size="Small" onClick={toggleDialog} />
+                <div className="flex items-center justify-between gap-2">
+                    <Button
+                        type="button"
+                        label="Detail"
+                        style="Filled"
+                        color="Primary"
+                        width="Full"
+                        size="Small"
+                        onClick={toggleDialog}
+                    />
+                    {isRevision && (
+                        <Button
+                            type="button"
+                            label="Revisi"
+                            style="Outlined"
+                            color="Primary"
+                            width="Full"
+                            size="Small"
+                            onClick={toggleRevisionDialog}
+                        />
+                    )}
+                </div>
             </div>
             <Dialog size="Normal" toggleDialog={toggleDialog} ref={dialogRef}>
                 <h1 className="heading-2 font-semibold text-left">Episode {episodeNumber}</h1>
                 <DetailEpisodeForm code={code} productionDate={productionDate} theme={theme} desc={desc} duration={duration} segment={segment} />
                 <Button type="button" label="Kembali" style="Filled" color="Primary" width="Full" size="Large" onClick={toggleDialog} />
+            </Dialog>
+            <Dialog size="Normal" toggleDialog={toggleRevisionDialog} ref={revisionDialogRef}>
+                <h1 className="heading-2 font-semibold text-left">Revisi</h1>
+                <RevisionForm
+                    programId={program_id ?? 0}
+                    episodeId={epsideo_id ?? 0}
+                />
             </Dialog>
         </>
     )

@@ -38,14 +38,11 @@ const EditProgramForm = ({ formData, onSuccess }: EditProgramFormProps) => {
 
     const formatDateForInput = (dateString: string) => {
         try {
-            // Split tanggal dan waktu dari format "YYYY-MM-DD HH:mm:ss"
             const [datePart, timePart] = dateString.split(" ");
             if (!datePart || !timePart) return "";
 
-            // Ambil jam dan menit saja dari waktu
             const [hours, minutes] = timePart.split(":");
 
-            // Gabungkan dalam format yang sesuai untuk input datetime-local
             return `${datePart}T${hours}:${minutes}`;
         } catch (e) {
             console.error("Error formatting date:", e);
@@ -99,8 +96,6 @@ const EditProgramForm = ({ formData, onSuccess }: EditProgramFormProps) => {
 
     const formatDateForSubmission = (dateString: string): string => {
         try {
-            // dateString akan dalam format "YYYY-MM-DDThh:mm"
-            // Kita perlu mengubahnya menjadi "YYYY-MM-DD hh:mm:00"
             return dateString.replace("T", " ") + ":00";
         } catch (e) {
             console.error("Error formatting date for submission:", e);

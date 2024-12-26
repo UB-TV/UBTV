@@ -26,8 +26,7 @@ class McrController extends Controller
             ->paginate(self::PAGINATION_PAGE_SIZE)
             ->onEachSide(self::PAGINATION_EACH_SIDE_SIZE);
 
-        dd(json_encode($programs, JSON_PRETTY_PRINT));
-        return Inertia::render('CHANGEME', $programs);
+        return Inertia::render('MCR/ProgramValidation', $programs);
     }
 
     public function programs(): \Inertia\Response
@@ -36,8 +35,7 @@ class McrController extends Controller
             ->paginate(self::PAGINATION_PAGE_SIZE)
             ->onEachSide(self::PAGINATION_EACH_SIDE_SIZE);
 
-        dd(json_encode($programs, JSON_PRETTY_PRINT));
-        return Inertia::render('CHANGEME', $programs);
+        return Inertia::render('MCR/Program', $programs);
     }
 
     public function pendingProgram(Program $program): \Inertia\Response
@@ -50,15 +48,13 @@ class McrController extends Controller
             });
             return $episode;
         });
-        dd(json_encode($program, JSON_PRETTY_PRINT));
-        return Inertia::render('CHANGEME', $program);
+        return Inertia::render('MCR/ProgramDetail', $program);
     }
 
     public function program(Program $program): \Inertia\Response
     {
         $program->load('episodes');
-        dd(json_encode($program, JSON_PRETTY_PRINT));
-        return Inertia::render('CHANGEME', $program);
+        return Inertia::render('MCR/ProgramDetail', $program);
     }
 
     public function update(Episode $episode, Request $request): \Illuminate\Http\Response
@@ -95,8 +91,8 @@ class McrController extends Controller
             })
             ->onEachSide(self::PAGINATION_EACH_SIDE_SIZE);
 
-        dd(json_encode($notifications, JSON_PRETTY_PRINT));
+        // dd(json_encode($notifications, JSON_PRETTY_PRINT));
 
-        return Inertia::render('CHANGEME', $notifications);
+        return Inertia::render('Shared/Notification', $notifications);
     }
 }

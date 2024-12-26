@@ -45,7 +45,8 @@ Route::middleware(['auth'])->group(function () {
     Route::controller(HeadOfProgramController::class)->prefix('/head-of-program')->group(function () {
         Route::get('/drafts', 'drafts');
         Route::get('/actives', 'actives');
-        Route::get('/{program:slug}', 'program');
+        Route::get('/drafts/{program:slug}', 'draftProgram');
+        Route::get('/actives/{program:slug}', 'activeProgram');
     })->middleware('role:head_of_program');
     Route::controller(McrController::class)->prefix('/mcr')->group(function () {
         Route::get('/pending', 'pending');
@@ -101,7 +102,7 @@ Route::middleware(['auth'])->group(function () {
     })->name('cameraman-not-uploaded-program-detail');
 
     Route::get('/message', function () {
-        return Inertia::render('Shared/ProgramMessage');
+        return Inertia::render('Shared/Notification');
     })->name('program-message');
 
     Route::get('/not-uploaded/editor/{slug}', function () {

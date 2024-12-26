@@ -25,7 +25,7 @@ class NotificationController extends Controller
         /** @var App\Models\User */
         $user = auth()->user();
 
-        $episode = Episode::where('program_id', '=', 'program_id')
+        $episode = Episode::where('program_id', '=', $payload['program_id'])
             ->where('id', '=', $payload['episode_id'])
             ->first();
         if ($episode === null) {
@@ -34,22 +34,23 @@ class NotificationController extends Controller
 
         $permittedRoleID = 0;
         if ($user->hasRole(RolesEnum::PRODUCER)) {
-            $permittedRoleID = Role::firstWhere('name', RolesEnum::EDITOR);
+            $permittedRoleID = Role::firstWhere('name', RolesEnum::EDITOR)->id;
         } elseif ($user->hasRole(RolesEnum::MCR)) {
-            $permittedRoleID = Role::firstWhere('name', RolesEnum::PRODUCER);
+            $permittedRoleID = Role::firstWhere('name', RolesEnum::PRODUCER)->id;
         } else {
             return response(status: 403);
         }
 
         try {
-            Notification::create([
+            Notification::create(attributes: [
                 'user_id' => $user->id,
                 'program_id' => $payload['program_id'],
                 'episode_id' => $episode->id,
                 'role_id' => $permittedRoleID,
                 'message' => $payload['message'],
             ]);
-        } catch (Exception) {
+        } catch (Exception $e) {
+            dd($e->getMessage());
             return response(status: 500);
         }
         return response(status: 201);

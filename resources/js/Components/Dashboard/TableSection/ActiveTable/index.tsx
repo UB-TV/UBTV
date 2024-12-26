@@ -27,6 +27,7 @@ const ActiveTable = ({ header, program }: ActiveTableProps) => {
                 pagination={false}
                 type="Program Status"
                 redirectUrl="actives"
+                isRedirectPrefix
             />
         </section>
     );

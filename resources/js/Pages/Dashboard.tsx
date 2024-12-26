@@ -31,6 +31,8 @@ interface IDashboard {
     some_unedited_video_programs?: IVideoProgram[];
     draft_programs: [];
     active_programs: [];
+    programs?: IVideoProgram[];
+    pending_programs?: IVideoProgram[];
 }
 
 const Dashboard = ({
@@ -40,6 +42,8 @@ const Dashboard = ({
     some_unedited_video_programs = [],
     draft_programs = [],
     active_programs = [],
+    programs = [],
+    pending_programs = [],
 }: IDashboard) => {
     const [searchInput, setSearchInput] = useState("");
 
@@ -54,7 +58,9 @@ const Dashboard = ({
         all_edited_video_programs.length +
         some_unedited_video_programs.length +
         draft_programs.length +
-        active_programs.length;
+        active_programs.length +
+        programs.length +
+        pending_programs.length;
 
     const handleSearch = (input: string) => {
         setSearchInput(input);
@@ -101,20 +107,15 @@ const Dashboard = ({
         [some_unedited_video_programs, searchInput]
     );
 
-    // TODO: adjust based on MCR Response
-    // const filteredValidationFalsePrograms = useMemo(
-    //     () => filterPrograms(
-    //         ProgramsData.filter((program: any) => program.episode.some((episode: any) => !episode.validationStatus)),
-    //         searchInput
-    //     ),
-    //     [ProgramsData, searchInput]
-    // );
+    const filteredPrograms = useMemo(
+        () => filterPrograms(programs, searchInput),
+        [programs, searchInput]
+    );
 
-    // TODO: adjust based on MCR Response
-    // const allPrograms = useMemo(
-    //     () => filterPrograms(ProgramsData, searchInput),
-    //     [ProgramsData, searchInput]
-    // );
+    const filteredPendingPrograms = useMemo(
+        () => filterPrograms(pending_programs, searchInput),
+        [pending_programs, searchInput]
+    );
 
     const notUploadSectionVisible = filteredNotUploadedPrograms.length > 0;
     const uploadSectionVisible = filteredUploadedPrograms.length > 0;
@@ -122,10 +123,8 @@ const Dashboard = ({
     const activeSectionVisible = filteredActivePrograms.length > 0;
     const editedSectionVisible = filteredEditedPrograms.length > 0;
     const uneditedSectionVisible = filteredUneditedPrograms.length > 0;
-
-    // TODO: adjust based on MCR Response
-    // const validatedFalseSectionVisible = filteredNotUploadedPrograms.length > 0;
-    // const programSectionVisible = allPrograms.length > 0;
+    const programSectionVisible = filteredPrograms.length > 0;
+    const pendingProgramSectionVisible = filteredPendingPrograms.length > 0;
 
     return (
         <Layout>
@@ -156,6 +155,8 @@ const Dashboard = ({
                         !uploadSectionVisible &&
                         !editedSectionVisible &&
                         !uneditedSectionVisible &&
+                        !programSectionVisible &&
+                        !pendingProgramSectionVisible &&
                         !registeredSectionVisible &&
                         !activeSectionVisible
                     ) {
@@ -209,21 +210,18 @@ const Dashboard = ({
                     if (role === "mcr") {
                         return (
                             <>
-                                {/* TODO: adjust based on MCR Response */}
-                                {/* {validatedFalseSectionVisible && (
+                                {pendingProgramSectionVisible && (
                                     <ValidationTable
                                         header={MCR_VALIDATION_HEADER}
-                                        program={
-                                            filteredValidationFalsePrograms
-                                        }
+                                        program={filteredPendingPrograms}
                                     />
                                 )}
                                 {programSectionVisible && (
                                     <ProgramTable
                                         header={MCR_PROGRAM_HEADER}
-                                        program={allPrograms}
+                                        program={filteredPrograms}
                                     />
-                                )} */}
+                                )}
                             </>
                         );
                     }

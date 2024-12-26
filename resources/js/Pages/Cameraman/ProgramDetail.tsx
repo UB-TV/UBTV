@@ -91,7 +91,7 @@ const ProgramDetail = ({ program, episodes }: IProgramDetail) => {
                                         Waktu Premiere
                                     </h1>
                                     <p className="body-2 font-semibold text-secondary-text">
-                                        {program.premiere_at}
+                                        {useFormatDate(program.premiere_at)}
                                     </p>
                                 </div>
                                 <div>
@@ -147,7 +147,7 @@ const ProgramDetail = ({ program, episodes }: IProgramDetail) => {
                                         productionDate={useFormatDate(
                                             episode.start_production
                                         )}
-                                        theme={episode.themes}
+                                        theme={episode.theme}
                                     />
                                 );
                             })}

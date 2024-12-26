@@ -27,6 +27,7 @@ const RegisteredTable = ({ header, program }: RegisteredTableProps) => {
                 pagination={false}
                 type="Program"
                 redirectUrl="drafts"
+                isRedirectPrefix
             />
         </section>
     );

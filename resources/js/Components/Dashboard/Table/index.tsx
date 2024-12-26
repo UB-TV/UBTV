@@ -7,6 +7,7 @@ import Pagination from "../Pagination/Index";
 import { IPaginationLink } from "@/models/generalinterfaces";
 import { useFetchNewUsers } from "@/repositories/Admin/useFetchNewUsers";
 import { useProgramService } from "@/repositories/HeadOfProgram/useProgramService";
+import useFormatDate from "@/util/useFormatDate";
 
 type TableHeaderProps = {
     label: string;
@@ -18,6 +19,7 @@ interface TableProps {
     body: any;
     action?: string;
     redirectUrl?: string;
+    isRedirectPrefix?: boolean;
     pagination: boolean;
     type:
         | "Program"
@@ -37,6 +39,7 @@ const Table = ({
     body,
     action,
     redirectUrl,
+    isRedirectPrefix = false,
     pagination,
     type,
     pagination_link,
@@ -224,7 +227,9 @@ const Table = ({
                                             <td className="p-2">{body.code}</td>
                                             <td className="p-2">{body.name}</td>
                                             <td className="p-2">
-                                                {formatDate(body.premiere_at)}
+                                                {useFormatDate(
+                                                    body.premiere_at
+                                                )}
                                             </td>
                                             {(type === "Status Episode" ||
                                                 type === "Program Status") && (
@@ -249,17 +254,15 @@ const Table = ({
                                         </>
                                     ) : type === "Message" ? (
                                         <>
-                                            <td className="p-2">
-                                                {body.sender}
+                                            <td className="p-2">{body.from}</td>
+                                            <td className="p-2 capitalize">
+                                                {body.program_name}
                                             </td>
                                             <td className="p-2">
-                                                {body.programTitle}
+                                                {body.episode_id}
                                             </td>
                                             <td className="p-2">
-                                                {body.programEpisode}
-                                            </td>
-                                            <td className="p-2">
-                                                {body.senderRole}
+                                                {body.role_name}
                                             </td>
                                             <td className="p-2">
                                                 {body.message}
@@ -271,20 +274,34 @@ const Table = ({
                                         </>
                                     )}
                                     {action && (
-                                        <>
-                                            <td className="flex gap-3 justify-center p-2">
-                                                {showDelete && (
-                                                    <IconButton
-                                                        onClick={() =>
-                                                            handleDeleteProgram(
-                                                                body.slug
-                                                            )
-                                                        }
-                                                        icon="/icon/delete.svg"
-                                                        color="Error"
-                                                        style="Filled"
-                                                    />
-                                                )}
+                                        <td className="flex justify-center p-2">
+                                            {isRedirectPrefix ? (
+                                                <>
+                                                    <div className="flex gap-1">
+                                                        {showDelete && (
+                                                            <IconButton
+                                                                onClick={() =>
+                                                                    handleDeleteProgram(
+                                                                        body.slug
+                                                                    )
+                                                                }
+                                                                icon="/icon/delete.svg"
+                                                                color="Error"
+                                                                style="Filled"
+                                                            />
+                                                        )}
+                                                        <Link
+                                                            href={`/${normalizedRole}/${redirectUrl}/${body.slug}`}
+                                                        >
+                                                            <IconButton
+                                                                color="Primary"
+                                                                icon="/icon/more-fill.svg"
+                                                                style="Filled"
+                                                            />
+                                                        </Link>
+                                                    </div>
+                                                </>
+                                            ) : (
                                                 <Link
                                                     href={`/${normalizedRole}/${body.slug}`}
                                                 >
@@ -294,8 +311,8 @@ const Table = ({
                                                         style="Filled"
                                                     />
                                                 </Link>
-                                            </td>
-                                        </>
+                                            )}
+                                        </td>
                                     )}
                                 </>
                             )}

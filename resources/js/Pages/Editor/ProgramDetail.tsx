@@ -11,6 +11,7 @@ import SegmentCard from '@/Components/Editor/SegementCard';
 import UploadSegmentForm from '@/Components/Editor/UploadSegmentForm';
 import { IVideoProgram } from '@/models/videprograminterfaces';
 import { IEpisode } from '@/models/episodeinterfaces';
+import useFormatDate from '@/util/useFormatDate';
 
 interface IEditorProgramDetail {
     program: IVideoProgram;
@@ -65,7 +66,7 @@ const ProgramDetail = ({
                             <div className="max-w-[48%] w-full flex flex-col gap-3">
                                 <div>
                                     <h1 className="heading-5 font-semibold mb-[6px]">Waktu Premiere</h1>
-                                    <p className="body-2 font-semibold text-secondary-text">{program.premiere_at}</p>
+                                    <p className="body-2 font-semibold text-secondary-text">{useFormatDate(program.premiere_at)}</p>
                                 </div>
                                 <div>
                                     <h1 className="heading-5 font-semibold mb-[6px]">Tim</h1>
@@ -96,7 +97,7 @@ const ProgramDetail = ({
                                         episodeNumber={index + 1}
                                         code={episode.code}
                                         duration={episode.duration}
-                                        theme={episode.themes}
+                                        theme={episode.theme}
                                         productionDate={episode.start_production}
                                         desc={episode.description}
                                         segmentNumber={episode.segment_count ?? 0}

@@ -90,7 +90,6 @@ class DashboardController extends Controller
             ->whereNull('videos.id')
             ->groupBy('programs.id')
             ->paginate(15)->onEachSide(5);
-        #TODO: render the correct page & delete dd
         return Inertia::render('Dashboard', [
             'all_edited_video_programs' => $allEditedVideoPrograms,
             'some_unedited_video_programs' => $someUneditedVideoPrograms,
@@ -113,11 +112,6 @@ class DashboardController extends Controller
                 unset($program->latestEpisode);
                 return $program;
             });
-        // dd(json_encode([
-        //     'draft_programs' => $draftPrograms,
-        //     'active_programs' => $activePrograms,
-        // ], JSON_PRETTY_PRINT));
-        #TODO: render the correct page & delete dd
         return Inertia::render('Dashboard', [
             'draft_programs' => $draftPrograms,
             'active_programs' => $activePrograms,
@@ -132,12 +126,7 @@ class DashboardController extends Controller
         $pendingPrograms = Program::whereHas('episodes', function (Builder $query) {
             $query->where('status', '=', StatusEnum::MCR_VALIDATION);
         })->limit(self::MAX_RECORDS)->get();
-        dd(json_encode([
-            'programs' => $programs,
-            'pending_programs' => $pendingPrograms,
-        ], JSON_PRETTY_PRINT));
-        #TODO: render the correct page & delete dd
-        return Inertia::render('CHANGEME', [
+        return Inertia::render('Dashboard', [
             'programs' => $programs,
             'pending_programs' => $pendingPrograms,
         ]);

@@ -18,7 +18,6 @@ class HeadOfProgramController extends Controller
         $programs = Program::doesntHave('episodes')
             ->paginate()
             ->onEachSide(5);
-        // dd(json_encode($programs, JSON_PRETTY_PRINT));
         return Inertia::render('HeadOfProgram/RegisteredProgram', [
             'programs' => $programs
         ]);
@@ -35,28 +34,36 @@ class HeadOfProgramController extends Controller
                 unset($program->latestEpisode);
                 return $program;
             })->onEachSide(5);
-        // dd(json_encode($programs, JSON_PRETTY_PRINT));
         return Inertia::render('HeadOfProgram/ActiveProgram', [
             'programs' => $programs
         ]);
     }
 
-    public function program($slug): Response
+    public function draftProgram(Program $program): Response
     {
-        $program = Program::where('slug', $slug)->first();
-
-        if (!$program) {
+        if ($program->episodes()->exists()) {
             abort(404);
         }
 
-        // Menambahkan episodes ke dalam data program
-        $program->episodes = $program->episodes()->get();
-        // dd(json_encode($program));
         return Inertia::render('HeadOfProgram/ProgramDetail', [
-            'program' => $program
+            'program' => $program,
+            'source' => 'drafts'
         ]);
     }
 
+    public function activeProgram(Program $program): Response
+    {
+        if (!$program->episodes()->exists()) {
+            abort(404);
+        }
+
+        $program->load('episodes');
+
+        return Inertia::render('HeadOfProgram/ProgramDetail', [
+            'program' => $program,
+            'source' => 'actives'
+        ]);
+    }
 
     public function create(CreateProgramRequest $req): HttpResponse|ResponseFactory
     {

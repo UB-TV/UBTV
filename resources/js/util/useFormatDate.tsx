@@ -3,17 +3,9 @@ import {
     useEffect
 } from 'react';
 
-interface DateFormatOptions {
-  year?: 'numeric' | '2-digit';
-  month?: 'numeric' | '2-digit' | 'long' | 'short' | 'narrow';
-  day?: 'numeric' | '2-digit';
-  weekday?: 'long' | 'short' | 'narrow';
-}
-
 const useFormatDate = (
   dateString: string,
-  options: DateFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' },
-  locale?: string | string[]
+  locale: string = 'id-ID'
 ): string => {
   const [formattedDate, setFormattedDate] = useState<string>('');
 
@@ -21,13 +13,18 @@ const useFormatDate = (
     if (dateString) {
       try {
         const date = new Date(dateString);
-        setFormattedDate(date.toLocaleDateString(locale, options));
+
+        const day = date.getDate();
+        const month = date.toLocaleDateString(locale, { month: 'long'});
+        const year = date.getFullYear();
+
+        setFormattedDate(`${day} ${month} ${year}`);
       } catch (error) {
         console.error('Error formatting date:', error);
         setFormattedDate('Invalid Date');
       }
     }
-  }, [dateString, locale, JSON.stringify(options)]);
+  }, [dateString, locale]);
 
   return formattedDate;
 };

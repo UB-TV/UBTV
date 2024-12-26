@@ -85,6 +85,8 @@ const RegisteredProgram = ({
                         action="draft"
                         pagination={true}
                         type="Program"
+                        redirectUrl="drafts"
+                        isRedirectPrefix
                         paginationData={programs}
                         pagination_link={programs.links}
                         showDelete={true}

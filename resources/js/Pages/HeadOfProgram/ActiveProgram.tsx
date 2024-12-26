@@ -82,8 +82,10 @@ const ActiveProgram = ({ programs }: { programs: PaginatedProgramData }) => {
                         action="draft"
                         pagination={true}
                         type="Program Status"
-                        paginationData={programs}
+                        redirectUrl="actives"
+                        isRedirectPrefix
                         pagination_link={programs.links}
+                        paginationData={programs}
                         showDelete={true}
                     />
                 ) : (
