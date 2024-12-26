@@ -63,19 +63,21 @@ class HeadOfProgramController extends Controller
         try {
             $payload = $req->validated();
             Program::create($payload);
-        } catch (Exception) {
+        } catch (Exception $e) {
+            dd($e->getMessage());
             return response(status: 500);
         }
         return response(status: 201);
     }
 
-    public function update(UpdateProgramRequest $req): HttpResponse|ResponseFactory
+    public function update(UpdateProgramRequest $req, $slug): HttpResponse|ResponseFactory
     {
         try {
+            $program = Program::where('slug', $slug)->firstOrFail();
             $payload = $req->validated();
-            Program::update($payload);
-        } catch (Exception) {
-            return response(status: 500);
+            $program->update($payload);
+        } catch (Exception $e) {
+            return response(['message' => $e->getMessage()], 500);
         }
         return response(status: 200);
     }
@@ -84,7 +86,8 @@ class HeadOfProgramController extends Controller
     {
         try {
             $program->delete();
-        } catch (Exception) {
+        } catch (Exception $e) {
+            dd($e->getMessage());
             return response(status: 500);
         }
         return response(status: 200);

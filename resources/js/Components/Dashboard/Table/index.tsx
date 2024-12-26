@@ -95,6 +95,12 @@ const Table = ({
                 return "Shooting";
             case "PRODUCER_VALIDATION":
                 return "Validasi Produser";
+            case "EDITING":
+                return "Editing";
+            case "MCR_VALIDATION":
+                return "Validasi MCR";
+            case "ON_AIR":
+                return "On Air";
             default:
                 return status
                     .replace(/_/g, " ")

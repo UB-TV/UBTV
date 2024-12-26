@@ -27,6 +27,7 @@ class CreateProgramRequest extends FormRequest
             'description' => ['required'],
             'is_active' => ['required'],
             'premiere_at' => ['required'],
+            'slug' => ['required']
         ];
     }
 }

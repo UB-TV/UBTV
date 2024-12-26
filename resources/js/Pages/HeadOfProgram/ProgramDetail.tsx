@@ -115,8 +115,7 @@ const ProgramDetail = ({ program }: IProgramDetail) => {
                             style="Filled"
                         />
                         <div>
-                            {/* <EditProgramButton program={program} /> */}
-                            ini edit
+                            <EditProgramButton program={program} />
                         </div>
                     </div>
                     <section className="w-full flex flex-col gap-3">

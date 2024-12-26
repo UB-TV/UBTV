@@ -32,7 +32,7 @@ const AddProgramButton = () => {
                 <h1 className="heading-2 font-semibold text-left">
                     Tambah Program
                 </h1>
-                {/* <AddProgramForm /> */}
+                <AddProgramForm />
             </Dialog>
         </>
     );

@@ -2,60 +2,114 @@ import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
+import { useProgramService } from "@/repositories/HeadOfProgram/useProgramService";
 // Components
 import Button from "@/Components/Shared/Button";
 import InputField from "@/Components/Form/InputField";
-import Select from "@/Components/Form/Select";
 import TextareaField from "@/Components/Form/TextArea";
 import RadioButtonGroup from "@/Components/Form/Radio";
-import MultiSelect from "@/Components/Form/MultiSelect";
-
-import { UsersData } from "@/Constants/Temp";
 
 type EditProgramFormProps = {
     formData: {
         code: string;
         name: string;
-        desc: string;
-        status: "Aktif" | "Tidak Aktif";
-        premiere: string;
-        team: string[];
+        description: string;
+        is_active: boolean;
+        premiere_at: string;
+        slug: string;
     };
+    onSuccess: () => void;
 };
 
 const EditProgramSchema = z.object({
-    code: z
-        .string()
-        .min(8, "Kode minimal harus 8 karakter")
-        .nonempty("Kode program wajib diisi"),
-    name: z
-        .string()
-        .min(1, "Nama program tidak boleh kosong")
-        .nonempty("Nama program wajib diisi"),
-    desc: z.string().nonempty("Deskripsi program wajib diisi"),
-    status: z.string().nonempty("Status program wajib dipilih"),
-    premiere: z.string().nonempty("Waktu premiere wajib dipilih"),
-    team: z.array(z.string()).min(3, "Minimal 3 anggota tim harus dipilih"),
+    code: z.string().min(1, "Kode program wajib diisi"),
+    name: z.string().min(1, "Nama program wajib diisi"),
+    description: z.string().min(1, "Deskripsi program wajib diisi"),
+    is_active: z.boolean(),
+    premiere_at: z.string().min(1, "Waktu premiere wajib dipilih"),
 });
 
 type EditProgramFormFields = z.infer<typeof EditProgramSchema>;
 
-const EditProgramForm = ({ formData }: EditProgramFormProps) => {
+const EditProgramForm = ({ formData, onSuccess }: EditProgramFormProps) => {
+    const { updateProgram, loading, error } = useProgramService();
+
+    console.log("Initial formData:", formData);
+
+    const formatDateForInput = (dateString: string) => {
+        try {
+            // Split tanggal dan waktu dari format "YYYY-MM-DD HH:mm:ss"
+            const [datePart, timePart] = dateString.split(" ");
+            if (!datePart || !timePart) return "";
+
+            // Ambil jam dan menit saja dari waktu
+            const [hours, minutes] = timePart.split(":");
+
+            // Gabungkan dalam format yang sesuai untuk input datetime-local
+            return `${datePart}T${hours}:${minutes}`;
+        } catch (e) {
+            console.error("Error formatting date:", e);
+            return "";
+        }
+    };
+
     const { register, handleSubmit, formState, control, reset } =
         useForm<EditProgramFormFields>({
             resolver: zodResolver(EditProgramSchema),
-            defaultValues: { ...formData },
+            defaultValues: {
+                code: formData.code,
+                name: formData.name,
+                description: formData.description,
+                is_active: formData.is_active,
+                premiere_at: formatDateForInput(formData.premiere_at),
+            },
         });
 
     const { errors } = formState;
 
     useEffect(() => {
-        reset(formData);
+        reset({
+            ...formData,
+            premiere_at: formatDateForInput(formData.premiere_at),
+        });
     }, [formData, reset]);
 
-    const onSubmit: SubmitHandler<EditProgramFormFields> = (data) => {
-        console.log("Form data:", data);
+    const onSubmit: SubmitHandler<EditProgramFormFields> = async (data) => {
+        console.log("Form submitted with data:", data);
+        try {
+            const submissionData = {
+                code: data.code,
+                name: data.name,
+                description: data.description,
+                is_active: data.is_active,
+                premiere_at: formatDateForSubmission(data.premiere_at),
+                slug: formData.slug,
+            };
+            console.log("Submission data:", submissionData);
+
+            const result = await updateProgram(submissionData);
+            console.log("Update result:", result);
+            if (result) {
+                onSuccess();
+            }
+        } catch (err) {
+            console.error("Failed to update program:", err);
+        }
     };
+
+    const formatDateForSubmission = (dateString: string): string => {
+        try {
+            // dateString akan dalam format "YYYY-MM-DDThh:mm"
+            // Kita perlu mengubahnya menjadi "YYYY-MM-DD hh:mm:00"
+            return dateString.replace("T", " ") + ":00";
+        } catch (e) {
+            console.error("Error formatting date for submission:", e);
+            return dateString;
+        }
+    };
+
+    const formattedDate = formatDateForInput(formData.premiere_at);
+    console.log("Formatted Premiere Date:", formattedDate);
 
     return (
         <form
@@ -69,6 +123,7 @@ const EditProgramForm = ({ formData }: EditProgramFormProps) => {
                         type="text"
                         label="Kode"
                         placeholder="Masukkan Kode"
+                        {...register("code")}
                         control={control}
                     />
                     {errors.code && (
@@ -83,6 +138,7 @@ const EditProgramForm = ({ formData }: EditProgramFormProps) => {
                         type="text"
                         label="Nama Program"
                         placeholder="Masukkan Nama Program"
+                        {...register("name")}
                         control={control}
                     />
                     {errors.name && (
@@ -93,15 +149,16 @@ const EditProgramForm = ({ formData }: EditProgramFormProps) => {
                 </div>
                 <div className="gap-3 flex flex-col">
                     <TextareaField
-                        id="desc"
+                        id="description"
                         label="Deskripsi"
                         placeholder="Masukkan deskripsi"
                         maxLength={200}
+                        {...register("description")}
                         control={control}
                     />
-                    {errors.desc && (
+                    {errors.description && (
                         <span className="text-error-500">
-                            {errors.desc.message}
+                            {errors.description.message}
                         </span>
                     )}
                 </div>
@@ -109,54 +166,49 @@ const EditProgramForm = ({ formData }: EditProgramFormProps) => {
             <div className="w-[48%] flex flex-col gap-6">
                 <div className="gap-3 flex flex-col">
                     <RadioButtonGroup
-                        id="status"
+                        id="is_active"
                         label="Status Program"
                         options={[
-                            { label: "Aktif", value: "Aktif" },
-                            { label: "Tidak Aktif", value: "Tidak Aktif" },
+                            { label: "Aktif", value: true },
+                            { label: "Tidak Aktif", value: false },
                         ]}
+                        {...register("is_active")}
                         control={control}
                     />
-                    {errors.status && (
-                        <span className="text-error-500">
-                            {errors.status.message}
-                        </span>
-                    )}
                 </div>
                 <div className="gap-3 flex flex-col">
-                    <Select
-                        id="premiere"
-                        label="Waktu Premiere"
-                        placeholder="Pilih Waktu"
-                        options={[
-                            { value: "08:00 AM", optionLabel: "08:00 AM" },
-                            { value: "10:00 AM", optionLabel: "10:00 AM" },
-                        ]}
-                        control={control}
+                    <label
+                        htmlFor="premiere_at"
+                        className="text-sm font-medium"
+                    >
+                        Waktu Premiere
+                    </label>
+                    <input
+                        type="datetime-local"
+                        id="premiere_at"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                        {...register("premiere_at")}
                     />
-                    {errors.premiere && (
+                    {errors.premiere_at && (
                         <span className="text-error-500">
-                            {errors.premiere.message}
+                            {errors.premiere_at.message}
                         </span>
                     )}
-                </div>
-                <div className="gap-3 flex flex-col">
-                    <MultiSelect
-                        id="team"
-                        label="Tim"
-                        options={UsersData}
-                        control={control}
-                    />
                 </div>
             </div>
             <Button
                 type="submit"
-                label="Edit"
+                label={loading ? "Menyimpan..." : "Simpan"}
                 style="Filled"
                 color="Primary"
                 width="Full"
                 size="Large"
             />
+            {error && (
+                <span className="text-error-500 w-full text-center">
+                    {error}
+                </span>
+            )}
         </form>
     );
 };

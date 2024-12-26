@@ -5,7 +5,7 @@ type RadioButtonGroupProps = {
     label: string;
     options: {
         label: string;
-        value: string;
+        value: any;
     }[];
     control: any;
 };

@@ -1,50 +1,49 @@
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 // Components
 import Button from "@/Components/Shared/Button";
 import InputField from "@/Components/Form/InputField";
-import Select from "@/Components/Form/Select";
 import TextareaField from "@/Components/Form/TextArea";
 import RadioButtonGroup from "@/Components/Form/Radio";
-import MultiSelect from "@/Components/Form/MultiSelect";
-
-import { UsersData } from "@/Constants/Temp";
+import { useProgramService } from "@/repositories/HeadOfProgram/useProgramService";
 
 const AddProgramSchema = z.object({
-    code: z
-        .string()
-        .min(8, "Kode minimal harus 8 karakter")
-        .nonempty("Kode program wajib diisi"),
-    name: z
-        .string()
-        .min(1, "Nama program tidak boleh kosong")
-        .nonempty("Nama program wajib diisi"),
-    desc: z.string().nonempty("Deskripsi program wajib diisi"),
-    status: z.string().nonempty("Status program wajib dipilih"),
-    premiere: z.string().nonempty("Waktu premiere wajib dipilih"),
-    UsersData: z
-        .array(z.string())
-        .refine((selectedUsers) => selectedUsers.length >= 3, {
-            message: "Minimal 3 anggota tim harus dipilih",
-        }),
+    code: z.string().min(1, "Kode program wajib diisi"),
+    name: z.string().min(1, "Nama program wajib diisi"),
+    description: z.string().min(1, "Deskripsi wajib diisi"),
+    is_active: z.boolean(),
+    premiere_at: z.string().min(1, "Waktu premiere wajib diisi"),
 });
 
 type AddProgramFormFields = z.infer<typeof AddProgramSchema>;
 
 const AddProgramForm = () => {
-    const { register, handleSubmit, formState, control } =
-        useForm<AddProgramFormFields>({
-            resolver: zodResolver(AddProgramSchema),
-            defaultValues: {
-                UsersData: [],
-            },
-        });
+    const { createProgram, loading, error } = useProgramService();
+    const {
+        control,
+        handleSubmit,
+        formState: { errors },
+        reset,
+    } = useForm<AddProgramFormFields>({
+        resolver: zodResolver(AddProgramSchema),
+        defaultValues: {
+            is_active: false,
+        },
+    });
 
-    const { errors } = formState;
-
-    const onSubmit: SubmitHandler<AddProgramFormFields> = (data) => {
-        console.log("Form data:", data);
+    const onSubmit: SubmitHandler<AddProgramFormFields> = async (data) => {
+        try {
+            const response = await createProgram(data);
+            if (response) {
+                console.log("Program created successfully");
+                reset();
+                window.location.reload();
+            }
+        } catch (err) {
+            console.error("Failed to create program:", err);
+        }
     };
 
     return (
@@ -61,11 +60,6 @@ const AddProgramForm = () => {
                         placeholder="Masukkan Kode"
                         control={control}
                     />
-                    {errors.code && (
-                        <span className="text-error-500">
-                            {errors.code.message}
-                        </span>
-                    )}
                 </div>
                 <div className="gap-3 flex flex-col">
                     <InputField
@@ -75,78 +69,58 @@ const AddProgramForm = () => {
                         placeholder="Masukkan Nama Program"
                         control={control}
                     />
-                    {errors.name && (
-                        <span className="text-error-500">
-                            {errors.name.message}
-                        </span>
-                    )}
                 </div>
                 <div className="gap-3 flex flex-col">
                     <TextareaField
-                        id="desc"
+                        id="description"
                         label="Deskripsi"
                         placeholder="Masukkan deskripsi"
                         maxLength={200}
                         control={control}
                     />
-                    {errors.desc && (
-                        <span className="text-error-500">
-                            {errors.desc.message}
-                        </span>
-                    )}
                 </div>
             </div>
             <div className="w-[48%] flex flex-col gap-6">
                 <div className="gap-3 flex flex-col">
                     <RadioButtonGroup
-                        id="status"
+                        id="is_active"
                         label="Status Program"
                         options={[
-                            { label: "Aktif", value: "aktif" },
-                            { label: "Tidak Aktif", value: "tidakAktif" },
+                            { label: "Aktif", value: true },
+                            { label: "Tidak Aktif", value: false },
                         ]}
                         control={control}
                     />
-                    {errors.status && (
-                        <span className="text-error-500">
-                            {errors.status.message}
-                        </span>
-                    )}
                 </div>
                 <div className="gap-3 flex flex-col">
-                    <Select
-                        id="premiere"
-                        label="Waktu Premiere"
-                        placeholder="Pilih Waktu"
-                        options={[
-                            { value: "08:00 AM", optionLabel: "08:00 AM" },
-                            { value: "10:00 AM", optionLabel: "10:00 AM" },
-                        ]}
+                    <label
+                        htmlFor="premiere_at"
+                        className="body-2 font-semibold mb-[6px]"
+                    >
+                        Waktu Premiere
+                    </label>
+                    <InputField
+                        id="premiere_at"
+                        type="datetime-local"
                         control={control}
-                    />
-                    {errors.premiere && (
-                        <span className="text-error-500">
-                            {errors.premiere.message}
-                        </span>
-                    )}
-                </div>
-                <div className="gap-3 flex flex-col">
-                    <MultiSelect
-                        id="team"
-                        label="Tim"
-                        options={UsersData}
-                        control={control}
+                        label=""
+                        placeholder="Masukkan Waktu Premiere"
                     />
                 </div>
             </div>
             <Button
                 type="submit"
-                label="Tambah Program"
+                label={loading ? "Menambahkan..." : "Tambah Program"}
                 style="Filled"
                 color="Primary"
                 width="Full"
                 size="Large"
             />
+            {error && (
+                <span className="text-error-500 w-full text-center">
+                    {error}
+                </span>
+            )}
         </form>
     );
 };
