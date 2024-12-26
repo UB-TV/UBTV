@@ -70,8 +70,7 @@ class HeadOfProgramController extends Controller
         try {
             $payload = $req->validated();
             Program::create($payload);
-        } catch (Exception $e) {
-            dd($e->getMessage());
+        } catch (Exception) {
             return response(status: 500);
         }
         return response(status: 201);
@@ -93,8 +92,7 @@ class HeadOfProgramController extends Controller
     {
         try {
             $program->delete();
-        } catch (Exception $e) {
-            dd($e->getMessage());
+        } catch (Exception) {
             return response(status: 500);
         }
         return response(status: 200);
