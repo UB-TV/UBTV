@@ -76,10 +76,9 @@ class HeadOfProgramController extends Controller
         return response(status: 201);
     }
 
-    public function update(UpdateProgramRequest $req, $slug): HttpResponse|ResponseFactory
+    public function update(Program $program, UpdateProgramRequest $req): HttpResponse|ResponseFactory
     {
         try {
-            $program = Program::where('slug', $slug)->firstOrFail();
             $payload = $req->validated();
             $program->update($payload);
         } catch (Exception $e) {
