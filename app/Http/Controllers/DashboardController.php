@@ -112,12 +112,7 @@ class DashboardController extends Controller
                 unset($program->latestEpisode);
                 return $program;
             });
-        dd(json_encode([
-            'draft_programs' => $draftPrograms,
-            'active_programs' => $activePrograms,
-        ], JSON_PRETTY_PRINT));
-        #TODO: render the correct page & delete dd
-        return Inertia::render('CHANGEME', [
+        return Inertia::render('Dashboard', [
             'draft_programs' => $draftPrograms,
             'active_programs' => $activePrograms,
         ]);

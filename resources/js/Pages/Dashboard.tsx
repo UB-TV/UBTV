@@ -1,13 +1,14 @@
-// Dashboard.tsx
 import { useMemo, useState } from "react";
 // Function
 import { getPrograms, useGetUserRole } from "@/util/RoleData";
 // Data
 import {
     CAMERAMAN_HEADER,
-    EDITOR_HEADER,
     MCR_PROGRAM_HEADER,
     MCR_VALIDATION_HEADER,
+    ACTIVE_HEAD_OF_PROGRAM_HEADER,
+    REGISTERED_HEAD_OF_PROGRAM_HEADER,
+    EDITOR_HEADER,
 } from "@/Constants/TableHeader";
 // Component
 import SearchField from "@/Components/Dashboard/SearchField";
@@ -20,12 +21,16 @@ import { IVideoProgram } from "@/models/videprograminterfaces";
 import { usePage } from "@inertiajs/react";
 import EditedProgramTable from "@/Components/Dashboard/TableSection/EditedProgramTable";
 import UneditedProgramTable from "@/Components/Dashboard/TableSection/UneditedProgramTable";
-
+import RegisteredTable from "@/Components/Dashboard/TableSection/RegisteredTable";
+import ActiveTable from "@/Components/Dashboard/TableSection/ActiveTable";
+import AddProgramButton from "@/Components/HeadOfProgram/AddProgramButton";
 interface IDashboard {
     pending_video_programs?: IVideoProgram[];
     uploaded_video_programs?: IVideoProgram[];
     all_edited_video_programs?: IVideoProgram[];
     some_unedited_video_programs?: IVideoProgram[];
+    draft_programs: [];
+    active_programs: [];
     programs?: IVideoProgram[];
     pending_programs?: IVideoProgram[];
 }
@@ -35,28 +40,36 @@ const Dashboard = ({
     uploaded_video_programs = [],
     all_edited_video_programs = [],
     some_unedited_video_programs = [],
+    draft_programs = [],
+    active_programs = [],
     programs = [],
-    pending_programs = []
+    pending_programs = [],
 }: IDashboard) => {
-    const [searchInput, setSearchInput] = useState('');
+    const [searchInput, setSearchInput] = useState("");
 
     const { user } = usePage<any>().props;
     const role = useGetUserRole();
     // TODO: Remove once all feature are integrated
     // const ProgramsData = getPrograms();
 
-    const allProgramLength = pending_video_programs.length +
-                           uploaded_video_programs.length +
-                           all_edited_video_programs.length +
-                           some_unedited_video_programs.length +
-                           programs.length +
-                           pending_programs.length;
+    const allProgramLength =
+        pending_video_programs.length +
+        uploaded_video_programs.length +
+        all_edited_video_programs.length +
+        some_unedited_video_programs.length +
+        draft_programs.length +
+        active_programs.length +
+        programs.length +
+        pending_programs.length;
 
     const handleSearch = (input: string) => {
         setSearchInput(input);
     };
 
-    const filterPrograms = (programs: IVideoProgram[] | undefined | null, searchInput: string) => {
+    const filterPrograms = (
+        programs: IVideoProgram[] | undefined | null,
+        searchInput: string
+    ) => {
         if (!programs || !Array.isArray(programs)) {
             return [];
         }
@@ -75,6 +88,15 @@ const Dashboard = ({
         [uploaded_video_programs, searchInput]
     );
 
+    const filteredRegisteredPrograms = useMemo(
+        () => filterPrograms(draft_programs, searchInput),
+        [draft_programs, searchInput]
+    );
+
+    const filteredActivePrograms = useMemo(
+        () => filterPrograms(active_programs, searchInput),
+        [active_programs, searchInput]
+    );
     const filteredEditedPrograms = useMemo(
         () => filterPrograms(all_edited_video_programs, searchInput),
         [all_edited_video_programs, searchInput]
@@ -97,6 +119,8 @@ const Dashboard = ({
 
     const notUploadSectionVisible = filteredNotUploadedPrograms.length > 0;
     const uploadSectionVisible = filteredUploadedPrograms.length > 0;
+    const registeredSectionVisible = filteredRegisteredPrograms.length > 0;
+    const activeSectionVisible = filteredActivePrograms.length > 0;
     const editedSectionVisible = filteredEditedPrograms.length > 0;
     const uneditedSectionVisible = filteredUneditedPrograms.length > 0;
     const programSectionVisible = filteredPrograms.length > 0;
@@ -105,45 +129,120 @@ const Dashboard = ({
     return (
         <Layout>
             <>
-                <h1 className="heading-3 font-semibold">Selamat Datang, {user.name}</h1>
-                <div className="flex items-center gap-6">
-                    <SearchField onSearch={handleSearch} />
-                    <p className="caption-1">
-                        <span className="font-semibold">{allProgramLength}</span> Program
-                    </p>
+                <h1 className="heading-3 font-semibold">
+                    Selamat Datang, {user.name}
+                </h1>
+                <div className="flex items-center justify-between w-full">
+                    <div className="flex gap-6 items-center">
+                        <SearchField onSearch={handleSearch} />
+                        <p className="caption-1">
+                            <span className="font-semibold">
+                                {allProgramLength}
+                            </span>{" "}
+                            Program
+                        </p>
+                    </div>
+                    {role === "head_of_program" && (
+                        <div>
+                            <AddProgramButton />
+                        </div>
+                    )}
                 </div>
-                {!notUploadSectionVisible && !uploadSectionVisible && !editedSectionVisible && !uneditedSectionVisible && !programSectionVisible && !pendingProgramSectionVisible ? (
-                    <p className="body-1 font-semibold">Tidak ada program yang ditemukan</p>
-                ) : (
-                    role === 'editor' ? (
-                        <>
-                            {editedSectionVisible && (
-                                <EditedProgramTable header={EDITOR_HEADER} program={filteredEditedPrograms} />
-                            )}
-                            {uneditedSectionVisible && (
-                                <UneditedProgramTable header={EDITOR_HEADER} program={filteredUneditedPrograms} />
-                            )}
-                        </>
-                    ) : role === 'mcr' ? (
-                        <>
-                            {pendingProgramSectionVisible && (
-                                <ValidationTable header={MCR_VALIDATION_HEADER} program={filteredPendingPrograms} />
-                            )}
-                            {programSectionVisible && (
-                                <ProgramTable header={MCR_PROGRAM_HEADER} program={filteredPrograms} />
-                            )}
-                        </>
-                    ) : (
+
+                {(() => {
+                    if (
+                        !notUploadSectionVisible &&
+                        !uploadSectionVisible &&
+                        !editedSectionVisible &&
+                        !uneditedSectionVisible &&
+                        !programSectionVisible &&
+                        !pendingProgramSectionVisible &&
+                        !registeredSectionVisible &&
+                        !activeSectionVisible
+                    ) {
+                        return (
+                            <p className="body-1 font-semibold">
+                                Tidak ada program yang ditemukan
+                            </p>
+                        );
+                    }
+
+                    if (role === "head_of_program") {
+                        return (
+                            <>
+                                {registeredSectionVisible && (
+                                    <RegisteredTable
+                                        header={
+                                            REGISTERED_HEAD_OF_PROGRAM_HEADER
+                                        }
+                                        program={filteredRegisteredPrograms}
+                                    />
+                                )}
+                                {activeSectionVisible && (
+                                    <ActiveTable
+                                        header={ACTIVE_HEAD_OF_PROGRAM_HEADER}
+                                        program={filteredActivePrograms}
+                                    />
+                                )}
+                            </>
+                        );
+                    }
+
+                    if (role === "editor") {
+                        return (
+                            <>
+                                {editedSectionVisible && (
+                                    <EditedProgramTable
+                                        header={EDITOR_HEADER}
+                                        program={filteredEditedPrograms}
+                                    />
+                                )}
+                                {uneditedSectionVisible && (
+                                    <UneditedProgramTable
+                                        header={EDITOR_HEADER}
+                                        program={filteredUneditedPrograms}
+                                    />
+                                )}
+                            </>
+                        );
+                    }
+
+                    if (role === "mcr") {
+                        return (
+                            <>
+                                {pendingProgramSectionVisible && (
+                                    <ValidationTable
+                                        header={MCR_VALIDATION_HEADER}
+                                        program={filteredPendingPrograms}
+                                    />
+                                )}
+                                {programSectionVisible && (
+                                    <ProgramTable
+                                        header={MCR_PROGRAM_HEADER}
+                                        program={filteredPrograms}
+                                    />
+                                )}
+                            </>
+                        );
+                    }
+
+                    return (
                         <>
                             {notUploadSectionVisible && (
-                                <NotUploadedTable header={CAMERAMAN_HEADER} program={filteredNotUploadedPrograms} />
+                                <NotUploadedTable
+                                    header={CAMERAMAN_HEADER}
+                                    program={filteredNotUploadedPrograms}
+                                />
                             )}
                             {uploadSectionVisible && (
-                                <UploadedTable header={CAMERAMAN_HEADER} program={filteredUploadedPrograms} />
+                                <UploadedTable
+                                    header={CAMERAMAN_HEADER}
+                                    program={filteredUploadedPrograms}
+                                />
                             )}
                         </>
-                    )
-                )}
+                    );
+                })()}
             </>
         </Layout>
     );

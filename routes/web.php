@@ -45,7 +45,8 @@ Route::middleware(['auth'])->group(function () {
     Route::controller(HeadOfProgramController::class)->prefix('/head-of-program')->group(function () {
         Route::get('/drafts', 'drafts');
         Route::get('/actives', 'actives');
-        Route::get('/{program:slug}', 'program');
+        Route::get('/drafts/{program:slug}', 'draftProgram');
+        Route::get('/actives/{program:slug}', 'activeProgram');
     })->middleware('role:head_of_program');
     Route::controller(McrController::class)->prefix('/mcr')->group(function () {
         Route::get('/pending', 'pending');
@@ -65,7 +66,7 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('/api/v1')->group(function () {
         Route::prefix('/programs')->group(function () {
             Route::post('/', [HeadOfProgramController::class, 'create']);
-            Route::patch('/', [HeadOfProgramController::class, 'update']);
+            Route::patch('/{program:slug}', [HeadOfProgramController::class, 'update']);
             Route::delete('/{program:slug}', [HeadOfProgramController::class, 'delete']);
         })->middleware('role:head_of_program');
         Route::prefix('/episodes')->group(function () {
