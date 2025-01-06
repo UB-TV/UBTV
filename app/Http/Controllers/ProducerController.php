@@ -93,4 +93,14 @@ class ProducerController extends Controller
         }
         return response(status: 201);
     }
+
+    public function deleteEpisode(Episode $episode): HttpResponse
+    {
+        try {
+            $episode->delete();
+        } catch (Exception) {
+            return response(status: 500);
+        }
+        return response(status: 200);
+    }
 }
