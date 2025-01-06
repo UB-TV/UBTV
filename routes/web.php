@@ -72,6 +72,7 @@ Route::middleware(['auth'])->group(function () {
         Route::prefix('/episodes')->group(function () {
             Route::post('/', [ProducerController::class, 'createEpisode']);
             Route::patch('/{episode:id}', [McrController::class, 'update']);
+            Route::delete('/{episode:id}', [ProducerController::class,'deleteEpisode']);
         })->middleware('role:producer,mcr');
         Route::prefix('/videos')->group(function () {
             Route::post('/', [CameramanController::class, 'upload']);
