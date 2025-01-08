@@ -5,11 +5,11 @@ import Dialog from "@/Components/Shared/Dialog";
 import Layout from "@/Layout";
 import IconButton from '@/Components/Shared/IconButton.tsx';
 import Button from '@/Components/Shared/Button';
-import EpisodeCard from '@/Components/MCR/EpisodeCard';
+import EpisodeCard from '@/Components/Shared/EpisodeCard';
 import { IEpisode, IVideoWithStatus } from '@/models/episodeinterfaces';
-import useFormatDate from '@/util/useFormatDate';
 import SegmentTable from '@/Components/Shared/SegmentTable';
 import { useForm } from 'react-hook-form';
+import useFormatDate from '@/util/useFormatDate';
 
 interface IMCRProgramDetail {
     id: number;

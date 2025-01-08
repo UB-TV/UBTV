@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 type SearchFieldProps = {
     onSearch: (input: string) => void;
@@ -7,11 +7,11 @@ type SearchFieldProps = {
 const SearchField = ({ onSearch }: SearchFieldProps) => {
     const [search, setSearch] = useState('');
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         const inputValue = e.target.value;
         setSearch(inputValue);
         onSearch(inputValue);
-    };
+    }, [onSearch]);
 
     return (
         <div className="relative text-gray-600">

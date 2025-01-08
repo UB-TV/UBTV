@@ -9,38 +9,55 @@ import InputField from "@/Components/Form/InputField";
 import Select from "@/Components/Form/Select";
 import { durationOptions } from "@/Constants/FormOptions";
 import TextArea from "@/Components/Form/TextArea";
+import useEditEpisode from "@/repositories/producer/useEditEpisode";
+import { formatDateForApi } from "@/util/formatDateforDB";
+import { useEffect } from "react";
 
 type EditEpisodeFormProps = {
+    programId: number,
+    episodeId: number,
     code: string
     duration: string
-    productionDate: string
-    productionStatus: string
+    start_production: string
     theme: string
-    desc: string
-    segment: number
+    description: string
+    segment_count: number
+    status: string;
+    onCloseDialog: () => void;
 }
 
 const schema = z.object({
-    code: z.string(),
-    duration: z.string(),
-    theme: z.string(),
-    productionDate: z.string(),
-    productionStatus: z.string(),
-    desc: z.string(),
-    segment: z.string()
+    code: z.string().min(1, "Code is required"),
+    duration: z.string().min(1, "Duration is required"),
+    theme: z.string().min(1, "Theme is required"),
+    start_production: z.string().min(1, "Start production date is required"),
+    description: z.string().min(1, "Description is required"),
+    status: z.string().min(1, "Production status is required"),
+    segment_count: z.string().min(1, "Segment count is required"),
 });
 
 type FormFields = z.infer<typeof schema>;
 
 const EditEpisodeForm = ({
+    programId,
+    episodeId,
     code,
     duration,
-    productionDate,
-    productionStatus,
+    start_production,
     theme,
-    desc,
-    segment
+    status,
+    description,
+    segment_count,
+    onCloseDialog
 }: EditEpisodeFormProps) => {
+
+    const statusOptions = [
+        { optionLabel: "Producer Validation", value: "PRODUCER_VALIDATION" },
+        { optionLabel: "MCR Validation", value: "MCR_VALIDATION" },
+        { optionLabel: "Shooting", value: "SHOOTING" },
+        { optionLabel: "Editing", value: "EDITING" },
+        { optionLabel: "On Air", value: "ON_AIR" },
+    ];
 
     const {
         register,
@@ -53,8 +70,34 @@ const EditEpisodeForm = ({
 
     const { errors } = formState;
 
-    const onSubmit: SubmitHandler<FormFields> = (data) => {
-        console.log(data);
+    useEffect(() => {
+        console.log(start_production);
+    }, [])
+
+    const { editEpisode, isLoading, error } = useEditEpisode();
+
+    const onSubmit: SubmitHandler<FormFields> = async (data) => {
+        try {
+            const formattedPayload = {
+                program_id: programId,
+                episode_id: episodeId,
+                ...data,
+                start_production: formatDateForApi(data.start_production),
+            };
+
+            console.log(formattedPayload);
+
+            const response = await editEpisode(
+                String(episodeId),
+                formattedPayload
+            );
+
+            if (response) {
+                onCloseDialog();
+            }
+        } catch (err) {
+            console.error("Form submission error:", err);
+        }
     };
 
     return (
@@ -78,7 +121,7 @@ const EditEpisodeForm = ({
                         label="Durasi"
                         options={durationOptions}
                         control={control}
-                        value={duration}
+                        value={String(duration)}
                     />
                     <InputField
                         id="theme"
@@ -92,54 +135,61 @@ const EditEpisodeForm = ({
                         <span className="text-error-500">{errors.theme.message}</span>
                     )}
                     <InputField
-                        id="segment"
+                        id="segment_count"
                         type="text"
                         label="Jumlah Segmen"
                         placeholder="Masukkan Jumlah Segmen"
                         control={control}
-                        value={segment.toString()}
+                        value={segment_count.toString()}
                     />
-                    {errors.segment && (
-                        <span className="text-error-500">{errors.segment.message}</span>
+                    {errors.segment_count && (
+                        <span className="text-error-500">{errors.segment_count.message}</span>
                     )}
                 </div>
                 <div className="w-[48%] flex flex-col gap-6">
                     <InputField
-                        id="productionStatus"
+                        id="start_production"
                         type="text"
-                        label="Status Episode"
-                        placeholder="Masukkan Status Episode"
-                        control={control}
-                        value={productionStatus}
-                    />
-                    {errors.productionStatus && (
-                        <span className="text-error-500">{errors.productionStatus.message}</span>
-                    )}
-                    <InputField
-                        id="productionDate"
-                        type="text"
-                        label="Tanggal Produksi"
+                        label="Tanggal Mulai Produksi"
                         placeholder="Masukkan Tanggal Produksi"
                         control={control}
-                        value={productionDate}
+                        value={start_production}
                     />
-                    {errors.productionDate && (
-                        <span className="text-error-500">{errors.productionDate.message}</span>
+                    {errors.start_production && (
+                        <span className="text-error-500">{errors.start_production.message}</span>
+                    )}
+                    <Select
+                        id="status"
+                        placeholder="Pilih status episode"
+                        label="Status"
+                        options={statusOptions}
+                        control={control}
+                        value={status}
+                    />
+                    {errors.status && (
+                        <span className="text-error-500">{errors.status.message}</span>
                     )}
                     <TextArea
-                        id="desc"
+                        id="description"
                         label="Deskripsi"
                         placeholder="Masukkan Deskripsi"
                         control={control}
                         maxLength={200}
-                        value={desc}
+                        value={description}
                     />
-                    {errors.desc && (
-                        <span className="text-error-500">{errors.desc.message}</span>
+                    {errors.description && (
+                        <span className="text-error-500">{errors.description.message}</span>
                     )}
                 </div>
             </div>
-            <Button type="submit" label="Edit" style="Filled" color="Primary" width="Full" size="Large" />
+            <Button
+                type="submit"
+                label="Edit"
+                style="Filled"
+                color="Primary"
+                width="Full"
+                size="Large"
+            />
         </form>
     )
 }

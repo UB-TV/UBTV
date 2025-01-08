@@ -5,28 +5,34 @@ import Select from "@/Components/Form/Select"
 import TextArea from "@/Components/Form/TextArea"
 import Button from "@/Components/Shared/Button"
 import { durationOptions } from "@/Constants/FormOptions"
+import useCreateEpisode from "@/repositories/producer/useCreateEpisode"
+import { formatDateForApi } from "@/util/formatDateforDB"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { router } from "@inertiajs/react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { z } from "zod"
 
 type NewEpisodeFormProps = {
     onCloseDialog: () => void;
+    programId: number;
 }
 
 const schema = z.object({
     code: z.string(),
     duration: z.string(),
     theme: z.string(),
-    segment: z.string().min(1),
-    startProductionDate: z.string(),
-    desc: z.string().max(200).min(1)
+    segment_count: z.string().min(1),
+    start_production: z.string(),
+    description: z.string().max(200).min(1)
 });
 
 type FormFields = z.infer<typeof schema>;
 
 const NewEpisodeForm = ({
-    onCloseDialog
+    onCloseDialog,
+    programId
 }: NewEpisodeFormProps) => {
+    const { createEpisode, isLoading, error } = useCreateEpisode();
 
     const {
         register,
@@ -39,13 +45,26 @@ const NewEpisodeForm = ({
 
     const { errors } = formState;
 
-    const onSubmit: SubmitHandler<FormFields> = (data) => {
-        onCloseDialog()
-        console.log(data);
+    const onSubmit: SubmitHandler<FormFields> = async (data) => {
+        try {
+            await createEpisode({
+                ...data,
+                program_id: programId,
+                start_production: formatDateForApi(data.start_production),
+            });
+            onCloseDialog();
+        } catch (err) {
+            console.error(err);
+        }
     };
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
+            {error && (
+                <div className="mb-4 p-2 bg-error-50 text-error-500 rounded">
+                    {error}
+                </div>
+            )}
             <div className="flex items-start justify-between mb-12">
                 <div className="flex flex-col gap-6 w-[45%]">
                     <div className="flex flex-col gap-2">
@@ -81,40 +100,40 @@ const NewEpisodeForm = ({
                     </div>
                     <div className="flex flex-col gap-2">
                         <InputField
-                            id="segment"
+                            id="segment_count"
                             type="number"
                             label="Jumlah Episode"
                             placeholder="Masukkan Jumlah Segmen"
                             control={control}
                         />
-                        {errors.segment && (
-                            <span className="text-error-500">{errors.segment.message}</span>
+                        {errors.segment_count && (
+                            <span className="text-error-500">{errors.segment_count.message}</span>
                         )}
                     </div>
                 </div>
                 <div className="flex flex-col gap-6 w-[45%]">
                     <div className="flex flex-col gap-2">
                         <InputField
-                            id="startProductionDate"
+                            id="start_production"
                             type="text"
                             label="Tanggal Mulai Produksi"
                             placeholder="Masukkan Tanggal Mulai Produksi"
                             control={control}
                         />
-                        {errors.startProductionDate && (
-                            <span className="text-error-500">{errors.startProductionDate.message}</span>
+                        {errors.start_production && (
+                            <span className="text-error-500">{errors.start_production.message}</span>
                         )}
                     </div>
                     <div className="flex flex-col gap-2">
                         <TextArea
-                            id="desc"
+                            id="description"
                             label="Deskripsi"
                             placeholder="Masukkan Deskripsi"
                             control={control}
                             maxLength={200}
                         />
-                        {errors.desc && (
-                            <span className="text-error-500">{errors.desc.message}</span>
+                        {errors.description && (
+                            <span className="text-error-500">{errors.description.message}</span>
                         )}
                     </div>
                 </div>

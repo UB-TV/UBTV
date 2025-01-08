@@ -57,7 +57,7 @@ const ProgramDetail = ({ program }: IProgramDetail) => {
             : dialogRef.current.showModal();
     }
 
-    function formatDate(dateString: string) {
+    function useFormatDate(dateString: string) {
         const days = [
             "Minggu",
             "Senin",
@@ -152,7 +152,7 @@ const ProgramDetail = ({ program }: IProgramDetail) => {
                                         Waktu Premiere
                                     </h1>
                                     <p className="body-2 font-semibold text-secondary-text">
-                                        {formatDate(program.premiere_at)}
+                                        {useFormatDate(program.premiere_at)}
                                     </p>
                                 </div>
                             </div>

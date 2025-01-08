@@ -50,3 +50,18 @@ export const MCRMenus = [
         label: 'Pesan Masuk'
     },
 ]
+
+export const ProducerMenus = [
+    {
+        link: '/producer/new-programs',
+        label: 'Program Baru'
+    },
+    {
+        link: '/producer/pending',
+        label: 'Perlu Validasi'
+    },
+    {
+        link: '/producer/notifications',
+        label: 'Pesan Masuk'
+    },
+]

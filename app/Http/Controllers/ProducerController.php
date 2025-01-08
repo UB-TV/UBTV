@@ -25,8 +25,7 @@ class ProducerController extends Controller
             ->paginate(self::PAGINATION_PAGE_SIZE)
             ->onEachSide(self::PAGINATION_EACH_SIDE_SIZE);
 
-        dd(json_encode($programs, JSON_PRETTY_PRINT));
-        return Inertia::render('CHANGEME', $programs);
+        return Inertia::render('Producer/NewProgram', $programs);
     }
 
     public function pending(): \Inertia\Response
@@ -37,8 +36,8 @@ class ProducerController extends Controller
             ->paginate(self::PAGINATION_PAGE_SIZE)
             ->onEachSide(self::PAGINATION_EACH_SIDE_SIZE);
 
-        dd(json_encode($programs, JSON_PRETTY_PRINT));
-        return Inertia::render('CHANGEME', $programs);
+        // dd(json_encode($programs, JSON_PRETTY_PRINT));
+        return Inertia::render('Producer/PendingProgram', $programs);
     }
 
     public function notifications(): \Inertia\Response
@@ -64,12 +63,10 @@ class ProducerController extends Controller
             })
             ->onEachSide(self::PAGINATION_EACH_SIDE_SIZE);
 
-        dd(json_encode($notifications, JSON_PRETTY_PRINT));
-
-        return Inertia::render('CHANGEME', $notifications);
+        return Inertia::render('Shared/Notification', $notifications);
     }
 
-    public function pendingProgram(Program $program): \Inertia\Response
+    public function program(Program $program): \Inertia\Response
     {
         $program->load('episodes.videos');
         $program->episodes->transform(function (Episode $episode, int $_): Episode {
@@ -79,22 +76,23 @@ class ProducerController extends Controller
             });
             return $episode;
         });
-        dd(json_encode($program, JSON_PRETTY_PRINT));
-        return Inertia::render('CHANGEME', $program);
+        // dd(json_encode($program, JSON_PRETTY_PRINT));
+        return Inertia::render('Producer/ProgramDetail', $program);
     }
 
-    public function createEpisode(CreateEpisodeRequest $req): HttpResponse
+    public function createEpisode(CreateEpisodeRequest $req): \Illuminate\Http\Response
     {
         try {
             $payload = $req->validated();
             Episode::create($payload);
-        } catch (Exception) {
+        } catch (Exception $e) {
+            dd($e->getMessage());
             return response(status: 500);
         }
         return response(status: 201);
     }
 
-    public function deleteEpisode(Episode $episode): HttpResponse
+    public function deleteEpisode(Episode $episode): \Illuminate\Http\Response
     {
         try {
             $episode->delete();
