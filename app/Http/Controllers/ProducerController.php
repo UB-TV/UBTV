@@ -13,6 +13,7 @@ use App\Enums\StatusEnum;
 use App\Models\Notification;
 use Illuminate\Database\Eloquent\Builder;
 use App\Http\Requests\CreateEpisodeRequest;
+use App\Http\Requests\UpdateEpisodeRequest;
 
 class ProducerController extends Controller
 {
@@ -92,6 +93,17 @@ class ProducerController extends Controller
             return response(status: 500);
         }
         return response(status: 201);
+    }
+
+    public function updateEpisode(Episode $episode, UpdateEpisodeRequest $request): HttpResponse
+    {
+        try {
+            $payload = $request->validated();
+            $episode->update($payload);
+        } catch (Exception $e) {
+            return response(['message' => $e->getMessage()], 500);
+        }
+        return response(status: 200);
     }
 
     public function deleteEpisode(Episode $episode): HttpResponse
