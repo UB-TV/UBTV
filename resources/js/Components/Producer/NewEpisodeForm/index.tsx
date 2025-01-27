@@ -1,21 +1,19 @@
-import DisabledInputField from "@/Components/Form/Disabled/DisabledInputField"
-import DisabledTextarea from "@/Components/Form/Disabled/DisabledTextArea"
-import InputField from "@/Components/Form/InputField"
-import Select from "@/Components/Form/Select"
-import TextArea from "@/Components/Form/TextArea"
-import Button from "@/Components/Shared/Button"
-import { durationOptions } from "@/Constants/FormOptions"
-import useCreateEpisode from "@/repositories/producer/useCreateEpisode"
-import { formatDateForApi } from "@/util/formatDateforDB"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { router } from "@inertiajs/react"
-import { SubmitHandler, useForm } from "react-hook-form"
-import { z } from "zod"
+import { SubmitHandler, useForm } from "react-hook-form";
+
+import Button from "@/Components/Shared/Button";
+import DatePicker from "@/Components/Form/DatePicker";
+import InputField from "@/Components/Form/InputField";
+import Select from "@/Components/Form/Select";
+import TextArea from "@/Components/Form/TextArea";
+import { durationOptions } from "@/Constants/FormOptions";
+import useCreateEpisode from "@/repositories/producer/useCreateEpisode";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 type NewEpisodeFormProps = {
     onCloseDialog: () => void;
     programId: number;
-}
+};
 
 const schema = z.object({
     code: z.string(),
@@ -23,23 +21,15 @@ const schema = z.object({
     theme: z.string(),
     segment_count: z.string().min(1),
     start_production: z.string(),
-    description: z.string().max(200).min(1)
+    description: z.string().max(200).min(1),
 });
 
 type FormFields = z.infer<typeof schema>;
 
-const NewEpisodeForm = ({
-    onCloseDialog,
-    programId
-}: NewEpisodeFormProps) => {
+const NewEpisodeForm = ({ onCloseDialog, programId }: NewEpisodeFormProps) => {
     const { createEpisode, isLoading, error } = useCreateEpisode();
 
-    const {
-        register,
-        handleSubmit,
-        formState,
-        control
-    } = useForm<FormFields>({
+    const { register, handleSubmit, formState, control } = useForm<FormFields>({
         resolver: zodResolver(schema),
     });
 
@@ -50,7 +40,6 @@ const NewEpisodeForm = ({
             await createEpisode({
                 ...data,
                 program_id: programId,
-                start_production: formatDateForApi(data.start_production),
             });
             onCloseDialog();
         } catch (err) {
@@ -76,7 +65,9 @@ const NewEpisodeForm = ({
                             control={control}
                         />
                         {errors.code && (
-                            <span className="text-error-500">{errors.code.message}</span>
+                            <span className="text-error-500">
+                                {errors.code.message}
+                            </span>
                         )}
                     </div>
                     <Select
@@ -95,7 +86,9 @@ const NewEpisodeForm = ({
                             control={control}
                         />
                         {errors.theme && (
-                            <span className="text-error-500">{errors.theme.message}</span>
+                            <span className="text-error-500">
+                                {errors.theme.message}
+                            </span>
                         )}
                     </div>
                     <div className="flex flex-col gap-2">
@@ -107,21 +100,24 @@ const NewEpisodeForm = ({
                             control={control}
                         />
                         {errors.segment_count && (
-                            <span className="text-error-500">{errors.segment_count.message}</span>
+                            <span className="text-error-500">
+                                {errors.segment_count.message}
+                            </span>
                         )}
                     </div>
                 </div>
                 <div className="flex flex-col gap-6 w-[45%]">
                     <div className="flex flex-col gap-2">
-                        <InputField
+                        <DatePicker
                             id="start_production"
-                            type="text"
                             label="Tanggal Mulai Produksi"
-                            placeholder="Masukkan Tanggal Mulai Produksi"
+                            placeholder="Pilih Tanggal Mulai Produksi"
                             control={control}
                         />
                         {errors.start_production && (
-                            <span className="text-error-500">{errors.start_production.message}</span>
+                            <span className="text-error-500">
+                                {errors.start_production.message}
+                            </span>
                         )}
                     </div>
                     <div className="flex flex-col gap-2">
@@ -133,7 +129,9 @@ const NewEpisodeForm = ({
                             maxLength={200}
                         />
                         {errors.description && (
-                            <span className="text-error-500">{errors.description.message}</span>
+                            <span className="text-error-500">
+                                {errors.description.message}
+                            </span>
                         )}
                     </div>
                 </div>
@@ -147,7 +145,7 @@ const NewEpisodeForm = ({
                 size="Large"
             />
         </form>
-    )
-}
+    );
+};
 
-export default NewEpisodeForm
+export default NewEpisodeForm;
