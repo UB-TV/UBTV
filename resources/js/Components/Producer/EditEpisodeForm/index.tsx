@@ -1,6 +1,7 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import Button from "@/Components/Shared/Button";
+import DatePickerField from "@/Components/Form/DatePicker";
 // Component
 import InputField from "@/Components/Form/InputField";
 import Select from "@/Components/Form/Select";
@@ -141,13 +142,12 @@ const EditEpisodeForm = ({
                     )}
                 </div>
                 <div className="w-[48%] flex flex-col gap-6">
-                    <InputField
+                    <DatePickerField
                         id="start_production"
-                        type="text"
                         label="Tanggal Mulai Produksi"
                         placeholder="Masukkan Tanggal Produksi"
                         control={control}
-                        value={start_production}
+                        defaultValue={start_production}
                     />
                     {errors.start_production && (
                         <span className="text-error-500">

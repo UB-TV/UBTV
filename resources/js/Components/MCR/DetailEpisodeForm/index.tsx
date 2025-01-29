@@ -1,14 +1,14 @@
-import DisabledInputField from "@/Components/Form/Disabled/DisabledInputField"
-import DisabledTextarea from "@/Components/Form/Disabled/DisabledTextArea"
+import DisabledInputField from "@/Components/Form/Disabled/DisabledInputField";
+import DisabledTextarea from "@/Components/Form/Disabled/DisabledTextArea";
 
 type DetailEpisodeFormProps = {
-    code: string
-    duration: string
-    productionDate: string
-    theme: string
-    desc: string
-    segment: number
-}
+    code: string;
+    duration: string;
+    productionDate: string;
+    theme: string;
+    desc: string;
+    segment: number;
+};
 
 const DetailEpisodeForm = ({
     code,
@@ -16,7 +16,7 @@ const DetailEpisodeForm = ({
     productionDate,
     theme,
     desc,
-    segment
+    segment,
 }: DetailEpisodeFormProps) => {
     return (
         <div className="flex items-start justify-between">
@@ -61,7 +61,7 @@ const DetailEpisodeForm = ({
                 />
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default DetailEpisodeForm
+export default DetailEpisodeForm;

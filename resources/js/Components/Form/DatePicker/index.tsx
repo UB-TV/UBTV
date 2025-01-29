@@ -13,6 +13,7 @@ type DatePickerFieldProps = {
     placeholder: string;
     control: any;
     disabled?: boolean;
+    defaultValue?: string | Date | null;
 };
 
 const DatePickerField = ({
@@ -21,17 +22,18 @@ const DatePickerField = ({
     placeholder,
     control,
     disabled = false,
+    defaultValue = null,
 }: DatePickerFieldProps) => {
     const {
         field: { value, onChange },
     } = useController({
         name: id,
         control,
-        defaultValue: null,
+        defaultValue: defaultValue,
     });
 
     const [selectedDate, setSelectedDate] = useState<Date | null>(
-        value ? new Date(value) : null
+        value ? new Date(value) : defaultValue ? new Date(defaultValue) : null
     );
 
     const handleDateChange = (date: Date | null) => {
