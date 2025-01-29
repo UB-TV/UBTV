@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Exception;
@@ -15,13 +14,11 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Http\Requests\CreateEpisodeRequest;
 use App\Http\Requests\UpdateEpisodeRequest;
 
-class ProducerController extends Controller
-{
+class ProducerController extends Controller {
     public const PAGINATION_PAGE_SIZE = 15;
     public const PAGINATION_EACH_SIDE_SIZE = 5;
 
-    public function newPrograms(): \Inertia\Response
-    {
+    public function newPrograms(): \Inertia\Response {
         $programs = Program::orderBy('created_at', 'desc')
             ->paginate(self::PAGINATION_PAGE_SIZE)
             ->onEachSide(self::PAGINATION_EACH_SIDE_SIZE);
@@ -29,8 +26,7 @@ class ProducerController extends Controller
         return Inertia::render('Producer/NewProgram', $programs);
     }
 
-    public function pending(): \Inertia\Response
-    {
+    public function pending(): \Inertia\Response {
         $programs = Program::whereHas('episodes', function (Builder $query) {
             $query->where('status', '=', StatusEnum::PRODUCER_VALIDATION);
         })
@@ -41,8 +37,7 @@ class ProducerController extends Controller
         return Inertia::render('Producer/PendingProgram', $programs);
     }
 
-    public function notifications(): \Inertia\Response
-    {
+    public function notifications(): \Inertia\Response {
         $notifications = Notification::with(['user', 'program', 'episode', 'role'])
             ->whereHas('role', function (Builder $query) {
                 $query->where('name', '=', RolesEnum::PRODUCER);
@@ -67,8 +62,7 @@ class ProducerController extends Controller
         return Inertia::render('Shared/Notification', $notifications);
     }
 
-    public function program(Program $program): \Inertia\Response
-    {
+    public function program(Program $program): \Inertia\Response {
         $program->load('episodes.videos');
         $program->episodes->transform(function (Episode $episode, int $_): Episode {
             $episode->videos->transform(function (Video $video, int $key): Video {
@@ -81,8 +75,7 @@ class ProducerController extends Controller
         return Inertia::render('Producer/ProgramDetail', $program);
     }
 
-    public function createEpisode(CreateEpisodeRequest $req): \Illuminate\Http\Response
-    {
+    public function createEpisode(CreateEpisodeRequest $req): \Illuminate\Http\Response {
         try {
             $payload = $req->validated();
             Episode::create($payload);
@@ -93,8 +86,7 @@ class ProducerController extends Controller
         return response(status: 201);
     }
 
-    public function updateEpisode(Episode $episode, UpdateEpisodeRequest $request): HttpResponse
-    {
+    public function updateEpisode(Episode $episode, UpdateEpisodeRequest $request): \Illuminate\Http\Response {
         try {
             $payload = $request->validated();
             $episode->update($payload);
@@ -104,8 +96,7 @@ class ProducerController extends Controller
         return response(status: 200);
     }
 
-    public function deleteEpisode(Episode $episode): HttpResponse
-    {
+    public function deleteEpisode(Episode $episode): HttpResponse {
         try {
             $episode->delete();
         } catch (Exception) {

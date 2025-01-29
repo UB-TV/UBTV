@@ -1,30 +1,28 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { z } from "zod";
-// Component
-import DisabledInputField from "@/Components/Form/Disabled/DisabledInputField"
-import DisabledTextarea from "@/Components/Form/Disabled/DisabledTextArea"
+
 import Button from "@/Components/Shared/Button";
+// Component
 import InputField from "@/Components/Form/InputField";
 import Select from "@/Components/Form/Select";
-import { durationOptions } from "@/Constants/FormOptions";
 import TextArea from "@/Components/Form/TextArea";
-import useEditEpisode from "@/repositories/producer/useEditEpisode";
+import { durationOptions } from "@/Constants/FormOptions";
 import { formatDateForApi } from "@/util/formatDateforDB";
-import { useEffect } from "react";
+import useEditEpisode from "@/repositories/producer/useEditEpisode";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 type EditEpisodeFormProps = {
-    programId: number,
-    episodeId: number,
-    code: string
-    duration: string
-    start_production: string
-    theme: string
-    description: string
-    segment_count: number
+    programId: number;
+    episodeId: number;
+    code: string;
+    duration: string;
+    start_production: string;
+    theme: string;
+    description: string;
+    segment_count: number;
     status: string;
     onCloseDialog: () => void;
-}
+};
 
 const schema = z.object({
     code: z.string().min(1, "Code is required"),
@@ -48,9 +46,8 @@ const EditEpisodeForm = ({
     status,
     description,
     segment_count,
-    onCloseDialog
+    onCloseDialog,
 }: EditEpisodeFormProps) => {
-
     const statusOptions = [
         { optionLabel: "Producer Validation", value: "PRODUCER_VALIDATION" },
         { optionLabel: "MCR Validation", value: "MCR_VALIDATION" },
@@ -59,20 +56,11 @@ const EditEpisodeForm = ({
         { optionLabel: "On Air", value: "ON_AIR" },
     ];
 
-    const {
-        register,
-        handleSubmit,
-        formState,
-        control
-    } = useForm<FormFields>({
+    const { register, handleSubmit, formState, control } = useForm<FormFields>({
         resolver: zodResolver(schema),
     });
 
     const { errors } = formState;
-
-    useEffect(() => {
-        console.log(start_production);
-    }, [])
 
     const { editEpisode, isLoading, error } = useEditEpisode();
 
@@ -113,7 +101,9 @@ const EditEpisodeForm = ({
                         value={code}
                     />
                     {errors.code && (
-                        <span className="text-error-500">{errors.code.message}</span>
+                        <span className="text-error-500">
+                            {errors.code.message}
+                        </span>
                     )}
                     <Select
                         id="duration"
@@ -132,7 +122,9 @@ const EditEpisodeForm = ({
                         value={theme}
                     />
                     {errors.theme && (
-                        <span className="text-error-500">{errors.theme.message}</span>
+                        <span className="text-error-500">
+                            {errors.theme.message}
+                        </span>
                     )}
                     <InputField
                         id="segment_count"
@@ -143,7 +135,9 @@ const EditEpisodeForm = ({
                         value={segment_count.toString()}
                     />
                     {errors.segment_count && (
-                        <span className="text-error-500">{errors.segment_count.message}</span>
+                        <span className="text-error-500">
+                            {errors.segment_count.message}
+                        </span>
                     )}
                 </div>
                 <div className="w-[48%] flex flex-col gap-6">
@@ -156,7 +150,9 @@ const EditEpisodeForm = ({
                         value={start_production}
                     />
                     {errors.start_production && (
-                        <span className="text-error-500">{errors.start_production.message}</span>
+                        <span className="text-error-500">
+                            {errors.start_production.message}
+                        </span>
                     )}
                     <Select
                         id="status"
@@ -167,7 +163,9 @@ const EditEpisodeForm = ({
                         value={status}
                     />
                     {errors.status && (
-                        <span className="text-error-500">{errors.status.message}</span>
+                        <span className="text-error-500">
+                            {errors.status.message}
+                        </span>
                     )}
                     <TextArea
                         id="description"
@@ -178,7 +176,9 @@ const EditEpisodeForm = ({
                         value={description}
                     />
                     {errors.description && (
-                        <span className="text-error-500">{errors.description.message}</span>
+                        <span className="text-error-500">
+                            {errors.description.message}
+                        </span>
                     )}
                 </div>
             </div>
@@ -191,7 +191,7 @@ const EditEpisodeForm = ({
                 size="Large"
             />
         </form>
-    )
-}
+    );
+};
 
-export default EditEpisodeForm
+export default EditEpisodeForm;
