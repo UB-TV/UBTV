@@ -41,6 +41,7 @@ const NewEpisodeForm = ({ onCloseDialog, programId }: NewEpisodeFormProps) => {
                 ...data,
                 program_id: programId,
             });
+            if (error) return;
             onCloseDialog();
         } catch (err) {
             console.error(err);

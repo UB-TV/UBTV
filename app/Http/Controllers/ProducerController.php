@@ -33,7 +33,6 @@ class ProducerController extends Controller {
             ->paginate(self::PAGINATION_PAGE_SIZE)
             ->onEachSide(self::PAGINATION_EACH_SIDE_SIZE);
 
-        // dd(json_encode($programs, JSON_PRETTY_PRINT));
         return Inertia::render('Producer/PendingProgram', $programs);
     }
 
@@ -71,7 +70,6 @@ class ProducerController extends Controller {
             });
             return $episode;
         });
-        // dd(json_encode($program, JSON_PRETTY_PRINT));
         return Inertia::render('Producer/ProgramDetail', $program);
     }
 
