@@ -5,6 +5,7 @@ type ButtonProps = {
     color?: "Primary" | "Error",
     icon?: string
     iconPosition?: "Left" | "Right",
+    iconClassName?: string
     onClick?: () => void;
     width?: "Fit" | "Full"
     size?: "Small" | "Medium" | "Large" | "Center"
@@ -18,6 +19,7 @@ const Button = ({
     style,
     color,
     icon,
+    iconClassName,
     iconPosition,
     onClick,
     width,
@@ -26,10 +28,11 @@ const Button = ({
     iconOnly
 }: ButtonProps) => {
     const buttonClasses = `
-        ${style === "Filled" ? "bg-primary-500 text-white" :
-            style === "Outlined" && color === "Primary" ? "border-2 border-solid border-primary-500 text-primary-500" : 
-            style === "Outlined" && color === "Error" ? "border-2 border-solid border-error-600 text-error-600" :
-            "bg-transparent text-black"
+        ${style === "Filled" && color === "Primary" ? "bg-primary-500 text-white" :
+            style === "Filled" && color === "Error" ? "bg-error-500 text-white" :
+                style === "Outlined" && color === "Primary" ? "border-2 border-solid border-primary-500 text-primary-500" :
+                    style === "Outlined" && color === "Error" ? "border-2 border-solid border-error-600 text-error-600" :
+                        "bg-transparent text-black"
         }
         ${width === "Fit" ? "w-fit flex justify-center" : "w-full flex justify-center"}
         ${size === "Small" ? "caption-2" : size === "Medium" ? "caption-1" : size === "Large" ? "body-2" : "body-1"}
@@ -41,8 +44,11 @@ const Button = ({
             <button
                 type={type}
                 onClick={onClick}
+                className={`${style === "Filled" && color === "Primary" ? "bg-primary-500 text-white" :
+                    style === "Filled" && color === "Error" ? "bg-error-500 text-white" : ""} font-medium rounded-[10px] p-2 `
+                }
             >
-                <img src={icon} alt={label} />
+                <img className={iconClassName} src={icon} alt={label} />
             </button>
         );
     }
@@ -55,11 +61,11 @@ const Button = ({
         >
             {icon ? (
                 <>
-                    <img src={icon} alt={label} />
+                    <img className={iconClassName} src={icon} alt={label} />
                     <span>{label}</span>
                 </>
-                ) : (
-                    <span>{label}</span>
+            ) : (
+                <span>{label}</span>
             )}
         </button>
     );

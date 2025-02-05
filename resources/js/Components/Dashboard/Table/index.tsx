@@ -7,7 +7,6 @@ import Pagination from "../Pagination/Index";
 import { IPaginationLink } from "@/models/generalinterfaces";
 import { useFetchNewUsers } from "@/repositories/Admin/useFetchNewUsers";
 import { useProgramService } from "@/repositories/HeadOfProgram/useProgramService";
-import useFormatDate from "@/util/useFormatDate";
 
 type TableHeaderProps = {
     label: string;
@@ -114,7 +113,7 @@ const Table = ({
 
     const normalizedRole = role.replace(/_/g, "-");
 
-    function formatDate(dateString: string) {
+    function useFormatDate(dateString: string) {
         const days = [
             "Minggu",
             "Senin",
@@ -244,7 +243,7 @@ const Table = ({
                                                     </td>
                                                 </>
                                             )}
-                                            {type === "Program" && (
+                                            {type === "Program Status" && (
                                                 <td className="p-2">
                                                     {body.is_active
                                                         ? "Aktif"

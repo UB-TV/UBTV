@@ -58,5 +58,9 @@ export const durationOptions = [
     {
         optionLabel: '90 Menit',
         value: '90'
-    }
+    },
+    {
+        optionLabel: '120 Menit',
+        value: '120'
+    },
 ]

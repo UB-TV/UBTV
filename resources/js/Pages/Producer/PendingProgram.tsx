@@ -1,17 +1,17 @@
-import { useMemo, useState } from "react";
-// Data
-import { PRODUCER_NEW_PROGRAM_HEADER } from "@/Constants/TableHeader";
+import { useMemo, useState } from 'react';
 // Component
-import { IGeneralPaginationTable } from "@/models/generalinterfaces";
-import { IVideoProgram } from "@/models/videprograminterfaces";
+import { IGeneralPaginationTable } from '@/models/generalinterfaces';
+import { IVideoProgram } from '@/models/videprograminterfaces';
+import { PRODUCER_NEW_PROGRAM_HEADER } from '@/Constants/TableHeader';
 import Layout from "@/Layout";
-import SearchField from "@/Components/Dashboard/SearchField";
-import Table from "@/Components/Dashboard/Table";
+import SearchField from '@/Components/Dashboard/SearchField';
+import Table from '@/Components/Dashboard/Table';
 
-const NewProgram = ({
+const PendingProgram = ({
     data,
     links
 }: IGeneralPaginationTable<IVideoProgram[]>) => {
+
     const [searchInput, setSearchInput] = useState('');
 
     const handleSearch = (input: string) => {
@@ -19,11 +19,8 @@ const NewProgram = ({
     };
 
     const filterPrograms = (programs: IVideoProgram[], searchInput: string) => {
-        if (!searchInput.trim()) return data;
-
-        const searchTerm = searchInput.toLowerCase();
-        const filteredPrograms = programs.filter((program: any) =>
-            program.name.toLowerCase().includes(searchTerm)
+        const filteredPrograms = programs.filter((program: IVideoProgram) =>
+            program.name.toLowerCase().includes(searchInput.toLowerCase())
         );
         return filteredPrograms;
     };
@@ -36,7 +33,7 @@ const NewProgram = ({
     return (
         <Layout>
             <>
-                <h1 className="heading-3 font-semibold">Program Baru</h1>
+                <h1 className="heading-3 font-semibold">Perlu Validasi </h1>
                 <div className="flex items-center gap-6">
                     <SearchField onSearch={handleSearch} />
                     <p className="caption-1">
@@ -49,10 +46,10 @@ const NewProgram = ({
                         body={filteredPrograms}
                         action="/icon/more-fill.svg"
                         pagination={true}
-                        pagination_link={links}
                         type="Program"
-                        isRedirectPrefix
                         redirectUrl="program"
+                        isRedirectPrefix
+                        pagination_link={links}
                     />
                 ) : (
                     <p className="body-1 font-semibol">Tidak ada program yang ditemukan</p>
@@ -62,4 +59,4 @@ const NewProgram = ({
     );
 };
 
-export default NewProgram;
+export default PendingProgram;

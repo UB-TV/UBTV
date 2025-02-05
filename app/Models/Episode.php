@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property int $program_id
@@ -42,6 +42,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Episode extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'program_id',
+        'code',
+        'duration',
+        'theme',
+        'segment_count',
+        'start_production',
+        'description'
+    ];
     public function videos(): HasMany
     {
         return $this->hasMany(Video::class);

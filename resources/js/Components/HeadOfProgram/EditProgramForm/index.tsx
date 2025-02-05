@@ -36,7 +36,7 @@ const EditProgramForm = ({ formData, onSuccess }: EditProgramFormProps) => {
 
     console.log("Initial formData:", formData);
 
-    const formatDateForInput = (dateString: string) => {
+    const useFormatDateForInput = (dateString: string) => {
         try {
             const [datePart, timePart] = dateString.split(" ");
             if (!datePart || !timePart) return "";
@@ -58,7 +58,7 @@ const EditProgramForm = ({ formData, onSuccess }: EditProgramFormProps) => {
                 name: formData.name,
                 description: formData.description,
                 is_active: formData.is_active,
-                premiere_at: formatDateForInput(formData.premiere_at),
+                premiere_at: useFormatDateForInput(formData.premiere_at),
             },
         });
 
@@ -67,7 +67,7 @@ const EditProgramForm = ({ formData, onSuccess }: EditProgramFormProps) => {
     useEffect(() => {
         reset({
             ...formData,
-            premiere_at: formatDateForInput(formData.premiere_at),
+            premiere_at: useFormatDateForInput(formData.premiere_at),
         });
     }, [formData, reset]);
 
@@ -79,7 +79,7 @@ const EditProgramForm = ({ formData, onSuccess }: EditProgramFormProps) => {
                 name: data.name,
                 description: data.description,
                 is_active: data.is_active,
-                premiere_at: formatDateForSubmission(data.premiere_at),
+                premiere_at: useFormatDateForSubmission(data.premiere_at),
                 slug: formData.slug,
             };
             console.log("Submission data:", submissionData);
@@ -94,7 +94,7 @@ const EditProgramForm = ({ formData, onSuccess }: EditProgramFormProps) => {
         }
     };
 
-    const formatDateForSubmission = (dateString: string): string => {
+    const useFormatDateForSubmission = (dateString: string): string => {
         try {
             return dateString.replace("T", " ") + ":00";
         } catch (e) {
@@ -103,7 +103,7 @@ const EditProgramForm = ({ formData, onSuccess }: EditProgramFormProps) => {
         }
     };
 
-    const formattedDate = formatDateForInput(formData.premiere_at);
+    const formattedDate = useFormatDateForInput(formData.premiere_at);
     console.log("Formatted Premiere Date:", formattedDate);
 
     return (

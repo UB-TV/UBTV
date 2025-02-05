@@ -4,7 +4,7 @@ import { useRef } from "react"
 import Dialog from "@/Components/Shared/Dialog"
 import Button from "@/Components/Shared/Button"
 import RevisionForm from "../RevisionForm"
-import DetailEpisodeForm from "../DetailEpisodeForm"
+import DetailEpisodeForm from "../../Shared/DetailEpisodeForm"
 
 type ValidationCardProps = {
     episodeNumber: number

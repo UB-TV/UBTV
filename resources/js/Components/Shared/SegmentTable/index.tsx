@@ -5,6 +5,7 @@ import Select from "@/Components/Form/Select";
 import useUpdateVideoStatus from "@/repositories/shared/useUpdateVideoStatus";
 import { useState } from "react";
 import axios from "axios";
+import { router } from "@inertiajs/react";
 
 interface ISegmentTable {
     data: IVideoWithStatus[];
@@ -35,7 +36,7 @@ const SegmentTable = ({
             });
 
             if (response) {
-                console.log('res', response)
+                router.reload();
                 return;
             }
 

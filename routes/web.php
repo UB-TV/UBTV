@@ -58,9 +58,9 @@ Route::middleware(['auth'])->group(function () {
     Route::controller(ProducerController::class)->prefix('/producer')->group(function () {
         Route::get('/new-programs', 'newPrograms');
         Route::get('/pending', 'pending');
-        Route::get('/pending/{program:slug}', 'pendingProgram');
+        Route::get('/program/{program:slug}', 'program');
         Route::get('/notifications', 'notifications');
-    });
+    })->middleware('role:producer');
 
     # API
     Route::prefix('/api/v1')->group(function () {

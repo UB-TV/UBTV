@@ -26,3 +26,25 @@ export interface IVideo {
 export interface IVideoWithStatus extends IVideo {
     episodeStatus: string;
 }
+
+export interface ICreateEpisodePayloadRoot {
+    program_id: number;
+    code: string;
+    duration: string;
+    theme: string;
+    segment_count: string;
+    start_production: string;
+    description: string;
+}
+
+export interface IEditEpsiodePayloadRoot {
+    program_id: number;
+    episode_id: number;
+    code: string;
+    duration: string;
+    theme: string;
+    segment_count: string;
+    start_production: string;
+    status: string;
+    description: string;
+}
