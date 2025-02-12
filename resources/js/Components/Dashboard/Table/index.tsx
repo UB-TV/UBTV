@@ -176,7 +176,18 @@ const Table = ({
                                 {head.label}
                             </th>
                         ))}
-                        {action && (
+                        {action && type === "Admin" && (
+                            <th
+                                className={`text-center ${
+                                    action === "new" ? "w-[20%]" : "w-[10%]"
+                                } `}
+                            >
+                                {action === "new"
+                                    ? "Konfirmasi Assign"
+                                    : "Aksi"}
+                            </th>
+                        )}
+                        {action && type !== "Admin" && (
                             <th className="text-center w-[10%]">Aksi</th>
                         )}
                     </tr>

@@ -13,8 +13,17 @@ class AdminController extends Controller
     public function newUsers(): Response
     {
         $users = User::query()->where('is_active', '=', null)->paginate(15)->onEachSide(5);
-        // dd(json_encode($users));
-        #TODO: render the correct page & delete dd
+
+        $users = User::with('roles:name')
+            ->where('is_active', '=', null)
+            ->paginate(15)
+            ->onEachSide(5)
+            ->through(function ($user) {
+                $user->role = $user->roles->first()->name ?? null;
+                unset($user->roles);
+                return $user;
+            });
+
         return Inertia::render('Admin/NewUsers', [
             'users' => $users
         ]);
