@@ -1,67 +1,93 @@
 export const CameramanMenus = [
     {
-        link: '/',
-        label: 'Dashboard'
+        link: "/",
+        label: "Dashboard",
     },
     {
-        link: '/cameraman/pending',
-        label: 'Belum Upload'
+        link: "/cameraman/pending",
+        label: "Belum Upload",
     },
     {
-        link: '/cameraman/uploaded',
-        label: 'Sudah Upload'
+        link: "/cameraman/uploaded",
+        label: "Sudah Upload",
     },
-]
+];
 
 export const EditorMenus = [
     {
-        link: '/',
-        label: 'Dashboard'
+        link: "/",
+        label: "Dashboard",
     },
     {
-        link: '/editor/pending',
-        label: 'Belum Upload'
+        link: "/editor/pending",
+        label: "Belum Upload",
     },
     {
-        link: '/editor/uploaded',
-        label: 'Sudah Upload'
+        link: "/editor/uploaded",
+        label: "Sudah Upload",
     },
     {
-        link: '/editor/message',
-        label: 'Pesan Masuk'
+        link: "/editor/message",
+        label: "Pesan Masuk",
     },
-]
+];
 
 export const MCRMenus = [
     {
-        link: '/',
-        label: 'Dashboard'
+        link: "/",
+        label: "Dashboard",
     },
     {
-        link: '/mcr/pending',
-        label: 'Perlu Validasi'
+        link: "/mcr/pending",
+        label: "Perlu Validasi",
     },
     {
-        link: '/mcr/programs',
-        label: 'Program'
+        link: "/mcr/programs",
+        label: "Program",
     },
     {
-        link: '/mcr/notifications',
-        label: 'Pesan Masuk'
+        link: "/mcr/notifications",
+        label: "Pesan Masuk",
     },
-]
+];
 
 export const ProducerMenus = [
     {
-        link: '/producer/new-programs',
-        label: 'Program Baru'
+        link: "/producer/new-programs",
+        label: "Program Baru",
     },
     {
-        link: '/producer/pending',
-        label: 'Perlu Validasi'
+        link: "/producer/pending",
+        label: "Perlu Validasi",
     },
     {
-        link: '/producer/notifications',
-        label: 'Pesan Masuk'
+        link: "/producer/notifications",
+        label: "Pesan Masuk",
     },
-]
+];
+
+export const AdminMenus = [
+    {
+        link: "/admin/new-users",
+        label: "User Baru",
+    },
+    {
+        link: "/admin/users",
+        label: "User",
+    },
+];
+
+export const HeadOfProgramMenus = [
+    {
+        link: "/",
+        label: "dashboard",
+    },
+    {
+        link: "/head-of-program/drafts",
+        label: "Terdaftar",
+    },
+    {
+        link: "/head-of-program/actives",
+        label: "Proses",
+    },
+];

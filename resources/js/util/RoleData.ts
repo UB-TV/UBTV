@@ -5,14 +5,14 @@ import {
     CameramanMenus,
     EditorMenus,
     MCRMenus,
-    ProducerMenus
+    ProducerMenus,
+    AdminMenus,
+    HeadOfProgramMenus
 } from "@/Constants/LayoutMenu";
 import {
     EditoProgram,
     MCRProgram,
     ProducerProgram,
-    AdminMenus,
-    // HeadOfProgramMenus
 } from "@/Constants/Temp";
 import { ILayoutMenu } from "@/models/generalinterfaces";
 import { usePage } from "@inertiajs/react";
@@ -43,7 +43,7 @@ export const getLayoutMenu = (role: string): ILayoutMenu[] => {
             return AdminMenus;
 
             case "head_of_program":
-            // return HeadOfProgramMenus;
+            return HeadOfProgramMenus;
 
         default:
             return [];

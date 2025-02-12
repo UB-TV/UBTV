@@ -91,8 +91,9 @@ const Table = ({
         }
     };
 
-    const getStatusLabel = (status: string): string => {
-        switch (status) {
+    const getStatusLabel = (status: string | undefined): string => {
+        if (!status) return "Unknown Status";
+        switch (status.toUpperCase()) {
             case "SHOOTING":
                 return "Shooting";
             case "PRODUCER_VALIDATION":
@@ -252,7 +253,9 @@ const Table = ({
                                     type === "Program Status" ||
                                     type === "Status Episode" ? (
                                         <>
-                                            <td className="p-2">{body.code}</td>
+                                            <td className="p-2 break-words">
+                                                {body.code}
+                                            </td>
                                             <td className="p-2">{body.name}</td>
                                             <td className="p-2">
                                                 {useFormatDate(
@@ -272,7 +275,7 @@ const Table = ({
                                                     </td>
                                                 </>
                                             )}
-                                            {type === "Program Status" && (
+                                            {type === "Program" && (
                                                 <td className="p-2">
                                                     {body.is_active
                                                         ? "Aktif"

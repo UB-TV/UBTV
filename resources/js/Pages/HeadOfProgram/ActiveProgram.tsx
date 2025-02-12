@@ -84,7 +84,10 @@ const ActiveProgram = ({ programs }: { programs: PaginatedProgramData }) => {
                         type="Program Status"
                         redirectUrl="actives"
                         isRedirectPrefix
-                        pagination_link={programs.links}
+                        pagination_link={programs.links.map((link) => ({
+                            ...link,
+                            url: link.url === null ? undefined : link.url,
+                        }))}
                         paginationData={programs}
                         showDelete={true}
                     />
