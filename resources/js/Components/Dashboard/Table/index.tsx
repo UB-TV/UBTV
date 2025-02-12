@@ -111,6 +111,19 @@ const Table = ({
         }
     };
 
+    const translateRole = (role: string): string => {
+        const roleMap: { [key: string]: string } = {
+            admin: "Admin",
+            head_of_program: "Kepala Program",
+            producer: "Produser",
+            cameraman: "Kameramen",
+            editor: "Editor",
+            mcr: "Operator MCR",
+        };
+
+        return roleMap[role] || role;
+    };
+
     const normalizedRole = role.replace(/_/g, "-");
 
     function useFormatDate(dateString: string) {
@@ -163,12 +176,7 @@ const Table = ({
                                 {head.label}
                             </th>
                         ))}
-                        {action && type === "Admin" && (
-                            <th className="text-center w-[10%]">
-                                Konfirmasi Assign
-                            </th>
-                        )}
-                        {action && type !== "Admin" && (
+                        {action && (
                             <th className="text-center w-[10%]">Aksi</th>
                         )}
                     </tr>
@@ -179,11 +187,21 @@ const Table = ({
                             {/* Please make one for User Permission and User Type for Admin Role */}
                             {type === "Admin" ? (
                                 <>
-                                    <td className="p-2">{body.id}</td>
-                                    <td className="p-2">{body.name}</td>
-                                    <td className="p-2">{body.role}</td>
-                                    <td className="p-2">{body.email}</td>
-                                    <td className="p-2">{body.phone_number}</td>
+                                    <td className="p-2 break-words">
+                                        {body.id}
+                                    </td>
+                                    <td className="p-2 break-words">
+                                        {body.name}
+                                    </td>
+                                    <td className="p-2 break-words">
+                                        {translateRole(body.role)}
+                                    </td>
+                                    <td className="p-2 break-words">
+                                        {body.email}
+                                    </td>
+                                    <td className="p-2 break-words">
+                                        {body.phone_number}
+                                    </td>
                                     {action === "new" && (
                                         <td className="flex justify-center gap-3 p-2">
                                             <Button
