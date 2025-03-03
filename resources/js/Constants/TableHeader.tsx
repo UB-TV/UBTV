@@ -134,7 +134,7 @@ export const ADMIN_HEADER = [
     },
     {
         label: "Nama",
-        width: "25%",
+        width: "20%",
     },
     {
         label: "Role",
@@ -142,7 +142,7 @@ export const ADMIN_HEADER = [
     },
     {
         label: "Email",
-        width: "35%",
+        width: "25%",
     },
     {
         label: "No. Telepon",

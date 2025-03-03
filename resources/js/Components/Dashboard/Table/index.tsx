@@ -91,8 +91,9 @@ const Table = ({
         }
     };
 
-    const getStatusLabel = (status: string): string => {
-        switch (status) {
+    const getStatusLabel = (status: string | undefined): string => {
+        if (!status) return "Unknown Status";
+        switch (status.toUpperCase()) {
             case "SHOOTING":
                 return "Shooting";
             case "PRODUCER_VALIDATION":
@@ -109,6 +110,19 @@ const Table = ({
                     .toLowerCase()
                     .replace(/\b\w/g, (char) => char.toUpperCase());
         }
+    };
+
+    const translateRole = (role: string): string => {
+        const roleMap: { [key: string]: string } = {
+            admin: "Admin",
+            head_of_program: "Kepala Program",
+            producer: "Produser",
+            cameraman: "Kameramen",
+            editor: "Editor",
+            mcr: "Operator MCR",
+        };
+
+        return roleMap[role] || role;
     };
 
     const normalizedRole = role.replace(/_/g, "-");
@@ -164,8 +178,14 @@ const Table = ({
                             </th>
                         ))}
                         {action && type === "Admin" && (
-                            <th className="text-center w-[10%]">
-                                Konfirmasi Assign
+                            <th
+                                className={`text-center ${
+                                    action === "new" ? "w-[20%]" : "w-[10%]"
+                                } `}
+                            >
+                                {action === "new"
+                                    ? "Konfirmasi Assign"
+                                    : "Aksi"}
                             </th>
                         )}
                         {action && type !== "Admin" && (
@@ -179,11 +199,21 @@ const Table = ({
                             {/* Please make one for User Permission and User Type for Admin Role */}
                             {type === "Admin" ? (
                                 <>
-                                    <td className="p-2">{body.id}</td>
-                                    <td className="p-2">{body.name}</td>
-                                    <td className="p-2">{body.role}</td>
-                                    <td className="p-2">{body.email}</td>
-                                    <td className="p-2">{body.phone_number}</td>
+                                    <td className="p-2 break-words">
+                                        {body.id}
+                                    </td>
+                                    <td className="p-2 break-words">
+                                        {body.name}
+                                    </td>
+                                    <td className="p-2 break-words">
+                                        {translateRole(body.role)}
+                                    </td>
+                                    <td className="p-2 break-words">
+                                        {body.email}
+                                    </td>
+                                    <td className="p-2 break-words">
+                                        {body.phone_number}
+                                    </td>
                                     {action === "new" && (
                                         <td className="flex justify-center gap-3 p-2">
                                             <Button
@@ -223,7 +253,9 @@ const Table = ({
                                     type === "Program Status" ||
                                     type === "Status Episode" ? (
                                         <>
-                                            <td className="p-2">{body.code}</td>
+                                            <td className="p-2 break-words">
+                                                {body.code}
+                                            </td>
                                             <td className="p-2">{body.name}</td>
                                             <td className="p-2">
                                                 {useFormatDate(
@@ -243,7 +275,7 @@ const Table = ({
                                                     </td>
                                                 </>
                                             )}
-                                            {type === "Program Status" && (
+                                            {type === "Program" && (
                                                 <td className="p-2">
                                                     {body.is_active
                                                         ? "Aktif"

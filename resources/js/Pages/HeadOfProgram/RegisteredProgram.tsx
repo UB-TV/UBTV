@@ -88,7 +88,10 @@ const RegisteredProgram = ({
                         redirectUrl="drafts"
                         isRedirectPrefix
                         paginationData={programs}
-                        pagination_link={programs.links}
+                        pagination_link={programs.links.map((link) => ({
+                            ...link,
+                            url: link.url === null ? undefined : link.url,
+                        }))}
                         showDelete={true}
                     />
                 ) : (

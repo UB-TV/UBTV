@@ -3,6 +3,7 @@ import Table from "@/Components/Dashboard/Table";
 import { ADMIN_HEADER } from "@/Constants/TableHeader";
 import Layout from "@/Layout";
 import { useMemo, useState } from "react";
+import { IPaginationLink } from "@/models/generalinterfaces";
 
 interface User {
     id: number;
@@ -23,7 +24,7 @@ interface PaginatedUsersData {
     from: number;
     last_page: number;
     last_page_url: string;
-    links: Array<{ url: string | null; label: string; active: boolean }>;
+    links: IPaginationLink[];
     next_page_url: string | null;
     path: string;
     per_page: number;
