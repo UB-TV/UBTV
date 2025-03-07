@@ -96,7 +96,7 @@ const NewEpisodeForm = ({ onCloseDialog, programId }: NewEpisodeFormProps) => {
                         <InputField
                             id="segment_count"
                             type="number"
-                            label="Jumlah Episode"
+                            label="Jumlah Segmen"
                             placeholder="Masukkan Jumlah Segmen"
                             control={control}
                         />

@@ -1,4 +1,4 @@
-import { useController } from 'react-hook-form';
+import { useController } from "react-hook-form";
 
 type SelectProps = {
     id: string;
@@ -9,7 +9,7 @@ type SelectProps = {
         value: string;
     }[];
     control: any;
-    disabled?: boolean
+    disabled?: boolean;
     onChange?: (value: string) => void;
     value?: string;
 };
@@ -22,7 +22,7 @@ const Select = ({
     control,
     onChange,
     disabled = false,
-    value: propValue = ''
+    value: propValue = "",
 }: SelectProps) => {
     const {
         field: { value, onChange: fieldOnChange },

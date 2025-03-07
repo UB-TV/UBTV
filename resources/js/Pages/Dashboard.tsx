@@ -1,29 +1,31 @@
-import { useMemo, useState } from "react";
-// Function
-import { getPrograms, useGetUserRole } from "@/util/RoleData";
 // Data
 import {
+    ACTIVE_HEAD_OF_PROGRAM_HEADER,
     CAMERAMAN_HEADER,
+    EDITOR_HEADER,
     MCR_PROGRAM_HEADER,
     MCR_VALIDATION_HEADER,
-    ACTIVE_HEAD_OF_PROGRAM_HEADER,
     REGISTERED_HEAD_OF_PROGRAM_HEADER,
-    EDITOR_HEADER,
 } from "@/Constants/TableHeader";
-// Component
-import SearchField from "@/Components/Dashboard/SearchField";
-import Layout from "@/Layout";
-import NotUploadedTable from "@/Components/Dashboard/TableSection/NotUploadedTable";
-import UploadedTable from "@/Components/Dashboard/TableSection/UploadedTable";
-import ValidationTable from "@/Components/Dashboard/TableSection/ValidationTable";
-import ProgramTable from "@/Components/Dashboard/TableSection/ProgramTable";
-import { IVideoProgram } from "@/models/videprograminterfaces";
-import { usePage } from "@inertiajs/react";
-import EditedProgramTable from "@/Components/Dashboard/TableSection/EditedProgramTable";
-import UneditedProgramTable from "@/Components/Dashboard/TableSection/UneditedProgramTable";
-import RegisteredTable from "@/Components/Dashboard/TableSection/RegisteredTable";
+import { useMemo, useState } from "react";
+
 import ActiveTable from "@/Components/Dashboard/TableSection/ActiveTable";
 import AddProgramButton from "@/Components/HeadOfProgram/AddProgramButton";
+import EditedProgramTable from "@/Components/Dashboard/TableSection/EditedProgramTable";
+import { IVideoProgram } from "@/models/videprograminterfaces";
+import Layout from "@/Layout";
+import NotUploadedTable from "@/Components/Dashboard/TableSection/NotUploadedTable";
+import ProgramTable from "@/Components/Dashboard/TableSection/ProgramTable";
+import RegisteredTable from "@/Components/Dashboard/TableSection/RegisteredTable";
+// Component
+import SearchField from "@/Components/Dashboard/SearchField";
+import UneditedProgramTable from "@/Components/Dashboard/TableSection/UneditedProgramTable";
+import UploadedTable from "@/Components/Dashboard/TableSection/UploadedTable";
+import ValidationTable from "@/Components/Dashboard/TableSection/ValidationTable";
+// Function
+import { useGetUserRole } from "@/util/RoleData";
+import { usePage } from "@inertiajs/react";
+
 interface IDashboard {
     pending_video_programs?: IVideoProgram[];
     uploaded_video_programs?: IVideoProgram[];
@@ -49,18 +51,24 @@ const Dashboard = ({
 
     const { user } = usePage<any>().props;
     const role = useGetUserRole();
-    // TODO: Remove once all feature are integrated
-    // const ProgramsData = getPrograms();
 
     const allProgramLength =
-        pending_video_programs.length +
-        uploaded_video_programs.length +
-        all_edited_video_programs.length +
-        some_unedited_video_programs.length +
-        draft_programs.length +
-        active_programs.length +
-        programs.length +
-        pending_programs.length;
+        (Array.isArray(pending_video_programs)
+            ? pending_video_programs.length
+            : 0) +
+        (Array.isArray(uploaded_video_programs)
+            ? uploaded_video_programs.length
+            : 0) +
+        (Array.isArray(all_edited_video_programs)
+            ? all_edited_video_programs.length
+            : 0) +
+        (Array.isArray(some_unedited_video_programs)
+            ? some_unedited_video_programs.length
+            : 0) +
+        (Array.isArray(draft_programs) ? draft_programs.length : 0) +
+        (Array.isArray(active_programs) ? active_programs.length : 0) +
+        (Array.isArray(programs) ? programs.length : 0) +
+        (Array.isArray(pending_programs) ? pending_programs.length : 0);
 
     const handleSearch = (input: string) => {
         setSearchInput(input);

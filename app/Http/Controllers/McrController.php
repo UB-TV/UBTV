@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Inertia\Inertia;
@@ -13,13 +12,11 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Database\Eloquent\Builder;
 
-class McrController extends Controller
-{
+class McrController extends Controller {
     public const PAGINATION_PAGE_SIZE = 15;
     public const PAGINATION_EACH_SIDE_SIZE = 5;
 
-    public function pending(): \Inertia\Response
-    {
+    public function pending(): \Inertia\Response {
         $programs = Program::whereHas('episodes', function (Builder $query) {
             $query->where('status', '=', StatusEnum::MCR_VALIDATION);
         })
@@ -29,8 +26,7 @@ class McrController extends Controller
         return Inertia::render('MCR/ProgramValidation', $programs);
     }
 
-    public function programs(): \Inertia\Response
-    {
+    public function programs(): \Inertia\Response {
         $programs = Program::orderBy('created_at', 'desc')
             ->paginate(self::PAGINATION_PAGE_SIZE)
             ->onEachSide(self::PAGINATION_EACH_SIDE_SIZE);
@@ -38,8 +34,7 @@ class McrController extends Controller
         return Inertia::render('MCR/Program', $programs);
     }
 
-    public function pendingProgram(Program $program): \Inertia\Response
-    {
+    public function pendingProgram(Program $program): \Inertia\Response {
         $program->load('episodes.videos');
         $program->episodes->transform(function (Episode $episode, int $_): Episode {
             $episode->videos->transform(function (Video $video, int $key): Video {
@@ -51,25 +46,22 @@ class McrController extends Controller
         return Inertia::render('MCR/ProgramDetail', $program);
     }
 
-    public function program(Program $program): \Inertia\Response
-    {
+    public function program(Program $program): \Inertia\Response {
         $program->load('episodes');
         return Inertia::render('MCR/ProgramDetail', $program);
     }
 
-    public function update(Episode $episode, Request $request): \Illuminate\Http\Response
-    {
+    public function update(Episode $episode, Request $request): \Illuminate\Http\Response {
         $validated = $request->validate([
             'episode_id' => ['required'],
-            'status' => ['required', Rule::enum(StatusEnum::class)],
+            'status'     => ['required', Rule::enum(StatusEnum::class)],
         ]);
         $episode->status = $validated['status'];
         $episode->save();
         return response(status: 200);
     }
 
-    public function notifications(): \Inertia\Response
-    {
+    public function notifications(): \Inertia\Response {
         $notifications = Notification::with(['user', 'program', 'episode', 'role'])
             ->whereHas('role', function (Builder $query) {
                 $query->where('name', '=', RolesEnum::MCR);

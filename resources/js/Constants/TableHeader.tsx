@@ -102,6 +102,10 @@ export const PRODUCER_NEW_PROGRAM_HEADER = [
         label: "Waktu  Premiere",
         width: "35%",
     },
+    {
+        label: "Status",
+        width: "10%",
+    },
 ];
 
 export const VALIDATION_HEADER = [

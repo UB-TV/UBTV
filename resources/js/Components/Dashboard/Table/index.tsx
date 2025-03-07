@@ -1,11 +1,12 @@
-import IconButton from "@/Components/Shared/IconButton.tsx";
-import { useGetUserRole } from "@/util/RoleData";
 import { useEffect, useState } from "react";
+
 import Button from "@/Components/Shared/Button";
+import { IPaginationLink } from "@/models/generalinterfaces";
+import IconButton from "@/Components/Shared/IconButton.tsx";
 import { Link } from "@inertiajs/react";
 import Pagination from "../Pagination/Index";
-import { IPaginationLink } from "@/models/generalinterfaces";
 import { useFetchNewUsers } from "@/repositories/Admin/useFetchNewUsers";
+import { useGetUserRole } from "@/util/RoleData";
 import { useProgramService } from "@/repositories/HeadOfProgram/useProgramService";
 
 type TableHeaderProps = {

@@ -1,18 +1,19 @@
 import { useMemo, useState } from "react";
-// Data
-import { PRODUCER_NEW_PROGRAM_HEADER } from "@/Constants/TableHeader";
+
 // Component
 import { IGeneralPaginationTable } from "@/models/generalinterfaces";
 import { IVideoProgram } from "@/models/videprograminterfaces";
 import Layout from "@/Layout";
+// Data
+import { PRODUCER_NEW_PROGRAM_HEADER } from "@/Constants/TableHeader";
 import SearchField from "@/Components/Dashboard/SearchField";
 import Table from "@/Components/Dashboard/Table";
 
 const NewProgram = ({
     data,
-    links
+    links,
 }: IGeneralPaginationTable<IVideoProgram[]>) => {
-    const [searchInput, setSearchInput] = useState('');
+    const [searchInput, setSearchInput] = useState("");
 
     const handleSearch = (input: string) => {
         setSearchInput(input);
@@ -40,7 +41,8 @@ const NewProgram = ({
                 <div className="flex items-center gap-6">
                     <SearchField onSearch={handleSearch} />
                     <p className="caption-1">
-                        <span className="font-semibold">{data.length}</span> Program
+                        <span className="font-semibold">{data.length}</span>{" "}
+                        Program
                     </p>
                 </div>
                 {filteredPrograms.length > 0 ? (
@@ -55,7 +57,9 @@ const NewProgram = ({
                         redirectUrl="program"
                     />
                 ) : (
-                    <p className="body-1 font-semibol">Tidak ada program yang ditemukan</p>
+                    <p className="body-1 font-semibol">
+                        Tidak ada program yang ditemukan
+                    </p>
                 )}
             </>
         </Layout>

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Google\Client;
@@ -11,15 +10,12 @@ use App\Models\Program;
 use Google\Service\Drive;
 use Illuminate\Http\Request;
 use Google\Service\Drive\DriveFile;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Http\Response as HttpResponse;
 use App\Http\Requests\PostEpisodeSegmentRequest;
 
-class EditorController extends Controller
-{
-    public function uploaded(Request $req): Response
-    {
+class EditorController extends Controller {
+    public function uploaded(Request $req): Response {
         $user = $req->user();
         $programs = Program::query()
             ->join('episodes', 'programs.id', '=', 'episodes.program_id')
@@ -30,12 +26,10 @@ class EditorController extends Controller
             ->join('user_video', 'videos.id', '=', 'user_video.video_id')
             ->groupBy('programs.id')
             ->paginate(15)->onEachSide(5);
-        #TODO: render the correct page & delete dd
         return Inertia::render('Shared/UploadedProgram', $programs);
     }
 
-    public function notUploaded(Request $req): Response
-    {
+    public function notUploaded(Request $req): Response {
         $user = $req->user();
         $programs = Program::query()
             ->join('episodes', 'programs.id', '=', 'episodes.program_id')
@@ -43,29 +37,29 @@ class EditorController extends Controller
             ->whereNull('videos.id')
             ->groupBy('programs.id')
             ->paginate(15)->onEachSide(5);
-        // dd(json_encode($programs));
-        #TODO: render the correct page & delete dd
         return Inertia::render('Shared/NotUploadedProgram', $programs);
     }
 
-    public function program(Program $program): Response
-    {
-        $episodes = Episode::with(['videos' => function (Builder $query) {
+    public function program(Program $program): Response {
+        $episodes = Episode::with(['videos' => function ($query) {
             $query->orderBy('segment_number', 'asc');
         }])->where('program_id', '=', $program->id)->get();
+
         $program->episode_count = $episodes->count();
-        $episodes->transform(function (Video $video, int $_) {
-            $video->url = "https://drive.google.com/uc?export=download&id={$video->object_id}";
+
+        $episodes->each(function ($episode) {
+            $episode->videos->each(function ($video) {
+                $video->url = "https://drive.google.com/uc?export=download&id={$video->object_id}";
+            });
         });
 
         return Inertia::render('Editor/ProgramDetail', [
-            'program' => $program,
+            'program'  => $program,
             'episodes' => $episodes,
         ]);
     }
 
-    public function upload(PostEpisodeSegmentRequest $req): HttpResponse
-    {
+    public function upload(PostEpisodeSegmentRequest $req): HttpResponse {
         $payload = $req->validated();
         $client = new Client();
         $client->useApplicationDefaultCredentials();
@@ -73,15 +67,15 @@ class EditorController extends Controller
         $drive = new Drive($client);
         $metadata = new DriveFile(['name' => $payload['attachment']->getClientOriginalName()]);
         $file = $drive->files->create($metadata, [
-            'data' => $payload['attachment'],
+            'data'   => $payload['attachment'],
             'fields' => 'id',
         ]);
 
         $segment_number = (int) $payload['segment_number'];
 
         Video::create([
-            'episode_id' => $payload['episode_id'],
-            'object_id' => $file->id,
+            'episode_id'     => $payload['episode_id'],
+            'object_id'      => $file->id,
             'segment_number' => $segment_number,
         ]);
         return response(status: 200);

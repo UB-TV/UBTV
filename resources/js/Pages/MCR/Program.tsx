@@ -1,17 +1,15 @@
 import { useMemo, useState } from "react";
-import { MCR_PROGRAM_HEADER } from "@/Constants/TableHeader";
+
 // Component
 import { IGeneralPaginationTable } from "@/models/generalinterfaces";
 import { IVideoProgram } from "@/models/videprograminterfaces";
 import Layout from "@/Layout";
+import { MCR_PROGRAM_HEADER } from "@/Constants/TableHeader";
 import SearchField from "@/Components/Dashboard/SearchField";
 import Table from "@/Components/Dashboard/Table";
 
-const Program = ({
-    data,
-    links
-}: IGeneralPaginationTable<IVideoProgram[]>) => {
-    const [searchInput, setSearchInput] = useState('');
+const Program = ({ data, links }: IGeneralPaginationTable<IVideoProgram[]>) => {
+    const [searchInput, setSearchInput] = useState("");
 
     const handleSearch = (input: string) => {
         setSearchInput(input);
@@ -36,7 +34,8 @@ const Program = ({
                 <div className="flex items-center gap-6">
                     <SearchField onSearch={handleSearch} />
                     <p className="caption-1">
-                        <span className="font-semibold">{data.length}</span> Program
+                        <span className="font-semibold">{data.length}</span>{" "}
+                        Program
                     </p>
                 </div>
                 {filteredPrograms.length > 0 ? (
@@ -45,13 +44,15 @@ const Program = ({
                         body={filteredPrograms}
                         action="/icon/more-fill.svg"
                         pagination={true}
-                        type="Program Status"
+                        type="Program"
                         redirectUrl="programs"
                         isRedirectPrefix
                         pagination_link={links}
                     />
                 ) : (
-                    <p className="body-1 font-semibol">Tidak ada program yang ditemukan</p>
+                    <p className="body-1 font-semibol">
+                        Tidak ada program yang ditemukan
+                    </p>
                 )}
             </>
         </Layout>

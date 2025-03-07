@@ -1,7 +1,8 @@
-import { Link } from "@inertiajs/react"
+import { Link, router } from "@inertiajs/react";
+
+import Button from "@/Components/Shared/Button";
 // Component
-import LoginForm from "@/Components/Auth/LoginForm"
-import Button from "@/Components/Shared/Button"
+import LoginForm from "@/Components/Auth/LoginForm";
 
 const Login = () => {
     return (
@@ -19,15 +20,22 @@ const Login = () => {
                     color="Primary"
                     width="Full"
                     size="Large"
+                    onClick={() =>
+                        router.visit("/sso/google/redirect", { replace: true })
+                    }
                 />
-                <span className="heading-6 font-semibold text-center">Belum Punya Akun?
-                    <Link href="/register" className="text-secondary-700 underline">
+                <span className="heading-6 font-semibold text-center">
+                    Belum Punya Akun?
+                    <Link
+                        href="/register"
+                        className="text-secondary-700 underline"
+                    >
                         Daftar
                     </Link>
                 </span>
             </div>
         </main>
-    )
-}
+    );
+};
 
-export default Login
+export default Login;

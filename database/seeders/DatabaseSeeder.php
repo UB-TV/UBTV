@@ -1,5 +1,4 @@
 <?php
-
 namespace Database\Seeders;
 
 use App\Models\User;
@@ -10,36 +9,34 @@ use App\Models\Notification;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 
-class DatabaseSeeder extends Seeder
-{
+class DatabaseSeeder extends Seeder {
     /**
      * Seed the application's database.
      */
-    public function run(): void
-    {
+    public function run(): void {
         $this->call([RoleSeeder::class]);
 
         $users = [];
         $users[] = User::create([
-            'email' => 'miruza.dev@gmail.com',
-            'name' => 'Mirza pengen Event-Driven',
+            'email'        => 'miruza.dev@gmail.com',
+            'name'         => 'Mirza pengen Event-Driven',
             'phone_number' => '0811111111',
-            'employee_id' => 'EMP-2020-0000',
-            'is_active' => true,
+            'employee_id'  => 'EMP-2020-0000',
+            'is_active'    => true,
         ])->assignRole('producer');
         $users[] = User::create([
-            'email' => 'agustianto.d19@gmail.com',
-            'name' => 'Faiz cape html',
+            'email'        => 'agustianto.d19@gmail.com',
+            'name'         => 'Faiz cape html',
             'phone_number' => '0822222222',
-            'employee_id' => 'EMP-2121-0000',
-            'is_active' => true,
+            'employee_id'  => 'EMP-2121-0000',
+            'is_active'    => true,
         ])->assignRole('producer');
         $users[] = User::create([
-            'email' => 'achmalpradiptaaditama@gmail.com',
-            'name' => 'Achmal Telolet',
+            'email'        => 'achmalpradiptaaditama@gmail.com',
+            'name'         => 'Achmal Telolet',
             'phone_number' => '0844444444',
-            'employee_id' => 'EMP-2525-0000',
-            'is_active' => true,
+            'employee_id'  => 'EMP-2525-0000',
+            'is_active'    => true,
         ])->assignRole('head_of_program');
         User::factory()->create([
             'is_active' => null,
@@ -77,11 +74,11 @@ class DatabaseSeeder extends Seeder
             $role = $roles->random();
 
             Notification::create([
-                'user_id' => $user->id,
+                'user_id'    => $user->id,
                 'program_id' => $program->id,
                 'episode_id' => $episode->id,
-                'role_id' => $role->id,
-                'message' => "Notification for user {$user->name} on program {$program->name}",
+                'role_id'    => $role->id,
+                'message'    => "Notification for user {$user->name} on program {$program->name}",
             ]);
         }
     }

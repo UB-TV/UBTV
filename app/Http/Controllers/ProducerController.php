@@ -2,7 +2,6 @@
 namespace App\Http\Controllers;
 
 use Exception;
-use HttpResponse;
 use Inertia\Inertia;
 use App\Models\Video;
 use App\Models\Episode;
@@ -94,7 +93,7 @@ class ProducerController extends Controller {
         return response(status: 200);
     }
 
-    public function deleteEpisode(Episode $episode): HttpResponse {
+    public function deleteEpisode(Episode $episode): \Illuminate\Http\Response {
         try {
             $episode->delete();
         } catch (Exception) {
